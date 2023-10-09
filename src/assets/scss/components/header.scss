@@ -2,11 +2,18 @@
 
 .header {
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
   align-items: center;
-  width: 100%;
-  height: 50px;
-  background-color: $primary;
+  justify-content: flex-start;
+
+  &__menu {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 50px;
+    background-color: $primary;
+  }
 
   &__logo {
     padding-left: 15px;
@@ -15,7 +22,40 @@
     text-decoration: none;
   }
 
-  &__menu {
+  &__img {
     padding-right: 15px;
+  }
+
+  &__toggle {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: flex-end;
+    width: 100%;
+    position: fixed;
+    top: 58px;
+    right: 8px;
+  }
+
+  &__menu-invisible {
+    display: none;
+  }
+
+  &__menu-visible {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: flex-end;
+    gap: 10px;
+
+    background-color: $primary;
+    width: 200px;
+    padding: 5px 15px 5px 0;
+  }
+
+  &__txt {
+    font-size: 16px;
+    color: #fff;
+    text-decoration: none;
   }
 }
