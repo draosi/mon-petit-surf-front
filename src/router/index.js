@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
+import LoginView from '../views/LoginView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -14,31 +15,31 @@ const router = createRouter({
       name: 'inscription',
       component: LoginView
     },
-    {
-      path: '/connexion',
-      name: 'connexion',
-      component: RegisterView
-    },
-    {
-      path: '/spot/détails/:spotId',
-      name: 'spotDetails',
-      component: SpotDetailsView
-    },
-    {
-      path: '/favoris/:userId',
-      name: 'favoris',
-      component: FavoriteView
-    },
-    {
-      path: '/profile/:userId',
-      name: 'profile',
-      component: ProfileView
-    },
-    {
-      path: '/cgu',
-      name: 'cgu',
-      component: CguView
-    },
+    // {
+    //   path: '/connexion',
+    //   name: 'connexion',
+    //   component: RegisterView
+    // },
+    // {
+    //   path: '/spot/détails/:spotId',
+    //   name: 'spotDetails',
+    //   component: SpotDetailsView
+    // },
+    // {
+    //   path: '/favoris/:userId',
+    //   name: 'favoris',
+    //   component: FavoriteView
+    // },
+    // {
+    //   path: '/profile/:userId',
+    //   name: 'profile',
+    //   component: ProfileView
+    // },
+    // {
+    //   path: '/cgu',
+    //   name: 'cgu',
+    //   component: CguView
+    // },
   ]
 })
 

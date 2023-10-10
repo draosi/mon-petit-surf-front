@@ -3,7 +3,6 @@
 </style>
 
 <template>
-  <div>
     <Header />
     <h1 class="test">Home Page Page</h1>
     <p class="lorem">
@@ -12,7 +11,6 @@
       Cumque distinctio dolorum sed? Consequatur, modi at!
     </p>
     <Footer />
-  </div>
 </template>
 
 <script>
