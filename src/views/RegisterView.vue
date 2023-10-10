@@ -1,4 +1,4 @@
-<style>
+<style lang="scss" scoped>
 @import "@/assets/scss/views/register.scss";
 </style>
 
