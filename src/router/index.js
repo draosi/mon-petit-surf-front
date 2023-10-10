@@ -5,6 +5,7 @@ import RegisterView from '../views/RegisterView.vue'
 import SpotDetailsView from '../views/SpotDetailsView.vue'
 import FavoritesView from '../views/FavoritesView.vue'
 import ProfileView from '../views/ProfileView.vue'
+import CguView from '../views/CguView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -39,11 +40,11 @@ const router = createRouter({
       name: 'profile',
       component: ProfileView
     },
-    // {
-    //   path: '/cgu',
-    //   name: 'cgu',
-    //   component: CguView
-    // },
+    {
+      path: '/cgu',
+      name: 'cgu',
+      component: CguView
+    },
   ]
 })
 
