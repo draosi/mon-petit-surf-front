@@ -8,7 +8,7 @@
       <RouterLink class="header__logo" to="/">Mon Petit Surf</RouterLink>
       <img
         class="header__img"
-        :src="menuVisible ? 'src/assets/images/close.png' : 'src/assets/images/menu.png'"
+        :src="menuVisible ? closeMenu : openMenu"
         alt="menu"
         @click="toggleMenu"
       />
@@ -27,11 +27,15 @@
 
 <script>
 import { RouterLink } from "vue-router";
+import closeMenu from '../assets/images/close.png'
+import openMenu from '../assets/images/menu.png'
 
 export default {
   data() {
     return {
       menuVisible: false,
+      closeMenu: closeMenu,
+      openMenu: openMenu
     };
   },
 
