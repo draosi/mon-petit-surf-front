@@ -3,6 +3,7 @@ import HomeView from '../views/HomeView.vue'
 import LoginView from '../views/LoginView.vue'
 import RegisterView from '../views/RegisterView.vue'
 import SpotDetailsView from '../views/SpotDetailsView.vue'
+import FavoritesView from '../views/FavoritesView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -27,11 +28,11 @@ const router = createRouter({
       name: 'spotDetails',
       component: SpotDetailsView
     },
-    // {
-    //   path: '/favoris/:userId',
-    //   name: 'favoris',
-    //   component: FavoriteView
-    // },
+    {
+      path: '/favoris/:userId',
+      name: 'favoris',
+      component: FavoritesView
+    },
     // {
     //   path: '/profile/:userId',
     //   name: 'profile',
