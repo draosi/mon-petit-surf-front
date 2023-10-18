@@ -8,3 +8,36 @@
   width: 150px;
   color: $primary;
 }
+
+.main {
+  padding: 30px;
+}
+
+.sort {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 30px;
+  margin: 30px 0;
+}
+
+.spot {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+
+  &__card {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 70%;
+  }
+
+  &__lien {
+    text-decoration: none;
+    width: 100%;
+  }
+}
