@@ -7,7 +7,7 @@
     <a href="https://github.com/draosi" target="_blank">
       <img class="footer__img" src="../assets/images/github.png" alt="menu" />
     </a>
-    <RouterLink to="/" class="footer__cgu">CGU</RouterLink>
+    <RouterLink to="/cgu" class="footer__cgu">CGU</RouterLink>
   </div>
 </template>
 

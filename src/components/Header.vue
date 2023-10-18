@@ -1,10 +1,11 @@
 <style lang="scss" scoped>
 @import "@/assets/scss/components/header.scss";
+@import "@/assets/scss/main.scss";
 </style>
 
 <template>
   <header class="header">
-    <div class="header__menu">
+    <div class="header__menu container">
       <RouterLink class="header__logo" to="/">Mon Petit Surf</RouterLink>
       <img
         class="header__img"
@@ -13,7 +14,7 @@
         @click="toggleMenu"
       />
     </div>
-    <div class="header__toggle">
+    <div class="header__toggle container">
       <div
         v-if="menuVisible"
         :class="menuVisible ? 'header__menu-visible' : 'header__menu-invisible'"
