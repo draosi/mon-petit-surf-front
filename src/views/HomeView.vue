@@ -15,11 +15,23 @@
       <div></div>
       <div></div>
     </section>
-    <section class="spot">
-      <div class="spot__card">
-        <RouterLink to="/" class="spot__lien">
-          <HomeCard />
-        </RouterLink>
+    <section class="spots">
+      <div
+        class="spot"
+        :class="{ 'spot__card--blue': cardBackground(index) }"
+        v-for="(spot, index) in spotEnDur"
+        :key="index"
+      >
+        <div class="spot__card">
+          <RouterLink :to="`spot/details/${spot.id}`" class="spot__lien">
+            <HomeCard
+              :nom="spot.nom"
+              :region="spot.region"
+              :vague="spot.vague"
+              :periode="spot.periode"
+            />
+          </RouterLink>
+        </div>
       </div>
     </section>
   </main>
@@ -36,6 +48,61 @@ export default {
     Header,
     Footer,
     HomeCard,
+  },
+  data() {
+    return {
+      blueBackground: true,
+      spots: [],
+      spotEnDur: [
+        {
+          id: 1,
+          nom: "Lacanau-océan",
+          region: "Gironde",
+          vague: 1.5,
+          periode: 11,
+        },
+        {
+          id: 1,
+          nom: "Lacanau-océan",
+          region: "Gironde",
+          vague: 1.5,
+          période: 11,
+        },
+        {
+          id: 1,
+          nom: "Lacanau-océan",
+          region: "Gironde",
+          vague: 1.5,
+          période: 11,
+        },
+        {
+          id: 1,
+          nom: "Lacanau-océan",
+          region: "Gironde",
+          vague: 1.5,
+          période: 11,
+        },
+        {
+          id: 1,
+          nom: "Lacanau-océan",
+          region: "Gironde",
+          vague: 1.5,
+          période: 11,
+        },
+        {
+          id: 1,
+          nom: "Lacanau-océan",
+          region: "Gironde",
+          vague: 1.5,
+          période: 11,
+        },
+      ],
+    };
+  },
+  methods: {
+    cardBackground(i) {
+      return i % 2 === 0;
+    },
   },
 };
 </script>

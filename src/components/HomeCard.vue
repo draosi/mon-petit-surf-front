@@ -4,22 +4,31 @@
 
 <template>
   <div class="card">
-    <h1 class="card__title">LACANAU-OCEAN</h1>
+    <h1 class="card__title">{{ nom }}</h1>
     <div class="card__infos">
       <div class="informations">
         <div class="informations__txt">Région</div>
-        <div class="informations__txt">Gironde</div>
+        <div class="informations__txt">{{ region }}</div>
       </div>
       <div class="informations">
         <div class="informations__txt">Taille moyenne des vagues</div>
-        <div class="informations__txt">1,5 m</div>
+        <div class="informations__txt">{{ vague }} m</div>
       </div>
       <div class="informations">
         <div class="informations__txt">Temps de période moyen</div>
-        <div class="informations__txt">11 s</div>
+        <div class="informations__txt">{{ periode }} s</div>
       </div>
     </div>
   </div>
 </template>
 
-<script></script>
+<script>
+export default {
+  props: {
+    nom: String,
+    region: String,
+    vague: Number,
+    periode: Number
+  }
+}
+</script>
