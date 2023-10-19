@@ -4,16 +4,32 @@
 
 <template>
   <Header />
-  <h1 class="test">Home Page Page</h1>
-  <p class="lorem">
-    Lorem ipsum dolor sit amet consectetur adipisicing elit. Est facilis quis
-    nisi tempore, amet magnam nam enim maxime, aspernatur ab ullam aut iusto.
-    Cumque distinctio dolorum sed? Consequatur, modi at!
-  </p>
   <main class="main">
     <section class="sort">
-      <div></div>
-      <div></div>
+      <div>
+        <select v-model="selected">
+          <option disabled value="">Taille moyenne</option>
+          <option v-for="option in waveHeight" :value="option">
+            {{ option }}
+          </option>
+        </select>
+        <select v-model="selected">
+          <option disabled value="">Période moyenne</option>
+          <option v-for="option in period" :value="option">
+            {{ option }}
+          </option>
+        </select>
+        <select v-model="selected">
+          <option disabled value="">Selectionnez une région</option>
+          <option v-for="option in regionEnDures" :value="option">
+            {{ option }}
+          </option>
+        </select>
+      </div>
+      <div>
+        <button></button>
+        <button></button>
+      </div>
     </section>
     <section class="spots">
       <div
@@ -51,7 +67,24 @@ export default {
   },
   data() {
     return {
-      blueBackground: true,
+      // Permet que 'Selectionnez une région' soit affiché par défaut
+      selected: "",
+      waveHeight: [
+        "vague < 0,9 m",
+        "0,8 m < vague < 1,3 m",
+        "1,2 m < vague < 1,7 m",
+        "1,6 m < vague < 2,2 m",
+        "2,1 m < vague"
+      ],
+      period: [
+        "période < 7 s",
+        "6 s < période < 9 s",
+        "8 s < période < 11 s",
+        "10 s < période < 13 s",
+        "12 s < période < 15 s",
+        "14 s < période"
+      ],
+      region: [],
       spots: [],
       spotEnDur: [
         {
@@ -96,6 +129,17 @@ export default {
           vague: 1.5,
           période: 11,
         },
+      ],
+      regionEnDures: [
+        "Charente-Maritime",
+        "Cotes-d'Armor",
+        "Finistère",
+        "Gironde",
+        "Landes",
+        "Loire-Atlantique",
+        "Morbihan",
+        "Pyrénées-Atlantique",
+        "Vendée",
       ],
     };
   },
