@@ -248,5 +248,9 @@ export default {
       }
     },
   },
+
+  mounted() {
+    this.filteredSpots = this.spotEnDur
+  }
 };
 </script>
