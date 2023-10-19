@@ -7,19 +7,19 @@
   <main class="main">
     <section class="sort">
       <div>
-        <select v-model="selectedHeight" @change="filterSpot">
+        <select v-model="selectedHeight" @change="filterHeight">
           <option disabled value="">Taille moyenne</option>
           <option v-for="option in waveHeight" :value="option">
             {{ option }}
           </option>
         </select>
-        <select v-model="selectedPeriod" @change="log">
+        <select v-model="selectedPeriod" @change="filterPeriod">
           <option disabled value="">Période moyenne</option>
           <option v-for="option in period" :value="option">
             {{ option }}
           </option>
         </select>
-        <select v-model="selectedRegion" @change="log">
+        <select v-model="selectedRegion" @change="filterRegion">
           <option disabled value="">Selectionnez une région</option>
           <option v-for="option in regionEnDures" :value="option">
             {{ option }}
@@ -82,9 +82,8 @@ export default {
         "période < 7 s",
         "6 s < période < 9 s",
         "8 s < période < 11 s",
-        "10 s < période < 13 s",
-        "12 s < période < 15 s",
-        "14 s < période",
+        "10 s < période < 14 s",
+        "13 s < période",
       ],
       region: [],
       spots: [],
@@ -95,7 +94,7 @@ export default {
           nom: "Lacanau-océan",
           region: "Gironde",
           vague: 0.8,
-          periode: 11,
+          periode: 6,
         },
         {
           id: 1,
@@ -109,28 +108,28 @@ export default {
           nom: "Lacanau-océan",
           region: "Gironde",
           vague: 1.1,
-          période: 11,
+          période: 9,
         },
         {
           id: 1,
           nom: "Lacanau-océan",
           region: "Gironde",
           vague: 1.9,
-          période: 11,
+          période: 12,
         },
         {
           id: 1,
-          nom: "Lacanau-océan",
-          region: "Gironde",
+          nom: "Capbreton",
+          region: "Landes",
           vague: 1.5,
-          période: 11,
+          période: 13,
         },
         {
           id: 1,
           nom: "Lacanau-océan",
           region: "Gironde",
           vague: 3,
-          période: 11,
+          période: 18,
         },
       ],
       regionEnDures: [
@@ -141,13 +140,12 @@ export default {
         "Landes",
         "Loire-Atlantique",
         "Morbihan",
-        "Pyrénées-Atlantique",
-        "Vendée",
+        "Pyrénées-Atlantique"
       ],
     };
   },
   computed: {
-    filterSpot() {
+    filterHeight() {
       if (this.selectedHeight !== "") {
         const result = this.spotEnDur.filter((el) => {
           if (this.selectedHeight === "vague < 0,9 m") {
@@ -162,23 +160,61 @@ export default {
             return el.vague > 2.2;
           }
         });
-        this.filteredSpots = result
+        this.filteredSpots = result;
       } else {
-        this.filteredSpots = this.spotEnDur
+        this.filteredSpots = this.spotEnDur;
+      }
+    },
+    filterPeriod() {
+      if (this.selectedPeriod !== "") {
+        const result = this.spotEnDur.filter((el) => {
+          if (this.selectedPeriod === "période < 7 s") {
+            return el.période < 7;
+          } else if (this.selectedPeriod === "6 s < période < 9 s") {
+            return el.période > 6 && el.période < 9;
+          } else if (this.selectedPeriod === "8 s < période < 11 s") {
+            return el.période > 8 && el.période < 11;
+          } else if (this.selectedPeriod === "10 s < période < 14 s") {
+            return el.période > 10 && el.période < 14;
+          } else {
+            return el.période > 13;
+          }
+        });
+        this.filteredSpots = result;
+      } else {
+        this.filteredSpots = this.spotEnDur;
+      }
+    },
+    filterRegion() {
+      if (this.selectedRegion !== "") {
+        const result = this.spotEnDur.filter((el) => {
+          if (this.selectedRegion === "Charente-Maritime") {
+            return el.region === "Charente-Maritime";
+          } else if (this.selectedRegion === "Cotes-d'Armor") {
+            return el.region === "Cotes-d'Armor";
+          } else if (this.selectedRegion === "Finistère") {
+            return el.region === "Finistère";
+          } else if (this.selectedRegion === "Gironde") {
+            return el.region === "Gironde";
+          } else if (this.selectedRegion === "Landes") {
+            return el.region === "Landes";
+          } else if (this.selectedRegion === "Loire-Atlantique") {
+            return el.region === "Loire-Atlantique";
+          } else if (this.selectedRegion === "Morbihan") {
+            return el.region === "Morbihan";
+          } else {
+            return el.region === "Pyrénées-Atlantique";
+          }
+        });
+        this.filteredSpots = result;
+      } else {
+        this.filteredSpots = this.spotEnDur;
       }
     },
   },
   methods: {
     cardBackground(i) {
       return i % 2 === 0;
-    },
-    log() {
-      console.log(
-        this.selectedHeight,
-        this.selectedPeriod,
-        this.selectedRegion,
-        this.spotEnDur
-      );
     },
   },
 };
