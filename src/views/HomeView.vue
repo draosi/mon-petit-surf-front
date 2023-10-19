@@ -7,7 +7,7 @@
   <main class="main">
     <section class="sort">
       <div>
-        <select v-model="selectedHeight" @change="filterHeight">
+        <select v-model="selectedHeight" @change="filterSpot">
           <option disabled value="">Taille moyenne</option>
           <option v-for="option in waveHeight" :value="option">
             {{ option }}
@@ -35,7 +35,7 @@
       <div
         class="spot"
         :class="{ 'spot__card--blue': cardBackground(index) }"
-        v-for="(spot, index) in spotEnDur"
+        v-for="(spot, index) in filteredSpots"
         :key="index"
       >
         <div class="spot__card">
@@ -44,7 +44,7 @@
               :nom="spot.nom"
               :region="spot.region"
               :vague="spot.vague"
-              :periode="spot.periode"
+              :periode="spot.période"
             />
           </RouterLink>
         </div>
@@ -108,7 +108,14 @@ export default {
           id: 1,
           nom: "Lacanau-océan",
           region: "Gironde",
-          vague: 1.5,
+          vague: 1.1,
+          période: 11,
+        },
+        {
+          id: 1,
+          nom: "Lacanau-océan",
+          region: "Gironde",
+          vague: 1.9,
           période: 11,
         },
         {
@@ -122,14 +129,7 @@ export default {
           id: 1,
           nom: "Lacanau-océan",
           region: "Gironde",
-          vague: 1.5,
-          période: 11,
-        },
-        {
-          id: 1,
-          nom: "Lacanau-océan",
-          region: "Gironde",
-          vague: 1.5,
+          vague: 3,
           période: 11,
         },
       ],
@@ -146,33 +146,40 @@ export default {
       ],
     };
   },
+  computed: {
+    filterSpot() {
+      if (this.selectedHeight !== "") {
+        const result = this.spotEnDur.filter((el) => {
+          if (this.selectedHeight === "vague < 0,9 m") {
+            return el.vague < 0.9;
+          } else if (this.selectedHeight === "0,8 m < vague < 1,3 m") {
+            return el.vague > 0.8 && el.vague < 1.3;
+          } else if (this.selectedHeight === "1,2 m < vague < 1,7 m") {
+            return el.vague > 1.2 && el.vague < 1.7;
+          } else if (this.selectedHeight === "1,6 m < vague < 2,2 m") {
+            return el.vague > 1.6 && el.vague < 2.2;
+          } else {
+            return el.vague > 2.2;
+          }
+        });
+        this.filteredSpots = result
+      } else {
+        this.filteredSpots = this.spotEnDur
+      }
+    },
+  },
   methods: {
     cardBackground(i) {
       return i % 2 === 0;
     },
     log() {
-      console.log(this.selectedHeight, this.selectedPeriod, this.selectedRegion);
+      console.log(
+        this.selectedHeight,
+        this.selectedPeriod,
+        this.selectedRegion,
+        this.spotEnDur
+      );
     },
-    filterHeight() {
-      if (this.selectedHeight === "vague < 0,9 m") {
-        this.filteredSpots = this.spotEnDur.filter((el) => {
-          el.vague < 0.9
-        })
-        console.log(this.filteredSpots);
-      }
-    },
-    filterPeriod() {
-
-    },
-    filterregion() {
-
-    }
   },
 };
 </script>
-
-<!-- "vague < 0,9 m",
-"0,8 m < vague < 1,3 m",
-"1,2 m < vague < 1,7 m",
-"1,6 m < vague < 2,2 m",
-"2,1 m < vague" -->
