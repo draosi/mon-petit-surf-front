@@ -94,7 +94,7 @@ export default {
           nom: "Lacanau-océan",
           region: "Gironde",
           vague: 0.8,
-          periode: 6,
+          période: 6,
         },
         {
           id: 1,
@@ -144,79 +144,23 @@ export default {
       ],
     };
   },
-  computed: {
-    // filterHeight() {
-    //   if (this.selectedHeight !== "") {
-    //     const result = this.spotEnDur.filter((el) => {
-    //       if (this.selectedHeight === "vague < 0,9 m") {
-    //         return el.vague < 0.9;
-    //       } else if (this.selectedHeight === "0,8 m < vague < 1,3 m") {
-    //         return el.vague > 0.8 && el.vague < 1.3;
-    //       } else if (this.selectedHeight === "1,2 m < vague < 1,7 m") {
-    //         return el.vague > 1.2 && el.vague < 1.7;
-    //       } else if (this.selectedHeight === "1,6 m < vague < 2,2 m") {
-    //         return el.vague > 1.6 && el.vague < 2.2;
-    //       } else {
-    //         return el.vague > 2.2;
-    //       }
-    //     });
-    //     this.filteredSpots = result;
-    //   } else {
-    //     this.filteredSpots = this.spotEnDur;
-    //   }
-    // },
-    // filterPeriod() {
-    //   if (this.selectedPeriod !== "") {
-    //     const result = this.spotEnDur.filter((el) => {
-    //       if (this.selectedPeriod === "période < 7 s") {
-    //         return el.période < 7;
-    //       } else if (this.selectedPeriod === "6 s < période < 9 s") {
-    //         return "6 s < période < 9 s";
-    //       } else if (this.selectedPeriod === "8 s < période < 11 s") {
-    //         return el.période > 8 && el.période < 11;
-    //       } else if (this.selectedPeriod === "10 s < période < 14 s") {
-    //         return el.période > 10 && el.période < 14;
-    //       } else {
-    //         return el.période > 13;
-    //       }
-    //     });
-    //     this.filteredSpots = result;
-    //   } else {
-    //     this.filteredSpots = this.spotEnDur;
-    //   }
-    // },
-    // filterRegion() {
-    //   if (this.selectedRegion !== "") {
-    //     const result = this.spotEnDur.filter((el) => {
-    //       if (this.selectedRegion === "Charente-Maritime") {
-    //         return el.region === "Charente-Maritime";
-    //       } else if (this.selectedRegion === "Cotes-d'Armor") {
-    //         return el.region === "Cotes-d'Armor";
-    //       } else if (this.selectedRegion === "Finistère") {
-    //         return el.region === "Finistère";
-    //       } else if (this.selectedRegion === "Gironde") {
-    //         return el.region === "Gironde";
-    //       } else if (this.selectedRegion === "Landes") {
-    //         return el.region === "Landes";
-    //       } else if (this.selectedRegion === "Loire-Atlantique") {
-    //         return el.region === "Loire-Atlantique";
-    //       } else if (this.selectedRegion === "Morbihan") {
-    //         return el.region === "Morbihan";
-    //       } else {
-    //         return el.region === "Pyrénées-Atlantique";
-    //       }
-    //     });
-    //     this.filteredSpots = result;
-    //   } else {
-    //     this.filteredSpots = this.spotEnDur;
-    //   }
-    // },
-  },
+
   methods: {
     cardBackground(i) {
       return i % 2 === 0;
     },
+
+    // responsable du filtrage lorsqu'un selecteur est selectionner
+    // En fonction du selecteur selectionné, appelle une fonction permettant de trier les données
     filterSpots() {
+      if (
+        !this.selectedHeight &&
+        !this.selectedPeriod &&
+        !this.selectedRegion
+      ) {
+        this.filteredSpots = this.spotEnDur;
+        return; // Sortir de la méthode si rien n'est sélectionné
+      }
       let result = this.spotEnDur;
 
       if (this.selectedHeight) {
@@ -233,6 +177,11 @@ export default {
 
       this.filteredSpots = result;
     },
+
+    // Filtre les données d'un tableau 'data'
+    // 'field' permet quel champ de chaque élément du tableau je souhaite modifier
+    // 'criteria' est la valeur utiliser pour filter les éléments
+    // Appelle différente fonction pour trier les données
     filterByCriteria(data, field, criteria) {
       return data.filter((el) => {
         if (field === "vague") {
@@ -281,21 +230,21 @@ export default {
     checkRegionCriteria(value, criteria) {
       switch (criteria) {
         case "Charente-Maritime":
-          return (value = "Charente-Maritime");
+          return (value === "Charente-Maritime");
         case "Cotes-d'Armor":
-          return (value = "Cotes-d'Armor");
+          return (value === "Cotes-d'Armor");
         case "Finistère":
-          return (value = "Finistère");
+          return (value === "Finistère");
         case "Gironde":
-          return (value = "Gironde");
+          return (value === "Gironde");
         case "Landes":
-          return (value = "Landes");
+          return (value === "Landes");
         case "Loire-Atlantique":
-          return (value = "Loire-Atlantique");
+          return (value === "Loire-Atlantique");
         case "Morbihan":
-          return (value = "Morbihan");
+          return (value === "Morbihan");
         default:
-          return (value = "Pyrénées-Atlantique");
+          return (value === "Pyrénées-Atlantique");
       }
     },
   },
