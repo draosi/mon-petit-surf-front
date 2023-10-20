@@ -9,20 +9,20 @@
       <div>
         <select v-model="selectedHeight" @change="filterSpots">
           <option disabled value="">Taille moyenne</option>
-          <option v-for="option in waveHeight" :value="option">
-            {{ option }}
+          <option v-for="option in waveHeight" :value="option.title">
+            {{ option.title }}
           </option>
         </select>
         <select v-model="selectedPeriod" @change="filterSpots">
           <option disabled value="">Période moyenne</option>
-          <option v-for="option in period" :value="option">
-            {{ option }}
+          <option v-for="option in wavePeriod" :value="option.title">
+            {{ option.title }}
           </option>
         </select>
         <select v-model="selectedRegion" @change="filterSpots">
           <option disabled value="">Selectionnez une région</option>
-          <option v-for="option in regionEnDures" :value="option">
-            {{ option }}
+          <option v-for="option in regionEnDures" :value="option.title">
+            {{ option.title }}
           </option>
         </select>
       </div>
@@ -72,18 +72,48 @@ export default {
       selectedPeriod: "",
       selectedRegion: "",
       waveHeight: [
-        "vague < 0,9 m",
-        "0,8 m < vague < 1,3 m",
-        "1,2 m < vague < 1,7 m",
-        "1,6 m < vague < 2,2 m",
-        "2,1 m < vague",
+        {
+          title: "vague < 0,9 m",
+          value: (height) => height < 0.9,
+        },
+        {
+          title: "0,8 m < vague < 1,3 m",
+          value: (height) => height > 0.8 && height < 1.3,
+        },
+        {
+          title: "1,2 m < vague < 1,7 m",
+          value: (height) => height > 1.2 && height < 1.7,
+        },
+        {
+          title: "1,6 m < vague < 2,2 m",
+          value: (height) => height > 1.6 && height < 2.2,
+        },
+        {
+          title: "2,1 m < vague",
+          value: (height) => height > 2.1,
+        },
       ],
-      period: [
-        "période < 7 s",
-        "6 s < période < 9 s",
-        "8 s < période < 11 s",
-        "10 s < période < 14 s",
-        "13 s < période",
+      wavePeriod: [
+        {
+          title: "période < 7 s",
+          value: (period) => period < 7,
+        },
+        {
+          title: "6 s < période < 9 s",
+          value: (period) => period > 6 && period < 9,
+        },
+        {
+          title: "8 s < période < 11 s",
+          value: (period) => period > 8 && period < 11,
+        },
+        {
+          title: "10 s < période < 14 s",
+          value: (period) => period > 10 && period < 14,
+        },
+        {
+          title: "13 s < période",
+          value: (period) => period > 13,
+        },
       ],
       region: [],
       spots: [],
@@ -133,14 +163,38 @@ export default {
         },
       ],
       regionEnDures: [
-        "Charente-Maritime",
-        "Cotes-d'Armor",
-        "Finistère",
-        "Gironde",
-        "Landes",
-        "Loire-Atlantique",
-        "Morbihan",
-        "Pyrénées-Atlantique",
+        {
+          title: "Charente-Maritime",
+          value: (region) => region === "Charente-Maritime"
+        },
+        {
+          title: "Cotes-d'Armor",
+          value: (region) => region === "Cotes-d'Armor"
+        },
+        {
+          title: "Finistère",
+          value: (region) => region === "Finistère"
+        },
+        {
+          title: "Gironde",
+          value: (region) => region === "Gironde"
+        },
+        {
+          title: "Landes",
+          value: (region) => region === "Landes"
+        },
+        {
+          title: "Loire-Atlantique",
+          value: (region) => region === "Loire-Atlantique"
+        },
+        {
+          title: "Morbihan",
+          value: (region) => region === "Morbihan"
+        },
+        {
+          title: "Pyrénées-Atlantique",
+          value: (region) => region === "Pyrénées-Atlantique"
+        },
       ],
     };
   },
@@ -150,7 +204,7 @@ export default {
       return i % 2 === 0;
     },
 
-    // responsable du filtrage lorsqu'un selecteur est selectionner
+    // responsable du filtrage lorsqu'un selecteur est selectionné
     // En fonction du selecteur selectionné, appelle une fonction permettant de trier les données
     filterSpots() {
       if (
@@ -158,8 +212,9 @@ export default {
         !this.selectedPeriod &&
         !this.selectedRegion
       ) {
+        // Sortir de la méthode si rien n'est sélectionné et retourner le tableau de base
         this.filteredSpots = this.spotEnDur;
-        return; // Sortir de la méthode si rien n'est sélectionné
+        return;
       }
       let result = this.spotEnDur;
 
@@ -179,9 +234,9 @@ export default {
     },
 
     // Filtre les données d'un tableau 'data'
-    // 'field' permet quel champ de chaque élément du tableau je souhaite modifier
-    // 'criteria' est la valeur utiliser pour filter les éléments
-    // Appelle différente fonction pour trier les données
+    // 'field' indique le champ de chaque élément du tableau je souhaite modifier
+    // 'criteria' est la valeur récupérée par le select, utilisé pour filter les éléments
+    // Appelle 3 fonctions pour trier les données
     filterByCriteria(data, field, criteria) {
       return data.filter((el) => {
         if (field === "vague") {
@@ -197,60 +252,39 @@ export default {
       });
     },
 
+    // Crééer une constante permettant de stocker l'élément dont le titre est égale à la valeur du select dans waveHeight
+    // Si cette constante existe, alors elle appelle la fonction associé au critère trouvé dans me tableau waveHeight
+    // Vérifie si l'argument 'value' associé au résultat du select est vrai
     checkWaveCriteria(value, criteria) {
-      switch (criteria) {
-        case "vague < 0,9 m":
-          return value < 0.9;
-        case "0,8 m < vague < 1,3 m":
-          return value >= 0.8 && value < 1.3;
-        case "1,2 m < vague < 1,7 m":
-          return value >= 1.2 && value < 1.7;
-        case "1,6 m < vague < 2,2 m":
-          return value >= 1.6 && value < 2.2;
-        default:
-          return value >= 2.2;
+      const wave = this.waveHeight.find((el) => el.title === criteria);
+      if (wave) {
+        return wave.value(value);
+      } else {
+        return value >= 2.2;
       }
     },
 
     checkPeriodCriteria(value, criteria) {
-      switch (criteria) {
-        case "période < 7 s":
-          return value < 7;
-        case "6 s < période < 9 s":
-          return value > 6 && value < 9;
-        case "8 s < période < 11 s":
-          return value > 8 && value < 11;
-        case "10 s < période < 14 s":
-          return value > 10 && value < 14;
-        default:
-          return value > 13;
+      const period = this.wavePeriod.find((el) => el.title === criteria);
+      if (period) {
+        return period.value(value);
+      } else {
+        return value > 13;
       }
     },
 
     checkRegionCriteria(value, criteria) {
-      switch (criteria) {
-        case "Charente-Maritime":
-          return (value === "Charente-Maritime");
-        case "Cotes-d'Armor":
-          return (value === "Cotes-d'Armor");
-        case "Finistère":
-          return (value === "Finistère");
-        case "Gironde":
-          return (value === "Gironde");
-        case "Landes":
-          return (value === "Landes");
-        case "Loire-Atlantique":
-          return (value === "Loire-Atlantique");
-        case "Morbihan":
-          return (value === "Morbihan");
-        default:
-          return (value === "Pyrénées-Atlantique");
+      const region = this.regionEnDures.find((el) => el.title === criteria)
+      if (region) {
+        return region.value(value)
+      } else {
+        return false
       }
     },
   },
 
   mounted() {
-    this.filteredSpots = this.spotEnDur
-  }
+    this.filteredSpots = this.spotEnDur;
+  },
 };
 </script>
