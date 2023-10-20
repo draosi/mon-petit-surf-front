@@ -6,30 +6,31 @@
   <Header />
   <main class="main">
     <section class="sort">
-      <div>
-        <select v-model="selectedHeight" @change="filterSpots">
+      <div class="sort__size">
+        <select v-model="selectedHeight" @change="filterSpots" class="sort__select sort__txt">
           <option disabled value="">Taille moyenne</option>
           <option v-for="option in waveHeight" :value="option.title">
             {{ option.title }}
           </option>
         </select>
-        <select v-model="selectedPeriod" @change="filterSpots">
+      </div>
+      <div class="sort__size">
+        <select v-model="selectedPeriod" @change="filterSpots" class="sort__select sort__txt">
           <option disabled value="">Période moyenne</option>
           <option v-for="option in wavePeriod" :value="option.title">
             {{ option.title }}
           </option>
         </select>
-        <select v-model="selectedRegion" @change="filterSpots">
+      </div>
+      <div class="sort__size">
+        <select v-model="selectedRegion" @change="filterSpots" class="sort__select sort__txt">
           <option disabled value="">Selectionnez une région</option>
           <option v-for="option in regionEnDures" :value="option.title">
             {{ option.title }}
           </option>
         </select>
       </div>
-      <div>
-        <button></button>
-        <button></button>
-      </div>
+      <button class="sort__size sort__button">Réinitialiser</button>
     </section>
     <section class="spots">
       <div
@@ -165,35 +166,35 @@ export default {
       regionEnDures: [
         {
           title: "Charente-Maritime",
-          value: (region) => region === "Charente-Maritime"
+          value: (region) => region === "Charente-Maritime",
         },
         {
           title: "Cotes-d'Armor",
-          value: (region) => region === "Cotes-d'Armor"
+          value: (region) => region === "Cotes-d'Armor",
         },
         {
           title: "Finistère",
-          value: (region) => region === "Finistère"
+          value: (region) => region === "Finistère",
         },
         {
           title: "Gironde",
-          value: (region) => region === "Gironde"
+          value: (region) => region === "Gironde",
         },
         {
           title: "Landes",
-          value: (region) => region === "Landes"
+          value: (region) => region === "Landes",
         },
         {
           title: "Loire-Atlantique",
-          value: (region) => region === "Loire-Atlantique"
+          value: (region) => region === "Loire-Atlantique",
         },
         {
           title: "Morbihan",
-          value: (region) => region === "Morbihan"
+          value: (region) => region === "Morbihan",
         },
         {
           title: "Pyrénées-Atlantique",
-          value: (region) => region === "Pyrénées-Atlantique"
+          value: (region) => region === "Pyrénées-Atlantique",
         },
       ],
     };
@@ -274,11 +275,11 @@ export default {
     },
 
     checkRegionCriteria(value, criteria) {
-      const region = this.regionEnDures.find((el) => el.title === criteria)
+      const region = this.regionEnDures.find((el) => el.title === criteria);
       if (region) {
-        return region.value(value)
+        return region.value(value);
       } else {
-        return false
+        return false;
       }
     },
   },
