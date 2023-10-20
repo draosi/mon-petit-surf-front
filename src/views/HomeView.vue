@@ -293,7 +293,6 @@ export default {
   },
 
   mounted() {
-    this.resetSpots = this.spotEnDur
     this.filteredSpots = this.spotEnDur;
   },
 };
