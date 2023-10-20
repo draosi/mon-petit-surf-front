@@ -19,8 +19,12 @@
         v-if="menuVisible"
         :class="menuVisible ? 'header__menu-visible' : 'header__menu-invisible'"
       >
-        <RouterLink to="/" class="header__txt">Connexion</RouterLink>
-        <RouterLink to="/" class="header__txt">Inscription</RouterLink>
+        <RouterLink :to="{ name: 'connexion' }" class="header__txt"
+          >Connexion</RouterLink
+        >
+        <RouterLink :to="{ name: 'inscription' }" class="header__txt"
+          >Inscription</RouterLink
+        >
       </div>
     </div>
   </header>
@@ -28,15 +32,15 @@
 
 <script>
 import { RouterLink } from "vue-router";
-import closeMenu from '../assets/images/close.png'
-import openMenu from '../assets/images/menu.png'
+import closeMenu from "../assets/images/close.png";
+import openMenu from "../assets/images/menu.png";
 
 export default {
   data() {
     return {
       menuVisible: false,
       closeMenu: closeMenu,
-      openMenu: openMenu
+      openMenu: openMenu,
     };
   },
 
