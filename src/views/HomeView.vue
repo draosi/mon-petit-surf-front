@@ -30,7 +30,7 @@
           </option>
         </select>
       </div>
-      <button class="sort__size sort__button">Réinitialiser</button>
+      <button @click="reset" class="sort__size sort__button">Réinitialiser</button>
     </section>
     <section class="spots">
       <div
@@ -119,6 +119,7 @@ export default {
       region: [],
       spots: [],
       filteredSpots: [],
+      resetSpots: [],
       spotEnDur: [
         {
           id: 1,
@@ -282,9 +283,17 @@ export default {
         return false;
       }
     },
+
+    reset() {
+      this.selectedHeight = "",
+      this.selectedPeriod = "",
+      this.selectedRegion = "",
+      this.filteredSpots = this.spotEnDur
+    }
   },
 
   mounted() {
+    this.resetSpots = this.spotEnDur
     this.filteredSpots = this.spotEnDur;
   },
 };
