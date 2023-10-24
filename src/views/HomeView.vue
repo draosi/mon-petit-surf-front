@@ -130,7 +130,7 @@ export default {
           value: (period) => period > 13,
         },
       ],
-      region: [],
+      regions: [],
       spots: [],
       filteredSpots: [],
       resetSpots: [],
@@ -312,6 +312,13 @@ export default {
       console.log(this.spots);
     },
 
+    async fetchRegions() {
+      const res = await fetch("https://localhost:7080/api/Spots/getRegions");
+      const response = await res.json();
+      this.regions = response;
+      console.log(this.regions);
+    },
+
     async fetchWaveInfos(latitude, longitude) {
       console.log(latitude, longitude);
       const res = await fetch(
@@ -335,6 +342,7 @@ export default {
   async mounted() {
     this.filteredSpots = this.spotEnDur;
     await this.fetchSpots();
+    await this.fetchRegions();
     await this.getWaves(this.spots);
   },
 };
