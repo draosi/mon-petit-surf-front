@@ -7,7 +7,11 @@
   <main class="main">
     <section class="sort">
       <div class="sort__size">
-        <select v-model="selectedHeight" @change="filterSpots" class="sort__select sort__txt">
+        <select
+          v-model="selectedHeight"
+          @change="filterSpots"
+          class="sort__select sort__txt"
+        >
           <option disabled value="">Taille moyenne</option>
           <option v-for="option in waveHeight" :value="option.title">
             {{ option.title }}
@@ -15,7 +19,11 @@
         </select>
       </div>
       <div class="sort__size">
-        <select v-model="selectedPeriod" @change="filterSpots" class="sort__select sort__txt">
+        <select
+          v-model="selectedPeriod"
+          @change="filterSpots"
+          class="sort__select sort__txt"
+        >
           <option disabled value="">Période moyenne</option>
           <option v-for="option in wavePeriod" :value="option.title">
             {{ option.title }}
@@ -23,14 +31,20 @@
         </select>
       </div>
       <div class="sort__size">
-        <select v-model="selectedRegion" @change="filterSpots" class="sort__select sort__txt">
+        <select
+          v-model="selectedRegion"
+          @change="filterSpots"
+          class="sort__select sort__txt"
+        >
           <option disabled value="">Selectionnez une région</option>
           <option v-for="option in regionEnDures" :value="option.title">
             {{ option.title }}
           </option>
         </select>
       </div>
-      <button @click="reset" class="sort__size sort__button">Réinitialiser</button>
+      <button @click="reset" class="sort__size sort__button">
+        Réinitialiser
+      </button>
     </section>
     <section class="spots">
       <div
@@ -285,15 +299,43 @@ export default {
     },
 
     reset() {
-      this.selectedHeight = "",
-      this.selectedPeriod = "",
-      this.selectedRegion = "",
-      this.filteredSpots = this.spotEnDur
-    }
+      (this.selectedHeight = ""),
+        (this.selectedPeriod = ""),
+        (this.selectedRegion = ""),
+        (this.filteredSpots = this.spotEnDur);
+    },
+
+    async fetchSpots() {
+      const res = await fetch("https://localhost:7080/api/Spots/getSpots");
+      const response = await res.json();
+      this.spots = response;
+      console.log(this.spots);
+    },
+
+    async fetchWaveInfos(latitude, longitude) {
+      console.log(latitude, longitude);
+      const res = await fetch(
+        `https://marine-api.open-meteo.com/v1/marine?latitude=${latitude}&longitude=${longitude}&hourly=wave_height,wave_direction,wave_period`
+      );
+      const response = await res.json();
+      console.log(response);
+      return response;
+    },
+
+    async getWaves(array) {
+      console.log(array);
+      const promises = array.forEach(async (el) => {
+        const res = await this.fetchWaveInfos(el.latitude, el.longitude);
+      });
+
+      await Promise.all(promises);
+    },
   },
 
-  mounted() {
+  async mounted() {
     this.filteredSpots = this.spotEnDur;
+    await this.fetchSpots();
+    await this.getWaves(this.spots);
   },
 };
 </script>
