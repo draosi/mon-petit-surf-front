@@ -337,13 +337,23 @@ export default {
 
       await Promise.all(promises);
     },
+
+    async getMaxConditionsTest(latitude, longitude) {
+      const res = await fetch(
+        `https://marine-api.open-meteo.com/v1/marine?latitude=${latitude}&longitude=${longitude}&daily=wave_height_max,wave_period_max&timezone=GMT`
+      );
+      const response = await res.json();
+      console.log(response);
+      return response;
+    },
   },
 
   async mounted() {
     this.filteredSpots = this.spotEnDur;
     await this.fetchSpots();
     await this.fetchRegions();
-    await this.getWaves(this.spots);
+    // await this.getWaves(this.spots);
+    await this.getMaxConditionsTest(45, -1.19)
   },
 };
 </script>
