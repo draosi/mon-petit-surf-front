@@ -212,6 +212,13 @@ export default {
           value: (region) => region === "Pyrénées-Atlantique",
         },
       ],
+      spotCard: [
+        { key: "id", value: "" },
+        { key: "Nom", value: "" },
+        { key: "Région", value: "" },
+        { key: "Taille maximum des vagues", value: "" },
+        { key: "Temps de période maximum", value: "" },
+      ],
     };
   },
 
@@ -308,8 +315,9 @@ export default {
     async fetchSpots() {
       const res = await fetch("https://localhost:7080/api/Spots/getSpots");
       const response = await res.json();
-      this.spots = response;
-      console.log(this.spots);
+      return response
+      // this.spots = response;
+      // console.log(this.spots);
     },
 
     async fetchRegions() {
@@ -332,7 +340,8 @@ export default {
     async getWaves(array) {
       console.log(array);
       const promises = array.forEach(async (el) => {
-        const res = await this.fetchWaveInfos(el.latitude, el.longitude);
+        // const res = await this.fetchWaveInfos(el.latitude, el.longitude);
+        const res = await this.getMaxConditionsTest(el.latitude, el.longitude);
       });
 
       await Promise.all(promises);
@@ -346,14 +355,37 @@ export default {
       console.log(response);
       return response;
     },
+
+    async createSpotCards() {
+      const spots = await this.fetchSpots();
+      console.log(spots);
+      const wavePromises = spots.map((e) =>
+        this.getMaxConditionsTest(e.latitude, e.longitude)
+      );
+      const waveData = await Promise.all(wavePromises);
+
+      const spotCards = spots.map((e, i) => {
+        const maxWave = waveData[i].daily.wave_height_max ? waveData[i].daily.wave_height_max[0] : "Données de vagues non disponibles";
+        const maxPeriod = waveData[i].daily.wave_period_max ? waveData[i].daily.wave_period_max[0] : "Données de périodes non disponibles";
+        return {
+          "id": e.id ,
+          "Nom": e.spotName,
+          "Région": e.department,
+          "Taille maximum des vagues": maxWave,
+          "Temps de période maximum": maxPeriod
+        };
+      });
+      console.log(spotCards);
+      return spotCards
+    },
   },
 
   async mounted() {
     this.filteredSpots = this.spotEnDur;
-    await this.fetchSpots();
-    await this.fetchRegions();
+    // await this.fetchSpots();
+    // await this.fetchRegions();
     // await this.getWaves(this.spots);
-    await this.getMaxConditionsTest(45, -1.19)
+    await this.createSpotCards()
   },
 };
 </script>
