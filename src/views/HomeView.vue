@@ -111,23 +111,23 @@ export default {
       wavePeriod: [
         {
           title: "période < 7 s",
-          value: (period) => period < 7,
+          value: (periode) => periode < 7,
         },
         {
           title: "6 s < période < 9 s",
-          value: (period) => period > 6 && period < 9,
+          value: (periode) => periode > 6 && periode < 9,
         },
         {
           title: "8 s < période < 11 s",
-          value: (period) => period > 8 && period < 11,
+          value: (periode) => periode > 8 && periode < 11,
         },
         {
           title: "10 s < période < 14 s",
-          value: (period) => period > 10 && period < 14,
+          value: (periode) => periode > 10 && periode < 14,
         },
         {
           title: "13 s < période",
-          value: (period) => period > 13,
+          value: (periode) => periode > 13,
         },
       ],
       regions: [],
@@ -135,50 +135,6 @@ export default {
       filteredSpots: [],
       resetSpots: [],
       spotCard: [],
-      // spotEnDur: [
-      //   {
-      //     id: 1,
-      //     nom: "Lacanau-océan",
-      //     region: "Gironde",
-      //     vague: 0.8,
-      //     période: 6,
-      //   },
-      //   {
-      //     id: 1,
-      //     nom: "Lacanau-océan",
-      //     region: "Gironde",
-      //     vague: 1.5,
-      //     période: 11,
-      //   },
-      //   {
-      //     id: 1,
-      //     nom: "Lacanau-océan",
-      //     region: "Gironde",
-      //     vague: 1.1,
-      //     période: 9,
-      //   },
-      //   {
-      //     id: 1,
-      //     nom: "Lacanau-océan",
-      //     region: "Gironde",
-      //     vague: 1.9,
-      //     période: 12,
-      //   },
-      //   {
-      //     id: 1,
-      //     nom: "Capbreton",
-      //     region: "Landes",
-      //     vague: 1.5,
-      //     période: 13,
-      //   },
-      //   {
-      //     id: 1,
-      //     nom: "Lacanau-océan",
-      //     region: "Gironde",
-      //     vague: 3,
-      //     période: 18,
-      //   },
-      // ],
       regionEnDures: [
         {
           title: "Charente-Maritime",
@@ -240,7 +196,7 @@ export default {
       }
 
       if (this.selectedPeriod) {
-        result = this.filterByCriteria(result, "période", this.selectedPeriod);
+        result = this.filterByCriteria(result, "periode", this.selectedPeriod);
       }
 
       if (this.selectedRegion) {
@@ -259,8 +215,8 @@ export default {
         if (field === "vague") {
           return this.checkWaveCriteria(el.vague, criteria);
         }
-        if (field === "période") {
-          return this.checkPeriodCriteria(el.période, criteria);
+        if (field === "periode") {
+          return this.checkPeriodCriteria(el.periode, criteria);
         }
         if (field === "region") {
           return this.checkRegionCriteria(el.region, criteria);
@@ -303,7 +259,7 @@ export default {
       (this.selectedHeight = ""),
         (this.selectedPeriod = ""),
         (this.selectedRegion = ""),
-        (this.filteredSpots = this.spotEnDur);
+        (this.filteredSpots = this.spotCard);
     },
 
     async fetchSpots() {
