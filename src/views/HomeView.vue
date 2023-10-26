@@ -134,6 +134,7 @@ export default {
       spots: [],
       filteredSpots: [],
       resetSpots: [],
+      spotCard: [],
       spotEnDur: [
         {
           id: 1,
@@ -211,13 +212,6 @@ export default {
           title: "Pyrénées-Atlantique",
           value: (region) => region === "Pyrénées-Atlantique",
         },
-      ],
-      spotCard: [
-        { key: "id", value: "" },
-        { key: "Nom", value: "" },
-        { key: "Région", value: "" },
-        { key: "Taille maximum des vagues", value: "" },
-        { key: "Temps de période maximum", value: "" },
       ],
     };
   },
@@ -376,16 +370,18 @@ export default {
         };
       });
       console.log(spotCards);
-      return spotCards
+      this.spotCard = spotCards
+      console.log(this.spotCard);
     },
   },
 
   async mounted() {
-    this.filteredSpots = this.spotEnDur;
+    // this.filteredSpots = this.spotEnDur;
     // await this.fetchSpots();
     // await this.fetchRegions();
     // await this.getWaves(this.spots);
     await this.createSpotCards()
+    this.filteredSpots = this.spotCard
   },
 };
 </script>
