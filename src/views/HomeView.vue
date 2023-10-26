@@ -59,7 +59,7 @@
               :nom="spot.nom"
               :region="spot.region"
               :vague="spot.vague"
-              :periode="spot.période"
+              :periode="spot.periode"
             />
           </RouterLink>
         </div>
@@ -135,50 +135,50 @@ export default {
       filteredSpots: [],
       resetSpots: [],
       spotCard: [],
-      spotEnDur: [
-        {
-          id: 1,
-          nom: "Lacanau-océan",
-          region: "Gironde",
-          vague: 0.8,
-          période: 6,
-        },
-        {
-          id: 1,
-          nom: "Lacanau-océan",
-          region: "Gironde",
-          vague: 1.5,
-          période: 11,
-        },
-        {
-          id: 1,
-          nom: "Lacanau-océan",
-          region: "Gironde",
-          vague: 1.1,
-          période: 9,
-        },
-        {
-          id: 1,
-          nom: "Lacanau-océan",
-          region: "Gironde",
-          vague: 1.9,
-          période: 12,
-        },
-        {
-          id: 1,
-          nom: "Capbreton",
-          region: "Landes",
-          vague: 1.5,
-          période: 13,
-        },
-        {
-          id: 1,
-          nom: "Lacanau-océan",
-          region: "Gironde",
-          vague: 3,
-          période: 18,
-        },
-      ],
+      // spotEnDur: [
+      //   {
+      //     id: 1,
+      //     nom: "Lacanau-océan",
+      //     region: "Gironde",
+      //     vague: 0.8,
+      //     période: 6,
+      //   },
+      //   {
+      //     id: 1,
+      //     nom: "Lacanau-océan",
+      //     region: "Gironde",
+      //     vague: 1.5,
+      //     période: 11,
+      //   },
+      //   {
+      //     id: 1,
+      //     nom: "Lacanau-océan",
+      //     region: "Gironde",
+      //     vague: 1.1,
+      //     période: 9,
+      //   },
+      //   {
+      //     id: 1,
+      //     nom: "Lacanau-océan",
+      //     region: "Gironde",
+      //     vague: 1.9,
+      //     période: 12,
+      //   },
+      //   {
+      //     id: 1,
+      //     nom: "Capbreton",
+      //     region: "Landes",
+      //     vague: 1.5,
+      //     période: 13,
+      //   },
+      //   {
+      //     id: 1,
+      //     nom: "Lacanau-océan",
+      //     region: "Gironde",
+      //     vague: 3,
+      //     période: 18,
+      //   },
+      // ],
       regionEnDures: [
         {
           title: "Charente-Maritime",
@@ -230,10 +230,10 @@ export default {
         !this.selectedRegion
       ) {
         // Sortir de la méthode si rien n'est sélectionné et retourner le tableau de base
-        this.filteredSpots = this.spotEnDur;
+        this.filteredSpots = this.spotCard;
         return;
       }
-      let result = this.spotEnDur;
+      let result = this.spotCard;
 
       if (this.selectedHeight) {
         result = this.filterByCriteria(result, "vague", this.selectedHeight);
@@ -363,10 +363,10 @@ export default {
         const maxPeriod = waveData[i].daily.wave_period_max ? waveData[i].daily.wave_period_max[0] : "Données de périodes non disponibles";
         return {
           "id": e.id ,
-          "Nom": e.spotName,
-          "Région": e.department,
-          "Taille maximum des vagues": maxWave,
-          "Temps de période maximum": maxPeriod
+          "nom": e.spotName,
+          "region": e.department,
+          "vague": maxWave,
+          "periode": maxPeriod
         };
       });
       console.log(spotCards);
