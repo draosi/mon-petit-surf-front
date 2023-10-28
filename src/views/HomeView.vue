@@ -50,7 +50,7 @@
       <div
         class="spot"
         :class="{ 'spot__card--blue': cardBackground(index) }"
-        v-for="(spot, index) in filteredSpots"
+        v-for="(spot, index) in spotsOnPage"
         :key="index"
       >
         <div class="spot__card">
@@ -66,9 +66,9 @@
       </div>
     </section>
     <section class="pagination">
-      <button>Page précédente</button>
-      <p>Chiffre</p>
-      <button>Page suivante</button>
+      <button @click="pagination(currentPage - 1)" :disabled="currentPage === 1">Page précédente</button>
+      <p>{{ currentPage }}</p>
+      <button @click="pagination(currentPage + 1)" :disabled="currentPage === pageCount">Page suivante</button>
     </section>
   </main>
   <Footer />
@@ -87,6 +87,12 @@ export default {
   },
   data() {
     return {
+      regions: [],
+      spots: [],
+      filteredSpots: [],
+      resetSpots: [],
+      spotCard: [],
+
       // Permet que le premier <option> soit affiché par défaut
       selectedHeight: "",
       selectedPeriod: "",
@@ -135,12 +141,25 @@ export default {
           value: (periode) => periode > 13,
         },
       ],
-      regions: [],
-      spots: [],
-      filteredSpots: [],
-      resetSpots: [],
-      spotCard: [],
+
+      currentPage: 1,
+      itemsPerPage: 5
     };
+  },
+
+  computed: {
+    startIndex() {
+      return (this.currentPage - 1) * this.itemsPerPage
+    },
+    endIndex() {
+      return this.currentPage * this.itemsPerPage
+    },
+    spotsOnPage() {
+      return this.filteredSpots.slice(this.startIndex, this.endIndex)
+    },
+    pageCount() {
+      return Math.ceil(this.filteredSpots.length / this.itemsPerPage)
+    }
   },
 
   methods: {
@@ -291,6 +310,12 @@ export default {
       })
       this.regions = regions
       console.log(this.regions);
+    },
+
+    pagination(page) {
+      if (page >= 1 && page <= this.pageCount) {
+        this.currentPage = page
+      }
     }
   },
 
