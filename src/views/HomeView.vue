@@ -70,14 +70,14 @@
         @click="pagination(currentPage - 1)"
         :disabled="currentPage === 1"
       >
-        Page précédente
+        Précédent
       </button>
       <p>{{ currentPage }}</p>
       <button
         @click="pagination(currentPage + 1)"
         :disabled="currentPage === pageCount"
       >
-        Page suivante
+        Suivant
       </button>
     </section>
   </main>
