@@ -37,7 +37,7 @@
           class="sort__select sort__txt"
         >
           <option disabled value="">Selectionnez une région</option>
-          <option v-for="option in regionEnDures" :value="option.title">
+          <option v-for="option in regions" :value="option.title">
             {{ option.title }}
           </option>
         </select>
@@ -135,40 +135,6 @@ export default {
       filteredSpots: [],
       resetSpots: [],
       spotCard: [],
-      regionEnDures: [
-        {
-          title: "Charente-Maritime",
-          value: (region) => region === "Charente-Maritime",
-        },
-        {
-          title: "Cotes-d'Armor",
-          value: (region) => region === "Cotes-d'Armor",
-        },
-        {
-          title: "Finistère",
-          value: (region) => region === "Finistère",
-        },
-        {
-          title: "Gironde",
-          value: (region) => region === "Gironde",
-        },
-        {
-          title: "Landes",
-          value: (region) => region === "Landes",
-        },
-        {
-          title: "Loire-Atlantique",
-          value: (region) => region === "Loire-Atlantique",
-        },
-        {
-          title: "Morbihan",
-          value: (region) => region === "Morbihan",
-        },
-        {
-          title: "Pyrénées-Atlantique",
-          value: (region) => region === "Pyrénées-Atlantique",
-        },
-      ],
     };
   },
 
@@ -177,7 +143,7 @@ export default {
       return i % 2 === 0;
     },
 
-    // responsable du filtrage lorsqu'un selecteur est selectionné
+    // Responsable du filtrage lorsqu'un selecteur est selectionné
     // En fonction du selecteur selectionné, appelle une fonction permettant de trier les données
     filterSpots() {
       if (
@@ -207,7 +173,7 @@ export default {
     },
 
     // Filtre les données d'un tableau 'data'
-    // 'field' indique le champ de chaque élément du tableau je souhaite modifier
+    // 'field' indique le champ de chaque élément du tableau que je souhaite modifier
     // 'criteria' est la valeur récupérée par le select, utilisé pour filter les éléments
     // Appelle 3 fonctions pour trier les données
     filterByCriteria(data, field, criteria) {
@@ -247,7 +213,7 @@ export default {
     },
 
     checkRegionCriteria(value, criteria) {
-      const region = this.regionEnDures.find((el) => el.title === criteria);
+      const region = this.regions.find((el) => el.title === criteria);
       if (region) {
         return region.value(value);
       } else {
@@ -265,52 +231,31 @@ export default {
     async fetchSpots() {
       const res = await fetch("https://localhost:7080/api/Spots/getSpots");
       const response = await res.json();
-      return response
-      // this.spots = response;
-      // console.log(this.spots);
+      return response;
     },
 
     async fetchRegions() {
       const res = await fetch("https://localhost:7080/api/Spots/getRegions");
       const response = await res.json();
-      this.regions = response;
-      console.log(this.regions);
-    },
-
-    async fetchWaveInfos(latitude, longitude) {
-      console.log(latitude, longitude);
-      const res = await fetch(
-        `https://marine-api.open-meteo.com/v1/marine?latitude=${latitude}&longitude=${longitude}&hourly=wave_height,wave_direction,wave_period`
-      );
-      const response = await res.json();
-      console.log(response);
       return response;
+      // this.regions = response;
+      // console.log(this.regions);
     },
 
-    async getWaves(array) {
-      console.log(array);
-      const promises = array.forEach(async (el) => {
-        // const res = await this.fetchWaveInfos(el.latitude, el.longitude);
-        const res = await this.getMaxConditionsTest(el.latitude, el.longitude);
-      });
-
-      await Promise.all(promises);
-    },
-
-    async getMaxConditionsTest(latitude, longitude) {
+    async getMaxConditions(latitude, longitude) {
       const res = await fetch(
         `https://marine-api.open-meteo.com/v1/marine?latitude=${latitude}&longitude=${longitude}&daily=wave_height_max,wave_period_max&timezone=GMT`
       );
       const response = await res.json();
-      console.log(response);
+      // console.log(response);
       return response;
     },
 
     async createSpotCards() {
       const spots = await this.fetchSpots();
-      console.log(spots);
+      // console.log(spots);
       const wavePromises = spots.map((e) =>
-        this.getMaxConditionsTest(e.latitude, e.longitude)
+        this.getMaxConditions(e.latitude, e.longitude)
       );
       const waveData = await Promise.all(wavePromises);
 
@@ -325,19 +270,29 @@ export default {
           "periode": maxPeriod
         };
       });
-      console.log(spotCards);
+      // console.log(spotCards);
       this.spotCard = spotCards
-      console.log(this.spotCard);
+      // console.log(this.spotCard);
     },
+
+    async createRegionsArray() {
+      const response = await this.fetchRegions();
+
+      const regions = response.map(e => {
+        return {
+          title: e,
+          value: (region) => region === e
+        }
+      })
+      this.regions = regions
+      console.log(this.regions);
+    }
   },
 
   async mounted() {
-    // this.filteredSpots = this.spotEnDur;
-    // await this.fetchSpots();
-    // await this.fetchRegions();
-    // await this.getWaves(this.spots);
     await this.createSpotCards()
     this.filteredSpots = this.spotCard
+    await this.createRegionsArray();
   },
 };
 </script>
