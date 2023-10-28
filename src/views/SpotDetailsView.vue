@@ -4,14 +4,16 @@
 
 <template>
     <Header />
-    <div>
-      <h1 class="spot">Détail du spot 1</h1>
-      <p>
-        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ducimus sed,
-        vitae est eius vero numquam at? Maxime totam, enim modi nemo numquam
-        deserunt rem molestias laudantium odit necessitatibus omnis sunt!
-      </p>
-    </div>
+    <main class="main">
+      <section class="infos">
+        <h1></h1>
+        <div>
+          <div></div>
+          <div></div>
+        </div>
+      </section>
+      <section></section>
+    </main>
     <Footer />
   </template>
   
