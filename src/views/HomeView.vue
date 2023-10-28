@@ -46,39 +46,46 @@
         Réinitialiser
       </button>
     </section>
-    <section class="spots">
-      <div
-        class="spot"
-        :class="{ 'spot__card--blue': cardBackground(index) }"
-        v-for="(spot, index) in spotsOnPage"
-        :key="index"
-      >
-        <div class="spot__card">
-          <RouterLink :to="`spot/details/${spot.id}`" class="spot__lien">
-            <HomeCard
-              :nom="spot.nom"
-              :region="spot.region"
-              :vague="spot.vague"
-              :periode="spot.periode"
-            />
-          </RouterLink>
+    <section>
+      <div v-if="filteredSpots.length > 0 ">
+        <div class="spots">
+          <div
+            class="spot"
+            :class="{ 'spot__card--blue': cardBackground(index) }"
+            v-for="(spot, index) in spotsOnPage"
+            :key="index"
+          >
+            <div class="spot__card">
+              <RouterLink :to="`spot/details/${spot.id}`" class="spot__lien">
+                <HomeCard
+                  :nom="spot.nom"
+                  :region="spot.region"
+                  :vague="spot.vague"
+                  :periode="spot.periode"
+                />
+              </RouterLink>
+            </div>
+          </div>
+        </div>
+        <div class="pagination">
+          <button
+            @click="pagination(currentPage - 1)"
+            :disabled="currentPage === 1"
+          >
+            Précédent
+          </button>
+          <p>{{ currentPage }}</p>
+          <button
+            @click="pagination(currentPage + 1)"
+            :disabled="currentPage === pageCount"
+          >
+            Suivant
+          </button>
         </div>
       </div>
-    </section>
-    <section class="pagination">
-      <button
-        @click="pagination(currentPage - 1)"
-        :disabled="currentPage === 1"
-      >
-        Précédent
-      </button>
-      <p>{{ currentPage }}</p>
-      <button
-        @click="pagination(currentPage + 1)"
-        :disabled="currentPage === pageCount"
-      >
-        Suivant
-      </button>
+      <div v-else class="loader">
+        <Loader />
+      </div>
     </section>
   </main>
   <Footer />
@@ -88,12 +95,14 @@
 import Header from "@/components/Header.vue";
 import Footer from "@/components/Footer.vue";
 import HomeCard from "@/components/HomeCard.vue";
+import Loader from "@/components/Loader.vue";
 
 export default {
   components: {
     Header,
     Footer,
     HomeCard,
+    Loader,
   },
   data() {
     return {
