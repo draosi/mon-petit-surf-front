@@ -82,4 +82,20 @@
   align-items: center;
   gap: 40px;
   padding-top: 30px;
+
+  &__btn {
+    width: 100px;
+    height: 30px;
+    background-color: white;
+    border: 1.5px solid black;
+    border-radius: 15px;
+    font-family: $font;
+    cursor: pointer;
+    transition: all 0.5s ease-out;
+
+    &:hover {
+      background-color: $primary;
+      color: white;
+    }
+  }
 }

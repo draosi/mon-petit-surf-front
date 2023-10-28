@@ -69,6 +69,7 @@
       <button
         @click="pagination(currentPage - 1)"
         :disabled="currentPage === 1"
+        class="pagination__btn"
       >
         Précédent
       </button>
@@ -76,6 +77,7 @@
       <button
         @click="pagination(currentPage + 1)"
         :disabled="currentPage === pageCount"
+        class="pagination__btn"
       >
         Suivant
       </button>
