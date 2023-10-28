@@ -35,6 +35,7 @@ export default {
     async fetchSpot(id) {
       const res = await fetch(`https://localhost:7080/api/Spots/getSpot/${id}`);
       const response = await res.json();
+      console.log(response);
       return response;
     },
 
@@ -43,6 +44,7 @@ export default {
         `https://marine-api.open-meteo.com/v1/marine?latitude=${latitude}&longitude=${longitude}&hourly=wave_height,wave_direction,wave_period&timezone=GMT`
       );
       const response = await res.json();
+      console.log(response);
       return response;
     },
     async getWindConditions(latitude, longitude) {
@@ -50,6 +52,7 @@ export default {
         `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&hourly=windspeed_10m,winddirection_10m`
       );
       const response = await res.json();
+      console.log(response);
       return response;
     },
     async getMeteo(latitude, longitude) {
@@ -57,6 +60,7 @@ export default {
         `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&hourly=windspeed_10m,winddirection_10m&daily=temperature_2m_max,temperature_2m_min,sunrise,sunset,precipitation_sum`
       );
       const response = await res.json();
+      console.log(response);
       return response;
     },
 
