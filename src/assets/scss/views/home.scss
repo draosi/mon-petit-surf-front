@@ -1,15 +1,5 @@
 @import "../variables.scss";
 
-.test {
-  color: red;
-}
-
-.lorem {
-  width: 150px;
-  color: $primary;
-  height: 150vh;
-}
-
 .main {
   padding: 30px;
 }
@@ -31,7 +21,6 @@
     border: 2px solid black;
     border-radius: 10px;
     cursor: pointer;
-
   }
 
   &__button {
@@ -84,4 +73,13 @@
     text-decoration: none;
     width: 100%;
   }
+}
+
+.pagination {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+  padding-top: 30px;
 }

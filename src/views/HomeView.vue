@@ -65,6 +65,11 @@
         </div>
       </div>
     </section>
+    <section class="pagination">
+      <button>Page précédente</button>
+      <p>Chiffre</p>
+      <button>Page suivante</button>
+    </section>
   </main>
   <Footer />
 </template>
