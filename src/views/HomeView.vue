@@ -66,9 +66,19 @@
       </div>
     </section>
     <section class="pagination">
-      <button @click="pagination(currentPage - 1)" :disabled="currentPage === 1">Page précédente</button>
+      <button
+        @click="pagination(currentPage - 1)"
+        :disabled="currentPage === 1"
+      >
+        Page précédente
+      </button>
       <p>{{ currentPage }}</p>
-      <button @click="pagination(currentPage + 1)" :disabled="currentPage === pageCount">Page suivante</button>
+      <button
+        @click="pagination(currentPage + 1)"
+        :disabled="currentPage === pageCount"
+      >
+        Page suivante
+      </button>
     </section>
   </main>
   <Footer />
@@ -143,23 +153,28 @@ export default {
       ],
 
       currentPage: 1,
-      itemsPerPage: 5
+      itemsPerPage: 5,
     };
   },
 
   computed: {
+    // Calcule l'indice de début des éléments à afficher sur la page
     startIndex() {
-      return (this.currentPage - 1) * this.itemsPerPage
+      return (this.currentPage - 1) * this.itemsPerPage;
     },
+    // Calcule l'indice de fin des éléments à afficher sur la page
     endIndex() {
-      return this.currentPage * this.itemsPerPage
+      return this.currentPage * this.itemsPerPage;
     },
+    // Extrait les éléments du tableau filteredSpots qui doivent être affichés
+    // Renvoie un tableau qui contient uniquement les éléments à afficher
     spotsOnPage() {
-      return this.filteredSpots.slice(this.startIndex, this.endIndex)
+      return this.filteredSpots.slice(this.startIndex, this.endIndex);
     },
+    // Calcule le nombre total de page en fonction du nombre d'éléments affichés par page
     pageCount() {
-      return Math.ceil(this.filteredSpots.length / this.itemsPerPage)
-    }
+      return Math.ceil(this.filteredSpots.length / this.itemsPerPage);
+    },
   },
 
   methods: {
@@ -284,44 +299,51 @@ export default {
       const waveData = await Promise.all(wavePromises);
 
       const spotCards = spots.map((e, i) => {
-        const maxWave = waveData[i].daily.wave_height_max ? waveData[i].daily.wave_height_max[0] : "Données de vagues non disponibles";
-        const maxPeriod = waveData[i].daily.wave_period_max ? waveData[i].daily.wave_period_max[0] : "Données de périodes non disponibles";
+        const maxWave = waveData[i].daily.wave_height_max
+          ? waveData[i].daily.wave_height_max[0]
+          : "Données de vagues non disponibles";
+        const maxPeriod = waveData[i].daily.wave_period_max
+          ? waveData[i].daily.wave_period_max[0]
+          : "Données de périodes non disponibles";
         return {
-          "id": e.id ,
-          "nom": e.spotName,
-          "region": e.department,
-          "vague": maxWave,
-          "periode": maxPeriod
+          id: e.id,
+          nom: e.spotName,
+          region: e.department,
+          vague: maxWave,
+          periode: maxPeriod,
         };
       });
       // console.log(spotCards);
-      this.spotCard = spotCards
+      this.spotCard = spotCards;
       // console.log(this.spotCard);
     },
 
     async createRegionsArray() {
       const response = await this.fetchRegions();
 
-      const regions = response.map(e => {
+      const regions = response.map((e) => {
         return {
           title: e,
-          value: (region) => region === e
-        }
-      })
-      this.regions = regions
+          value: (region) => region === e,
+        };
+      });
+      this.regions = regions;
       console.log(this.regions);
     },
 
+    // Le paramètre "page" indique vers quelle page je souhaite naviguer
+    // La condition verifie si la valeur du paramètre est supérieur à 1 et inférieur au nombre total de page
+    // la valeur de "this.currentPage" est mise à jour, startIndex, endIndex et spotsOnPage sont mis à jour également
     pagination(page) {
       if (page >= 1 && page <= this.pageCount) {
-        this.currentPage = page
+        this.currentPage = page;
       }
-    }
+    },
   },
 
   async mounted() {
-    await this.createSpotCards()
-    this.filteredSpots = this.spotCard
+    await this.createSpotCards();
+    this.filteredSpots = this.spotCard;
     await this.createRegionsArray();
   },
 };
