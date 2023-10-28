@@ -106,3 +106,12 @@
   align-items: center;
   padding: 30px 0;
 }
+
+.no-result {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 2px solid $primary;
+  border-radius: 10px;
+  padding: 30px 0;
+}
