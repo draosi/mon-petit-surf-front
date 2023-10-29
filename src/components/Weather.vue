@@ -3,7 +3,16 @@
 </style>
 
 <template>
-    <h1 class="test">test</h1>
+  <h1 class="test">test</h1>
 </template>
 
-<script></script>
+<script>
+export default {
+  props: {
+    meteoData: Object,
+  },
+  mounted() {
+    console.log(this.meteoData);
+  },
+};
+</script>

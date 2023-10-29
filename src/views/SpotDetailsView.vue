@@ -8,8 +8,8 @@
     <section class="infos">
       <h1>{{ spotInfos.spotName }} ({{ spotInfos.department }})</h1>
       <div>
-        <div>
-          <Weather />
+        <div v-if="surfDatas.length !== 0">
+          <Weather :meteoData="surfDatas.meteo" />
         </div>
         <div></div>
       </div>
@@ -28,7 +28,8 @@ export default {
   data() {
     return {
       spotInfos: [],
-      surfDatas: []
+      surfDatas: [],
+
     };
   },
   components: {
