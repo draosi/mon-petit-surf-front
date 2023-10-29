@@ -10,7 +10,10 @@
       <div>
         <div></div>
         <div>
-          <Map />
+          <Map
+            :latitude="spotInfos.latitude"
+            :longitude="spotInfos.longitude"
+          />
         </div>
       </div>
     </section>
@@ -22,26 +25,26 @@
 <script>
 import Header from "@/components/Header.vue";
 import Footer from "@/components/Footer.vue";
-import Map from "@/components/Map.vue"
+import Map from "@/components/Map.vue";
 
 export default {
   data() {
     return {
       spotInfos: [],
-      surfDatas: []
+      surfDatas: [],
     };
   },
   components: {
     Header,
     Footer,
-    Map
+    Map,
   },
   methods: {
     async fetchSpot(id) {
       const res = await fetch(`https://localhost:7080/api/Spots/getSpot/${id}`);
       const response = await res.json();
       // console.log(response);
-      this.spotInfos = response
+      this.spotInfos = response;
       console.log(this.spotInfos);
       return response;
     },
@@ -72,23 +75,29 @@ export default {
     },
 
     sortSurfData(array) {
-      const filteredArray = []
+      const filteredArray = [];
       array.forEach((e, i) => {
-        if (i % 3 === 0 ) {
-          filteredArray.push(e)
-        }       
+        if (i % 3 === 0) {
+          filteredArray.push(e);
+        }
       });
-      return filteredArray
+      return filteredArray;
     },
 
     async createSpotInfos(id) {
-      const spot = await this.fetchSpot(id)
+      const spot = await this.fetchSpot(id);
 
-      const wavesData = await this.getWavesConditions(spot.latitude, spot.longitude)
-      const windData = await this.getWindConditions(spot.latitude, spot.longitude)
-      const meteoData = await this.getMeteo(spot.latitude, spot.longitude)
+      const wavesData = await this.getWavesConditions(
+        spot.latitude,
+        spot.longitude
+      );
+      const windData = await this.getWindConditions(
+        spot.latitude,
+        spot.longitude
+      );
+      const meteoData = await this.getMeteo(spot.latitude, spot.longitude);
 
-      if(spot && wavesData && windData && meteoData) {
+      if (spot && wavesData && windData && meteoData) {
         const spotInformations = {
           id: spot.id,
           name: spot.spotName,
@@ -101,20 +110,20 @@ export default {
             sunrise: meteoData.daily.sunrise[0],
             sunset: meteoData.daily.sunset[0],
             temperatureMax: meteoData.daily.temperature_2m_max[0],
-            temperatureMin: meteoData.daily.temperature_2m_min[0]
-          }
-        }
+            temperatureMin: meteoData.daily.temperature_2m_min[0],
+          },
+        };
 
-        this.surfDatas = spotInformations
+        this.surfDatas = spotInformations;
         console.log(this.surfDatas);
       } else {
-        console.error("Echec dans la récupération des données")
+        console.error("Echec dans la récupération des données");
       }
     },
   },
   async mounted() {
     const spotId = this.$route.params;
-    await this.createSpotInfos(spotId.spotId)
+    await this.createSpotInfos(spotId.spotId);
   },
 };
 </script>
