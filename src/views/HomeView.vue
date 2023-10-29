@@ -321,10 +321,10 @@ export default {
       const spotCards = spots.map((e, i) => {
         const maxWave = waveData[i].daily.wave_height_max
           ? waveData[i].daily.wave_height_max[0]
-          : "Données de vagues non disponibles";
+          : "Données des vagues non disponibles";
         const maxPeriod = waveData[i].daily.wave_period_max
           ? waveData[i].daily.wave_period_max[0]
-          : "Données de périodes non disponibles";
+          : "Données des périodes non disponibles";
         return {
           id: e.id,
           nom: e.spotName,
