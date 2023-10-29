@@ -20,7 +20,12 @@
       </div>
     </section>
     <section class="chart">
-      <Chart />
+      <Chart
+        :time="surfDatas.time"
+        :waves="surfDatas.wavesSize"
+        :period="surfDatas.wavesPeriod"
+        :wind="surfDatas.wind"
+      />
     </section>
   </main>
   <Footer />
@@ -31,7 +36,7 @@ import Header from "@/components/Header.vue";
 import Footer from "@/components/Footer.vue";
 import Map from "@/components/Map.vue";
 import Weather from "@/components/Weather.vue";
-import Chart from "@/components/Chart.vue"
+import Chart from "@/components/Chart.vue";
 
 export default {
   data() {

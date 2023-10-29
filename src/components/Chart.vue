@@ -12,6 +12,12 @@
 import Chart from "chart.js/auto";
 
 export default {
+  props: {
+    time: Array,
+    waves: Array,
+    period: Array,
+    wind: Array
+  },
   mounted() {
     const ctx = document.getElementById("chart");
 
@@ -34,16 +40,16 @@ export default {
             beginAtZero: true,
             suggestedMax: 5,
             ticks: {
-              stepSize: 1,
+              stepSize: 0.5,
             },
           },
         },
       },
     });
-
-    // if(ctx) {
-    //   ctx.style.width = "100%"
-    // }
+    console.log("time", this.time);
+    console.log("waves", this.waves);
+    console.log("period", this.period);
+    console.log("wind", this.wind);
   },
 };
 </script>
