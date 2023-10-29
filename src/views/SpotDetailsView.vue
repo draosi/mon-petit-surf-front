@@ -19,7 +19,7 @@
         </div>
       </div>
     </section>
-    <section>
+    <section class="chart">
       <Chart />
     </section>
   </main>

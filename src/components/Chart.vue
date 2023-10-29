@@ -3,7 +3,9 @@
 </style>
 
 <template>
-  <canvas id="chart"></canvas>
+  <div class="size">
+    <canvas id="chart"></canvas>
+  </div>
 </template>
 
 <script>
@@ -20,19 +22,28 @@ export default {
         datasets: [
           {
             label: "# of Votes",
-            data: [12, 19, 3, 5, 2, 3],
+            data: [1, 2, 3, 4],
             borderWidth: 1,
           },
         ],
       },
       options: {
+        maintainAspectRatio: false,
         scales: {
           y: {
             beginAtZero: true,
+            suggestedMax: 5,
+            ticks: {
+              stepSize: 1,
+            },
           },
         },
       },
     });
+
+    // if(ctx) {
+    //   ctx.style.width = "100%"
+    // }
   },
 };
 </script>
