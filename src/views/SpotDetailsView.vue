@@ -25,6 +25,7 @@ export default {
   data() {
     return {
       spotInfos: [],
+      surfDatas: []
     };
   },
   components: {
@@ -36,6 +37,8 @@ export default {
       const res = await fetch(`https://localhost:7080/api/Spots/getSpot/${id}`);
       const response = await res.json();
       // console.log(response);
+      this.spotInfos = response
+      console.log(this.spotInfos);
       return response;
     },
 
@@ -64,9 +67,18 @@ export default {
       return response;
     },
 
+    sortSurfData(array) {
+      const filteredArray = []
+      array.forEach((e, i) => {
+        if (i % 3 === 0 ) {
+          filteredArray.push(e)
+        }       
+      });
+      return filteredArray
+    },
+
     async createSpotInfos(id) {
       const spot = await this.fetchSpot(id)
-      console.log(spot);
 
       const wavesData = await this.getWavesConditions(spot.latitude, spot.longitude)
       const windData = await this.getWindConditions(spot.latitude, spot.longitude)
@@ -75,15 +87,22 @@ export default {
       if(spot && wavesData && windData && meteoData) {
         const spotInformations = {
           id: spot.id,
-          name: spot.name,
-          time: wavesData.hourly.time,
-          wavesSize: wavesData.hourly.wave_height,
-          wavesPeriod: wavesData.hourly.wave_period,
-          wind: windData.hourly.windspeed_10m,
-          meteo: meteoData.daily
+          name: spot.spotName,
+          time: this.sortSurfData(wavesData.hourly.time),
+          wavesSize: this.sortSurfData(wavesData.hourly.wave_height),
+          wavesPeriod: this.sortSurfData(wavesData.hourly.wave_period),
+          wind: this.sortSurfData(windData.hourly.windspeed_10m),
+          meteo: {
+            precipitationSum: meteoData.daily.precipitation_sum[0],
+            sunrise: meteoData.daily.sunrise[0],
+            sunset: meteoData.daily.sunset[0],
+            temperatureMax: meteoData.daily.temperature_2m_max[0],
+            temperatureMin: meteoData.daily.temperature_2m_min[0]
+          }
         }
 
-        console.log(spotInformations);
+        this.surfDatas = spotInformations
+        console.log(this.surfDatas);
       } else {
         console.error("Echec dans la récupération des données")
       }
@@ -91,8 +110,6 @@ export default {
   },
   async mounted() {
     const spotId = this.$route.params;
-    // console.log(spotId.spotId);
-
     await this.createSpotInfos(spotId.spotId)
   },
 };
