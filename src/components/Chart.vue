@@ -31,6 +31,16 @@ export default {
             data: [1, 2, 3, 4],
             borderWidth: 1,
           },
+          {
+            label: "# of Votes",
+            data: [1, 4, 3, 8],
+            borderWidth: 1,
+          },
+          {
+            label: "# of Votes",
+            data: [7, 2, 6, 7, 8],
+            borderWidth: 1,
+          },
         ],
       },
       options: {
@@ -46,10 +56,11 @@ export default {
         },
       },
     });
-    console.log("time", this.time);
-    console.log("waves", this.waves);
-    console.log("period", this.period);
-    console.log("wind", this.wind);
+
+    // console.log("time", this.time);
+    // console.log("waves", this.waves);
+    // console.log("period", this.period);
+    // console.log("wind", this.wind);
   },
 };
 </script>
