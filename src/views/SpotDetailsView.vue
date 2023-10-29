@@ -7,13 +7,15 @@
   <main class="main">
     <section class="infos">
       <h1>{{ spotInfos.spotName }} ({{ spotInfos.department }})</h1>
-      <div>
-        <div></div>
+      <div class="infos__location">
         <div v-if="spotInfos.length !== 0">
           <Map
             :latitude="spotInfos.latitude"
             :longitude="spotInfos.longitude"
           />
+        </div>
+        <div v-if="surfDatas.length !== 0" class="infos__weather">
+          <Weather :meteoData="surfDatas.meteo" />
         </div>
       </div>
     </section>
@@ -26,6 +28,7 @@
 import Header from "@/components/Header.vue";
 import Footer from "@/components/Footer.vue";
 import Map from "@/components/Map.vue";
+import Weather from "@/components/Weather.vue";
 
 export default {
   data() {
@@ -38,6 +41,7 @@ export default {
     Header,
     Footer,
     Map,
+    Weather,
   },
   methods: {
     async fetchSpot(id) {

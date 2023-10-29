@@ -1,0 +1,25 @@
+@import "../variables.scss";
+
+.weather {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    padding: 15px;
+    border: 1.5px solid black;
+    border-radius: 15px;
+
+    &__infos {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+    }
+
+    &__img {
+        width: 32px;
+        height: 32px;
+    }
+}
