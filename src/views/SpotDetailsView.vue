@@ -19,7 +19,9 @@
         </div>
       </div>
     </section>
-    <section></section>
+    <section>
+      <Chart />
+    </section>
   </main>
   <Footer />
 </template>
@@ -29,6 +31,7 @@ import Header from "@/components/Header.vue";
 import Footer from "@/components/Footer.vue";
 import Map from "@/components/Map.vue";
 import Weather from "@/components/Weather.vue";
+import Chart from "@/components/Chart.vue"
 
 export default {
   data() {
@@ -42,6 +45,7 @@ export default {
     Footer,
     Map,
     Weather,
+    Chart,
   },
   methods: {
     async fetchSpot(id) {
