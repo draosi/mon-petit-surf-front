@@ -6,7 +6,7 @@
   <Header />
   <main class="main">
     <section class="infos">
-      <h1></h1>
+      <h1>{{ spotInfos.spotName }} ({{ spotInfos.department }})</h1>
       <div>
         <div></div>
         <div></div>
