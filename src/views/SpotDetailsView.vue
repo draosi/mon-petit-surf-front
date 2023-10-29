@@ -8,7 +8,7 @@
     <section class="infos">
       <h1>{{ spotInfos.spotName }} ({{ spotInfos.department }})</h1>
       <div class="infos__location">
-        <div v-if="spotInfos.length !== 0">
+        <div v-if="spotInfos.length !== 0" class="infos__map">
           <Map
             :latitude="spotInfos.latitude"
             :longitude="spotInfos.longitude"
