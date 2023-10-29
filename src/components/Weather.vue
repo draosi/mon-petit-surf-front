@@ -6,19 +6,19 @@
   <section class="weather">
     <div class="weather__infos">
         <img src="@/assets/images/sunrise.png" alt="sunrise" class="weather__img"/>
-        <p>{{ meteoData.sunrise }}</p>
+        <p>{{ transfomDate(meteoData.sunrise) }}</p>
     </div>
     <div class="weather__infos">
         <img src="@/assets/images/sunset.png" alt="sunset" class="weather__img"/>
-        <p>{{ meteoData.sunset }}</p>
+        <p>{{ transfomDate(meteoData.sunset) }}</p>
     </div>
     <div class="weather__infos">
         <img src="@/assets/images/temperatures.png" alt="temperatures" class="weather__img"/>
-        <p>{{ meteoData.temperatureMin }} - {{ meteoData.temperatureMax }}</p>
+        <p>{{ meteoData.temperatureMin }} °C - {{ meteoData.temperatureMax }} °C</p>
     </div>
     <div class="weather__infos">
         <img src="@/assets/images/rain.png" alt="rain" class="weather__img"/>
-        <p>{{ meteoData.precipitationSum }}</p>
+        <p>{{ meteoData.precipitationSum }} mm</p>
     </div>
   </section>
 </template>
@@ -28,8 +28,13 @@ export default {
   props: {
     meteoData: Object,
   },
-  mounted() {
-    console.log(this.meteoData);
+  methods: {
+    transfomDate(string) {
+        const date = new Date(string)
+        const hours = date.getHours().toString()
+        const minutes = date.getMinutes().toString()
+        return `${hours}h${minutes}`
+    }
   },
 };
 </script>

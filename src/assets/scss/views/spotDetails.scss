@@ -15,4 +15,13 @@
     justify-content: center;
     align-items: center;
     gap: 30px;
+    width: 100%;
+
+    &__location {
+        width: 100%;
+    }
+
+    &__weather {
+        width: 30%;
+    }
 }

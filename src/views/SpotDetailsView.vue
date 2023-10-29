@@ -7,8 +7,8 @@
   <main class="main">
     <section class="infos">
       <h1>{{ spotInfos.spotName }} ({{ spotInfos.department }})</h1>
-      <div>
-        <div v-if="surfDatas.length !== 0">
+      <div class="infos__location">
+        <div v-if="surfDatas.length !== 0" class="infos__weather">
           <Weather :meteoData="surfDatas.meteo" />
         </div>
         <div></div>
