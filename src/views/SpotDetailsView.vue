@@ -9,7 +9,7 @@
       <h1>{{ spotInfos.spotName }} ({{ spotInfos.department }})</h1>
       <div>
         <div></div>
-        <div>
+        <div v-if="spotInfos.length !== 0">
           <Map
             :latitude="spotInfos.latitude"
             :longitude="spotInfos.longitude"
