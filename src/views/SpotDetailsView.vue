@@ -8,7 +8,9 @@
     <section class="infos">
       <h1>{{ spotInfos.spotName }} ({{ spotInfos.department }})</h1>
       <div>
-        <div></div>
+        <div>
+          <Weather />
+        </div>
         <div></div>
       </div>
     </section>
@@ -20,6 +22,7 @@
 <script>
 import Header from "@/components/Header.vue";
 import Footer from "@/components/Footer.vue";
+import Weather from "@/components/Weather.vue"
 
 export default {
   data() {
@@ -31,6 +34,7 @@ export default {
   components: {
     Header,
     Footer,
+    Weather
   },
   methods: {
     async fetchSpot(id) {
