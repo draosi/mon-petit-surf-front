@@ -16,9 +16,9 @@ export default {
     time: Array,
     waves: Array,
     period: Array,
-    wind: Array
+    wind: Array,
   },
-  mounted() {
+  async mounted() {
     const ctx = document.getElementById("chart");
 
     new Chart(ctx, {
@@ -28,39 +28,59 @@ export default {
         datasets: [
           {
             label: "# of Votes",
-            data: [1, 2, 3, 4],
+            data: [1, 2, 3, 4, 5, 6],
             borderWidth: 1,
+            yAxisID: "y-axis-1",
           },
           {
             label: "# of Votes",
-            data: [1, 4, 3, 8],
+            data: [1, 4, 3, 8, 6, 2],
             borderWidth: 1,
+            yAxisID: "y-axis-1",
           },
           {
             label: "# of Votes",
-            data: [7, 2, 6, 7, 8],
+            data: [7, 8, 9, 10, 11, 12],
             borderWidth: 1,
+            yAxisID: "y-axis-2",
           },
         ],
       },
       options: {
         maintainAspectRatio: false,
         scales: {
-          y: {
-            beginAtZero: true,
-            suggestedMax: 5,
-            ticks: {
-              stepSize: 0.5,
+          y: [
+            {
+              id: "y-axis-1",
+              // type: "linear",
+              position: "left",
+              beginAtZero: true,
+              // suggestedMax: 5,
+              ticks: {
+                stepSize: 1,
+              },
             },
-          },
+            {
+              id: "y-axis-2",
+              // type: "linear",
+              position: "right",
+              beginAtZero: true,
+              // suggestedMax: 15,
+              ticks: {
+                stepSize: 0.5,
+              },
+            },
+          ],
         },
       },
     });
 
-    // console.log("time", this.time);
-    // console.log("waves", this.waves);
-    // console.log("period", this.period);
-    // console.log("wind", this.wind);
+    if (this.time && this.waves && this.period && this.wind) {
+      console.log("time", this.time);
+      console.log("waves", this.waves);
+      console.log("period", this.period);
+      console.log("wind", this.wind);
+    }
   },
 };
 </script>

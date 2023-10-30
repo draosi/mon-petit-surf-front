@@ -4,29 +4,34 @@
 
 <template>
   <Header />
-  <main class="main">
-    <section class="infos">
-      <h1>{{ spotInfos.spotName }} ({{ spotInfos.department }})</h1>
-      <div class="infos__location">
-        <div v-if="spotInfos.length !== 0" class="infos__map">
-          <Map
-            :latitude="spotInfos.latitude"
-            :longitude="spotInfos.longitude"
-          />
+  <main>
+    <div v-if="spotInfos.length !== 0 && surfDatas.length !== 0" class="main">
+      <section class="infos">
+        <h1>{{ spotInfos.spotName }} ({{ spotInfos.department }})</h1>
+        <div class="infos__location">
+          <div v-if="spotInfos.length !== 0" class="infos__map">
+            <Map
+              :latitude="spotInfos.latitude"
+              :longitude="spotInfos.longitude"
+            />
+          </div>
+          <div v-if="surfDatas.length !== 0" class="infos__weather">
+            <Weather :meteoData="surfDatas.meteo" />
+          </div>
         </div>
-        <div v-if="surfDatas.length !== 0" class="infos__weather">
-          <Weather :meteoData="surfDatas.meteo" />
-        </div>
-      </div>
-    </section>
-    <section class="chart">
-      <Chart
-        :time="surfDatas.time"
-        :waves="surfDatas.wavesSize"
-        :period="surfDatas.wavesPeriod"
-        :wind="surfDatas.wind"
-      />
-    </section>
+      </section>
+      <section class="chart">
+        <Chart
+          :time="surfDatas.time"
+          :waves="surfDatas.wavesSize"
+          :period="surfDatas.wavesPeriod"
+          :wind="surfDatas.wind"
+        />
+      </section>
+    </div>
+    <div v-else class="loader">
+      <Loader />
+    </div>
   </main>
   <Footer />
 </template>
@@ -37,6 +42,7 @@ import Footer from "@/components/Footer.vue";
 import Map from "@/components/Map.vue";
 import Weather from "@/components/Weather.vue";
 import Chart from "@/components/Chart.vue";
+import Loader from "@/components/Loader.vue";
 
 export default {
   data() {
@@ -51,6 +57,7 @@ export default {
     Map,
     Weather,
     Chart,
+    Loader,
   },
   methods: {
     async fetchSpot(id) {
