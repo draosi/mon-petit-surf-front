@@ -18,6 +18,16 @@ export default {
     period: Array,
     wind: Array,
   },
+
+  methods: {
+    transformHours(string) {
+      const date = new Date(string);
+      const hours = date.getHours().toString();
+      const minutes = date.getMinutes().toString();
+      return `${hours}h${minutes}`;
+    },
+  },
+
   async mounted() {
     const ctx = document.getElementById("chart");
 
@@ -80,6 +90,7 @@ export default {
       console.log("waves", this.waves);
       console.log("period", this.period);
       console.log("wind", this.wind);
+      console.log(this.transformHours(this.time[0]));
     }
   },
 };
