@@ -17,6 +17,14 @@
     gap: 30px;
     width: 100%;
 
+    &__title {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+    }
+
     &__location {
         display: flex;
         flex-direction: row;

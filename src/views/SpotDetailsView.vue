@@ -6,8 +6,17 @@
   <Header />
   <main class="main">
     <section class="infos">
-      <h1>{{ spotInfos.spotName }} ({{ spotInfos.department }})</h1>
-      <div v-if=" surfDatas.length !== 0 && spotInfos.length !== 0" class="infos__location">
+      <div
+        v-if="surfDatas.length !== 0 && spotInfos.length !== 0"
+        class="infos__title"
+      >
+        <h1>{{ spotInfos.spotName }} ({{ spotInfos.department }})</h1>
+        <h2>{{ transformDate(surfDatas.time[0]) }}</h2>
+      </div>
+      <div
+        v-if="surfDatas.length !== 0 && spotInfos.length !== 0"
+        class="infos__location"
+      >
         <div v-if="spotInfos.length !== 0" class="infos__map">
           <Map
             :latitude="spotInfos.latitude"
@@ -32,7 +41,7 @@ import Header from "@/components/Header.vue";
 import Footer from "@/components/Footer.vue";
 import Map from "@/components/Map.vue";
 import Weather from "@/components/Weather.vue";
-import Loader from "@/components/Loader.vue"
+import Loader from "@/components/Loader.vue";
 
 export default {
   data() {
@@ -128,6 +137,17 @@ export default {
       } else {
         console.error("Echec dans la récupération des données");
       }
+    },
+
+    transformDate(string) {
+      const options = {
+        weekday: "long",
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+      };
+      const date = new Date(string);
+      return date.toLocaleDateString("fr-FR", options);
     },
   },
   async mounted() {
