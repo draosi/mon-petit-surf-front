@@ -34,56 +34,121 @@ export default {
     new Chart(ctx, {
       type: "line",
       data: {
-        labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+        labels: ["Label1", "Label2", "Label3", "Label4", "Label5"],
         datasets: [
           {
-            label: "# of Votes",
-            data: [1, 2, 3, 4, 5, 6],
-            borderWidth: 1,
+            label: "Ligne Gauche",
+            data: [10, 20, 30],
+            borderColor: "blue",
             yAxisID: "y-axis-1",
           },
-          {
-            label: "# of Votes",
-            data: [1, 4, 3, 8, 6, 2],
-            borderWidth: 1,
-            yAxisID: "y-axis-1",
-          },
-          {
-            label: "# of Votes",
-            data: [7, 8, 9, 10, 11, 12],
-            borderWidth: 1,
-            yAxisID: "y-axis-2",
-          },
+          // {
+          //   label: "Ligne Droite",
+          //   data: [5, 15, 25],
+          //   borderColor: "red",
+          //   yAxisID: "y-axis-2",
+          // },
         ],
       },
       options: {
         maintainAspectRatio: false,
         scales: {
+          x: [
+            {
+              id: "x-axis-1", // Axe x en bas
+              type: "category",
+              labels: ["Label1", "Label2", "Label3"],
+            },
+            // {
+            //   id: "x-axis-2", // Axe x en haut
+            //   type: "category",
+            //   labels: ["TopLabel1", "TopLabel2", "TopLabel3"],
+            // },
+          ],
           y: [
             {
               id: "y-axis-1",
-              // type: "linear",
-              position: "left",
-              beginAtZero: true,
-              // suggestedMax: 5,
-              ticks: {
-                stepSize: 1,
-              },
-            },
-            {
-              id: "y-axis-2",
-              // type: "linear",
+              type: "linear",
               position: "right",
-              beginAtZero: true,
-              // suggestedMax: 15,
-              ticks: {
-                stepSize: 0.5,
-              },
+              display: true
             },
+            // {
+            //   id: "y-axis-2",
+            //   type: "linear",
+            //   position: "right",
+            // },
           ],
         },
       },
     });
+
+    // new Chart(ctx, {
+    //   type: "line",
+    //   data: {
+    //     labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+    //     datasets: [
+    //       {
+    //         label: "# of 1",
+    //         data: [1, 2, 3, 4, 5, 6],
+    //         borderWidth: 1,
+    //         borderColor: "green",
+    //         yAxisID: "axis1",
+    //       },
+    //       {
+    //         label: "# of 2",
+    //         data: [1, 2, 3, 4, 5, 6],
+    //         borderWidth: 1,
+    //         borderColor: "yellow",
+    //         yAxisID: "axis2",
+    //       },
+    //       {
+    //         label: "# of 3",
+    //         data: [7, 4, 9, 13, 11, 12],
+    //         borderWidth: 1,
+    //         borderColor: "red",
+    //         yAxisID: "axis3",
+    //       },
+    //     ],
+    //   },
+    //   options: {
+    //     maintainAspectRatio: false,
+    //     scales: {
+    //       y: [
+    //         {
+    //           id: "axis1",
+    //           type: "linear",
+    //           position: "left",
+    //           // beginAtZero: true,
+    //           // suggestedMax: 5,
+    //           // ticks: {
+    //           //   stepSize: 1,
+    //           // },
+    //         },
+    //         {
+    //           id: "axis2",
+    //           type: "linear",
+    //           position: "left",
+    //           // beginAtZero: true,
+    //           // suggestedMax: 15,
+    //           // ticks: {
+    //           //   stepSize: 0.5,
+    //           // },
+    //         },
+    //         {
+    //           id: "axis3",
+    //           type: "linear",
+    //           position: "right",
+    //           // beginAtZero: true,
+    //           // suggestedMax: 15,
+    //           // ticks: {
+    //           //   stepSize: 0.5,
+    //           // },
+    //           display: true,
+    //         },
+    //       ],
+    //     },
+    //   },
+    // });
 
     if (this.time && this.waves && this.period && this.wind) {
       console.log("time", this.time);
