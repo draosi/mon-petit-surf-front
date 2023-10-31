@@ -49,14 +49,14 @@ export default {
             label: "Taille",
             data: [10, 25, 30, 12, 16, 28, 20, 27],
             borderColor: "blue",
-            tension: 0.3,
+            tension: 0.4,
             yAxisID: "wave",
           },
           {
             label: "Période",
             data: [9, 12, 11, 16, 13, 14, 7, 9],
             borderColor: "red",
-            tension: 0.3,
+            tension: 0.4,
             yAxisID: "period",
           },
         ],
@@ -64,6 +64,12 @@ export default {
       options: {
         maintainAspectRatio: false,
         scales: {
+          x: {
+            title: {
+              display: true,
+              text: 'Date du jour'
+            }
+          },
           wave: {
             type: "linear",
             position: "left",
@@ -72,6 +78,10 @@ export default {
               callback: (value, index, values) => {
                 return `${value} m`
               }
+            },
+            title: {
+              display: true,
+              text: 'Taille des vagues en mètre'
             }
           },
           period: {
@@ -86,6 +96,10 @@ export default {
               callback: (value, index, values) => {
                 return `${value} s`
               }
+            },
+            title: {
+              display: true,
+              text: 'Temps de période en seconde'
             }
           },
         },
