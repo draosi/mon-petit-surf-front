@@ -46,14 +46,14 @@ export default {
         ],
         datasets: [
           {
-            label: "Ligne Gauche",
+            label: "Taille",
             data: [10, 25, 30, 12, 16, 28, 20, 27],
             borderColor: "blue",
             tension: 0.3,
-            yAxisID: "y",
+            yAxisID: "wave",
           },
           {
-            label: "Ligne Droite",
+            label: "Période",
             data: [9, 12, 11, 16, 13, 14, 7, 9],
             borderColor: "red",
             tension: 0.3,
@@ -64,10 +64,15 @@ export default {
       options: {
         maintainAspectRatio: false,
         scales: {
-          y: {
+          wave: {
             type: "linear",
             position: "left",
             display: true,
+            ticks: {
+              callback: (value, index, values) => {
+                return `${value} m`
+              }
+            }
           },
           period: {
             type: "linear",
@@ -77,6 +82,11 @@ export default {
             grid: {
               drawOnChartArea: false,
             },
+            ticks: {
+              callback: (value, index, values) => {
+                return `${value} s`
+              }
+            }
           },
         },
       },
