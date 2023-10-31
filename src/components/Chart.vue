@@ -3,8 +3,13 @@
 </style>
 
 <template>
-  <div class="size">
-    <canvas id="chart"></canvas>
+  <div class="chart">
+    <div class="chart__line">
+      <canvas id="vague"></canvas>
+    </div>
+    <div class="chart__bar">
+      <canvas id="wind"></canvas>
+    </div>
   </div>
 </template>
 
@@ -29,9 +34,48 @@ export default {
   },
 
   async mounted() {
-    const ctx = document.getElementById("chart");
+    const waveChart = document.getElementById("vague");
+    const windChart = document.getElementById("wind");
 
-    new Chart(ctx, {
+    new Chart(windChart, {
+      type: "bar",
+      data: {
+        labels: ["00h00", "06h00", "12h00", "18h00"],
+        datasets: [
+          {
+            label: "Vent",
+            data: [10, 25, 30, 12],
+            yAxisID: "wind",
+          },
+        ],
+      },
+      options: {
+        maintainAspectRatio: false,
+        scales: {
+          wind: {
+            type: "linear",
+            position: "right",
+            display: true,
+            ticks: {
+              callback: (value, index, values) => {
+                return `${value} km/h`;
+              },
+            },
+            title: {
+              display: true,
+              text: "Vitesse du vent en kilometre par heure",
+            },
+          },
+        },
+        plugins: {
+          tooltip: {
+            displayColors: false,
+          },
+        },
+      },
+    });
+
+    new Chart(waveChart, {
       type: "line",
       data: {
         labels: [
@@ -48,14 +92,12 @@ export default {
           {
             label: "Taille",
             data: [10, 25, 30, 12, 16, 28, 20, 27],
-            borderColor: "blue",
             tension: 0.4,
             yAxisID: "wave",
           },
           {
             label: "Période",
             data: [9, 12, 11, 16, 13, 14, 7, 9],
-            borderColor: "red",
             tension: 0.4,
             yAxisID: "period",
           },
@@ -64,12 +106,6 @@ export default {
       options: {
         maintainAspectRatio: false,
         scales: {
-          x: {
-            title: {
-              display: true,
-              text: "Date du jour",
-            },
-          },
           wave: {
             type: "linear",
             position: "left",
