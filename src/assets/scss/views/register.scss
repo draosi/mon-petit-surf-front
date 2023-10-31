@@ -1,5 +1,8 @@
 @import "../variables.scss";
 
 .register {
-    color: $tertiary;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }

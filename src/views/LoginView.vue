@@ -4,14 +4,25 @@
 
 <template>
   <Header />
-  <div>
-    <h1 class="login">Login Page</h1>
-    <p>
-      Lorem ipsum dolor sit amet consectetur, adipisicing elit. Libero, tempora
-      architecto? Rem similique libero laborum maxime facere! Deleniti odit,
-      quidem maiores, nemo similique tenetur vero voluptas consequuntur tempora
-      blanditiis at.
-    </p>
+  <div class="login">
+    <h1>Connexion</h1>
+    <form @submit.prevent="login" class="login__form">
+      <input
+        type="text"
+        placeholder="Pseudo"
+        v-model="pseudo"
+        required
+        class="login__input"
+      />
+      <input
+        type="password"
+        placeholder="Mot de passe"
+        v-model="password"
+        required
+        class="login__input"
+      />
+      <button type="submit" class="login__button">Valider</button>
+    </form>
   </div>
   <Footer />
 </template>
@@ -21,9 +32,18 @@ import Header from "@/components/Header.vue";
 import Footer from "@/components/Footer.vue";
 
 export default {
+  data() {
+    return {
+      pseudo: "",
+      password: "",
+    };
+  },
   components: {
     Header,
     Footer,
+  },
+  methods: {
+    login() {},
   },
 };
 </script>
