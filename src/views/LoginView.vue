@@ -21,7 +21,7 @@
         required
         class="login__input"
       />
-      <button type="submit" class="login__button">Valider</button>
+      <button type="submit" class="login__button">Connexion</button>
     </form>
   </div>
   <Footer />
