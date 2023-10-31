@@ -67,8 +67,8 @@ export default {
           x: {
             title: {
               display: true,
-              text: 'Date du jour'
-            }
+              text: "Date du jour",
+            },
           },
           wave: {
             type: "linear",
@@ -76,13 +76,13 @@ export default {
             display: true,
             ticks: {
               callback: (value, index, values) => {
-                return `${value} m`
-              }
+                return `${value} m`;
+              },
             },
             title: {
               display: true,
-              text: 'Taille des vagues en mètre'
-            }
+              text: "Taille des vagues en mètre",
+            },
           },
           period: {
             type: "linear",
@@ -94,13 +94,19 @@ export default {
             },
             ticks: {
               callback: (value, index, values) => {
-                return `${value} s`
-              }
+                return `${value} s`;
+              },
             },
             title: {
               display: true,
-              text: 'Temps de période en seconde'
-            }
+              text: "Temps de période en seconde",
+            },
+          },
+        },
+        // Permet de modifier le tooltip
+        plugins: {
+          tooltip: {
+            displayColors: false,
           },
         },
       },
