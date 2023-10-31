@@ -40,7 +40,7 @@ export default {
     new Chart(windChart, {
       type: "bar",
       data: {
-        labels: ["00h00", "06h00", "12h00", "18h00"],
+        labels: ["06h00", "12h00", "18h00", "21h00"],
         datasets: [
           {
             label: "Vent",
