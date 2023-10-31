@@ -28,7 +28,8 @@ const router = createRouter({
     {
       path: '/spot/details/:spotId',
       name: 'spotDetails',
-      component: SpotDetailsView
+      component: SpotDetailsView,
+      props: true
     },
     {
       path: '/favoris/:userId',

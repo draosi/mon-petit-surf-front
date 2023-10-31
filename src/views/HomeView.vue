@@ -47,46 +47,53 @@
       </button>
     </section>
     <section>
-      <div v-if="filteredSpots.length > 0 ">
-        <div class="spots">
-          <div
-            class="spot"
-            :class="{ 'spot__card--blue': cardBackground(index) }"
-            v-for="(spot, index) in spotsOnPage"
-            :key="index"
-          >
-            <div class="spot__card">
-              <RouterLink :to="`spot/details/${spot.id}`" class="spot__lien">
-                <HomeCard
-                  :nom="spot.nom"
-                  :region="spot.region"
-                  :vague="spot.vague"
-                  :periode="spot.periode"
-                />
-              </RouterLink>
+      <div v-if="loading" class="loader">
+        <Loader />
+      </div>
+      <div v-else>
+        <div v-if="filteredSpots.length">
+          <div class="spots">
+            <div
+              class="spot"
+              :class="{ 'spot__card--blue': cardBackground(index) }"
+              v-for="(spot, index) in spotsOnPage"
+              :key="index"
+            >
+              <div class="spot__card">
+                <RouterLink :to="`spot/details/${spot.id}`" class="spot__lien">
+                  <HomeCard
+                    :nom="spot.nom"
+                    :region="spot.region"
+                    :vague="spot.vague"
+                    :periode="spot.periode"
+                  />
+                </RouterLink>
+              </div>
             </div>
           </div>
+          <div class="pagination" v-if="!noResult">
+            <button
+              @click="pagination(currentPage - 1)"
+              :disabled="currentPage === 1"
+              class="pagination__btn"
+            >
+              Précédent
+            </button>
+            <p>{{ currentPage }}</p>
+            <button
+              @click="pagination(currentPage + 1)"
+              :disabled="currentPage === pageCount"
+              class="pagination__btn"
+            >
+              Suivant
+            </button>
+          </div>
         </div>
-        <div class="pagination">
-          <button
-            @click="pagination(currentPage - 1)"
-            :disabled="currentPage === 1"
-            class="pagination__btn"
-      >
-            Précédent
-          </button>
-          <p>{{ currentPage }}</p>
-          <button
-            @click="pagination(currentPage + 1)"
-            :disabled="currentPage === pageCount"
-            class="pagination__btn"
-      >
-            Suivant
-          </button>
+        <div v-else class="no-result">
+          <p>
+            Oups, aucun spot ne remplit les conditions que vous recherchez...
+          </p>
         </div>
-      </div>
-      <div v-else class="loader">
-        <Loader />
       </div>
     </section>
   </main>
@@ -165,6 +172,8 @@ export default {
 
       currentPage: 1,
       itemsPerPage: 5,
+
+      loading: false
     };
   },
 
@@ -312,10 +321,10 @@ export default {
       const spotCards = spots.map((e, i) => {
         const maxWave = waveData[i].daily.wave_height_max
           ? waveData[i].daily.wave_height_max[0]
-          : "Données de vagues non disponibles";
+          : "Données des vagues non disponibles";
         const maxPeriod = waveData[i].daily.wave_period_max
           ? waveData[i].daily.wave_period_max[0]
-          : "Données de périodes non disponibles";
+          : "Données des périodes non disponibles";
         return {
           id: e.id,
           nom: e.spotName,
@@ -353,9 +362,11 @@ export default {
   },
 
   async mounted() {
+    this.loading = true;
     await this.createSpotCards();
     this.filteredSpots = this.spotCard;
     await this.createRegionsArray();
+    this.loading = false;
   },
 };
 </script>

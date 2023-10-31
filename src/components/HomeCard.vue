@@ -11,11 +11,11 @@
         <div class="informations__txt">{{ region }}</div>
       </div>
       <div class="informations">
-        <div class="informations__txt">Taille moyenne des vagues</div>
+        <div class="informations__txt">Taille maximum des vagues</div>
         <div class="informations__txt">{{ vague }} m</div>
       </div>
       <div class="informations">
-        <div class="informations__txt">Temps de période moyen</div>
+        <div class="informations__txt">Temps de période maximum</div>
         <div class="informations__txt">{{ periode }} s</div>
       </div>
     </div>

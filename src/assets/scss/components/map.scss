@@ -1,0 +1,12 @@
+@import "../variables.scss";
+
+.test {
+    color: $primary;
+}
+
+#map {
+    height: 100%;
+    width: 100%;
+    border: 1.5px solid black;
+    border-radius: 15px;
+}
