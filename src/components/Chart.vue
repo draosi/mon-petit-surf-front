@@ -34,121 +34,53 @@ export default {
     new Chart(ctx, {
       type: "line",
       data: {
-        labels: ["Label1", "Label2", "Label3", "Label4", "Label5"],
+        labels: [
+          "00h00",
+          "03h00",
+          "06h00",
+          "09h00",
+          "12h00",
+          "15h00",
+          "18h00",
+          "21h00",
+        ],
         datasets: [
           {
             label: "Ligne Gauche",
-            data: [10, 20, 30],
+            data: [10, 25, 30, 12, 16, 28, 20, 27],
             borderColor: "blue",
-            yAxisID: "y-axis-1",
+            tension: 0.3,
+            yAxisID: "y",
           },
-          // {
-          //   label: "Ligne Droite",
-          //   data: [5, 15, 25],
-          //   borderColor: "red",
-          //   yAxisID: "y-axis-2",
-          // },
+          {
+            label: "Ligne Droite",
+            data: [9, 12, 11, 16, 13, 14, 7, 9],
+            borderColor: "red",
+            tension: 0.3,
+            yAxisID: "period",
+          },
         ],
       },
       options: {
         maintainAspectRatio: false,
         scales: {
-          x: [
-            {
-              id: "x-axis-1", // Axe x en bas
-              type: "category",
-              labels: ["Label1", "Label2", "Label3"],
+          y: {
+            type: "linear",
+            position: "left",
+            display: true,
+          },
+          period: {
+            type: "linear",
+            position: "right",
+            display: true,
+            // Permet qu'il n'y ai qu'une seul ligne pour les deux axes des y
+            grid: {
+              drawOnChartArea: false,
             },
-            // {
-            //   id: "x-axis-2", // Axe x en haut
-            //   type: "category",
-            //   labels: ["TopLabel1", "TopLabel2", "TopLabel3"],
-            // },
-          ],
-          y: [
-            {
-              id: "y-axis-1",
-              type: "linear",
-              position: "right",
-              display: true
-            },
-            // {
-            //   id: "y-axis-2",
-            //   type: "linear",
-            //   position: "right",
-            // },
-          ],
+          },
         },
       },
     });
-
-    // new Chart(ctx, {
-    //   type: "line",
-    //   data: {
-    //     labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
-    //     datasets: [
-    //       {
-    //         label: "# of 1",
-    //         data: [1, 2, 3, 4, 5, 6],
-    //         borderWidth: 1,
-    //         borderColor: "green",
-    //         yAxisID: "axis1",
-    //       },
-    //       {
-    //         label: "# of 2",
-    //         data: [1, 2, 3, 4, 5, 6],
-    //         borderWidth: 1,
-    //         borderColor: "yellow",
-    //         yAxisID: "axis2",
-    //       },
-    //       {
-    //         label: "# of 3",
-    //         data: [7, 4, 9, 13, 11, 12],
-    //         borderWidth: 1,
-    //         borderColor: "red",
-    //         yAxisID: "axis3",
-    //       },
-    //     ],
-    //   },
-    //   options: {
-    //     maintainAspectRatio: false,
-    //     scales: {
-    //       y: [
-    //         {
-    //           id: "axis1",
-    //           type: "linear",
-    //           position: "left",
-    //           // beginAtZero: true,
-    //           // suggestedMax: 5,
-    //           // ticks: {
-    //           //   stepSize: 1,
-    //           // },
-    //         },
-    //         {
-    //           id: "axis2",
-    //           type: "linear",
-    //           position: "left",
-    //           // beginAtZero: true,
-    //           // suggestedMax: 15,
-    //           // ticks: {
-    //           //   stepSize: 0.5,
-    //           // },
-    //         },
-    //         {
-    //           id: "axis3",
-    //           type: "linear",
-    //           position: "right",
-    //           // beginAtZero: true,
-    //           // suggestedMax: 15,
-    //           // ticks: {
-    //           //   stepSize: 0.5,
-    //           // },
-    //           display: true,
-    //         },
-    //       ],
-    //     },
-    //   },
-    // });
 
     if (this.time && this.waves && this.period && this.wind) {
       console.log("time", this.time);
