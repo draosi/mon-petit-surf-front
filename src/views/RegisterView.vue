@@ -10,7 +10,7 @@
       <input
         type="text"
         placeholder="Pseudo"
-        v-model="pseudo"
+        v-model="username"
         required
         class="register__input"
       />
@@ -30,11 +30,12 @@
 <script>
 import Header from "@/components/Header.vue";
 import Footer from "@/components/Footer.vue";
+import axios from 'axios'
 
 export default {
   data() {
     return {
-      pseudo: "",
+      usename: "",
       password: "",
     };
   },
@@ -43,7 +44,42 @@ export default {
     Footer,
   },
   methods: {
-    register() {},
+    async register() {
+      const userInfos = {
+        username: this.username,
+        password: this.password,
+      }
+
+      axios.post('https://localhost:7080/api/Users/register', userInfos)
+      .then(res => console.log(res))
+      .catch(err => console.log(err))
+    },
+    // async register() {
+    //   const userInfos = {
+    //     username: this.username,
+    //     password: this.password,
+    //   };
+
+    //   await fetch("https://localhost:7080/api/Users/register", {
+    //     method: "POST",
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //     },
+    //     body: JSON.stringify(userInfos),
+    //   })
+    //     .then((res) => {
+    //       console.log(res);
+    //       if (res.ok) {
+    //         return res.json();
+    //       } else {
+    //         console.log("Erreur dans le if !");
+    //       }
+    //     })
+    //     .then((data) => {
+    //       console.log("Réponse JSON :", data);
+    //     })
+    //     // .catch((err) => console.log(err));
+    // },
   },
 };
 </script>
