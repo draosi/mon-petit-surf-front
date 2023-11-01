@@ -19,10 +19,10 @@ import Chart from "chart.js/auto";
 export default {
   dat() {
     return {
-      WaveIfConnected: 24,
-      waveIfNotConnected: 8,
-      windIfConnected: 12,
-      windIfNotConnected: 4
+      indexWaveIfConnected: 24,
+      indexWaveIfNotConnected: 8,
+      indexWindIfConnected: 12,
+      indexWindIfNotConnected: 4
     }
   },
   props: {
@@ -40,7 +40,9 @@ export default {
       return `${hours}h${minutes}`;
     },
 
-    getWaveTime(array) {},
+    getWaveTime(array) {
+      
+    },
     getWindTime(array) {},
   },
 
