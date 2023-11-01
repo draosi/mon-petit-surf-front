@@ -30,7 +30,6 @@
 <script>
 import Header from "@/components/Header.vue";
 import Footer from "@/components/Footer.vue";
-import axios from 'axios'
 
 export default {
   data() {
@@ -48,38 +47,28 @@ export default {
       const userInfos = {
         username: this.username,
         password: this.password,
+      };
+
+      try {
+        const res = await fetch("https://localhost:7080/api/Users/register", {
+          method: 'POST',
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(userInfos)
+        })
+
+        if(res.ok) {
+          const data = await res.json()
+          console.log("Réponse de l'API :", data);
+        } else {
+          console.log("Erreur dans le réponse");
+        }
+
+      } catch (err) {
+        console.log(err);
       }
-
-      axios.post('https://localhost:7080/api/Users/register', userInfos)
-      .then(res => console.log(res))
-      .catch(err => console.log(err))
     },
-    // async register() {
-    //   const userInfos = {
-    //     username: this.username,
-    //     password: this.password,
-    //   };
-
-    //   await fetch("https://localhost:7080/api/Users/register", {
-    //     method: "POST",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify(userInfos),
-    //   })
-    //     .then((res) => {
-    //       console.log(res);
-    //       if (res.ok) {
-    //         return res.json();
-    //       } else {
-    //         console.log("Erreur dans le if !");
-    //       }
-    //     })
-    //     .then((data) => {
-    //       console.log("Réponse JSON :", data);
-    //     })
-    //     // .catch((err) => console.log(err));
-    // },
   },
 };
 </script>
