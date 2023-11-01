@@ -17,6 +17,14 @@
 import Chart from "chart.js/auto";
 
 export default {
+  dat() {
+    return {
+      WaveIfConnected: 24,
+      waveIfNotConnected: 8,
+      windIfConnected: 12,
+      windIfNotConnected: 4
+    }
+  },
   props: {
     time: Array,
     waves: Array,
@@ -31,6 +39,9 @@ export default {
       const minutes = date.getMinutes().toString();
       return `${hours}h${minutes}`;
     },
+
+    getWaveTime(array) {},
+    getWindTime(array) {},
   },
 
   async mounted() {
@@ -46,6 +57,7 @@ export default {
             label: "Vent",
             data: [10, 25, 30, 12],
             yAxisID: "wind",
+            backgroundColor: 'rgba(255, 191, 0, 0.5)'
           },
         ],
       },
@@ -143,6 +155,7 @@ export default {
         plugins: {
           tooltip: {
             displayColors: false,
+            yAlign: 'bottom',
           },
         },
       },
