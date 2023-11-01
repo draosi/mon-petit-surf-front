@@ -19,11 +19,10 @@ import Chart from "chart.js/auto";
 export default {
   dat() {
     return {
-      indexWaveIfConnected: 24,
-      indexWaveIfNotConnected: 8,
-      indexWindIfConnected: 12,
-      indexWindIfNotConnected: 4
-    }
+      chartWavesData: [],
+      chartPeriodData: [],
+      chartWindData: []
+    };
   },
   props: {
     time: Array,
@@ -40,26 +39,53 @@ export default {
       return `${hours}h${minutes}`;
     },
 
-    getWaveTime(array) {
-      
+    oneDayWaveDataArray(array) {
+      const newArray = [];
+      array.forEach((e, i) => {
+        if (i % 3 === 0) {
+          newArray.push(e);
+        }
+      });
+      return newArray.slice(0, 8);
     },
-    getWindTime(array) {},
+
+    oneDayWindDataArray(array) {
+      const newArray = [];
+      array.forEach((e, i) => {
+        if (i % 6 === 0) {
+          newArray.push(e);
+        }
+      });
+      console.log(newArray);
+      return newArray.slice(0, 4);
+    },
   },
 
   async mounted() {
+    if (this.time && this.waves && this.period && this.wind) {
+      // console.log("time", this.time);
+      // console.log("waves", this.waves);
+      // console.log("period", this.period);
+      // console.log("wind", this.wind);
+      // console.log(this.transformHours(this.time[0]));
+      this.chartWavesData = this.oneDayWaveDataArray(this.waves);
+      this.chartPeriodData = this.oneDayWaveDataArray(this.period)
+      this.chartWindData = this.oneDayWindDataArray(this.wind)
+    }
+
     const waveChart = document.getElementById("vague");
     const windChart = document.getElementById("wind");
 
     new Chart(windChart, {
       type: "bar",
       data: {
-        labels: ["06h00", "12h00", "18h00", "21h00"],
+        labels: ["00h00", "06h00", "12h00", "18h00"],
         datasets: [
           {
             label: "Vent",
-            data: [10, 25, 30, 12],
+            data: this.chartWindData,
             yAxisID: "wind",
-            backgroundColor: 'rgba(255, 191, 0, 0.5)'
+            backgroundColor: "rgba(255, 191, 0, 0.5)",
           },
         ],
       },
@@ -105,13 +131,13 @@ export default {
         datasets: [
           {
             label: "Taille",
-            data: [10, 25, 30, 12, 16, 28, 20, 27],
+            data: this.chartWavesData,
             tension: 0.4,
             yAxisID: "wave",
           },
           {
             label: "Période",
-            data: [9, 12, 11, 16, 13, 14, 7, 9],
+            data: this.chartPeriodData,
             tension: 0.4,
             yAxisID: "period",
           },
@@ -157,19 +183,11 @@ export default {
         plugins: {
           tooltip: {
             displayColors: false,
-            yAlign: 'bottom',
+            yAlign: "bottom",
           },
         },
       },
     });
-
-    if (this.time && this.waves && this.period && this.wind) {
-      console.log("time", this.time);
-      console.log("waves", this.waves);
-      console.log("period", this.period);
-      console.log("wind", this.wind);
-      console.log(this.transformHours(this.time[0]));
-    }
   },
 };
 </script>
