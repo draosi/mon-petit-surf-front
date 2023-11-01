@@ -4,34 +4,46 @@
 
 <template>
   <Header />
-  <main class="main">
-    <section class="infos">
+  <main>
+    <div v-if="spotInfos.length !== 0 && surfDatas.length !== 0" class="main">
+      <section class="infos">
       <div
         v-if="surfDatas.length !== 0 && spotInfos.length !== 0"
         class="infos__title"
       >
-        <h1>{{ spotInfos.spotName }} ({{ spotInfos.department }})</h1>
-        <h2>{{ transformDate(surfDatas.time[0]) }}</h2>
+          <h1>{{ spotInfos.spotName }} ({{ spotInfos.department }})</h1>
+          <h2>{{ transformDate(surfDatas.time[0]) }}</h2>
       </div>
       <div
         v-if="surfDatas.length !== 0 && spotInfos.length !== 0"
         class="infos__location"
       >
-        <div v-if="spotInfos.length !== 0" class="infos__map">
-          <Map
-            :latitude="spotInfos.latitude"
-            :longitude="spotInfos.longitude"
-          />
+          <div v-if="spotInfos.length !== 0" class="infos__map">
+            <Map
+              :latitude="spotInfos.latitude"
+              :longitude="spotInfos.longitude"
+            />
+          </div>
+          <div v-if="surfDatas.length !== 0" class="infos__weather">
+            <Weather :meteoData="surfDatas.meteo" />
+          </div>
         </div>
-        <div v-if="surfDatas.length !== 0" class="infos__weather">
-          <Weather :meteoData="surfDatas.meteo" />
-        </div>
-      </div>
       <div v-else>
         <Loader />
       </div>
-    </section>
-    <section></section>
+      </section>
+      <section class="chart">
+        <Chart
+          :time="surfDatas.time"
+          :waves="surfDatas.wavesSize"
+          :period="surfDatas.wavesPeriod"
+          :wind="surfDatas.wind"
+        />
+      </section>
+    </div>
+    <div v-else class="loader">
+      <Loader />
+    </div>
   </main>
   <Footer />
 </template>
@@ -41,6 +53,7 @@ import Header from "@/components/Header.vue";
 import Footer from "@/components/Footer.vue";
 import Map from "@/components/Map.vue";
 import Weather from "@/components/Weather.vue";
+import Chart from "@/components/Chart.vue";
 import Loader from "@/components/Loader.vue";
 
 export default {
@@ -55,6 +68,7 @@ export default {
     Footer,
     Map,
     Weather,
+    Chart,
     Loader,
   },
   methods: {
