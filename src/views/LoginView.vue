@@ -10,7 +10,7 @@
       <input
         type="text"
         placeholder="Pseudo"
-        v-model="pseudo"
+        v-model="username"
         required
         class="login__input"
       />
@@ -34,7 +34,7 @@ import Footer from "@/components/Footer.vue";
 export default {
   data() {
     return {
-      pseudo: "",
+      username: "",
       password: "",
     };
   },
@@ -43,7 +43,33 @@ export default {
     Footer,
   },
   methods: {
-    login() {},
+    async login() {
+      const userInfos = {
+        username: this.username,
+        password: this.password
+      }
+
+      try {
+        const res = await fetch("https://localhost:7080/api/Users/login", {
+          method: 'POST',
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(userInfos)
+        })
+
+        console.log(res);
+
+        if(res.ok) {
+          const data = await res.json()
+          console.log("Réponse de l'API :", data);
+        } else {
+          console.log("Erreur dans la réponse");
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    },
   },
 };
 </script>
