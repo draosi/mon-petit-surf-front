@@ -62,6 +62,7 @@ export default {
 
         if(res.ok) {
           const data = await res.json()
+          sessionStorage.setItem('jwt', `${data.token}`);
           console.log("Réponse de l'API :", data);
         } else {
           console.log("Erreur dans la réponse");
