@@ -15,16 +15,41 @@
       />
     </div>
     <div class="header__toggle container">
-      <div
-        v-if="menuVisible"
-        :class="menuVisible ? 'header__menu-visible' : 'header__menu-invisible'"
-      >
-        <RouterLink :to="{ name: 'connexion' }" class="header__txt"
-          >Connexion</RouterLink
+      <div v-if="connected">
+        <div
+          v-if="menuVisible"
+          :class="
+            menuVisible ? 'header__menu-visible' : 'header__menu-invisible'
+          "
         >
-        <RouterLink :to="{ name: 'inscription' }" class="header__txt"
-          >Inscription</RouterLink
+          <RouterLink :to="{ name: 'home' }" class="header__txt"
+            >Profile</RouterLink
+          >
+          <RouterLink :to="{ name: 'home' }" class="header__txt"
+            >Favoris</RouterLink
+          >
+          <RouterLink
+            :to="{ name: 'home' }"
+            class="header__txt"
+            @click="clearSessionStorage"
+            >Deconnexion</RouterLink
+          >
+        </div>
+      </div>
+      <div v-else>
+        <div
+          v-if="menuVisible"
+          :class="
+            menuVisible ? 'header__menu-visible' : 'header__menu-invisible'
+          "
         >
+          <RouterLink :to="{ name: 'connexion' }" class="header__txt"
+            >Connexion</RouterLink
+          >
+          <RouterLink :to="{ name: 'inscription' }" class="header__txt"
+            >Inscription</RouterLink
+          >
+        </div>
       </div>
     </div>
   </header>
@@ -41,6 +66,7 @@ export default {
       menuVisible: false,
       closeMenu: closeMenu,
       openMenu: openMenu,
+      connected: false,
     };
   },
 
@@ -49,6 +75,23 @@ export default {
       this.menuVisible = !this.menuVisible;
       console.log(this.menuVisible);
     },
+
+    getSessionStorage() {
+      const session = sessionStorage.getItem("jwt");
+      if (session) {
+        this.connected = true;
+      }
+    },
+
+    clearSessionStorage() {
+      sessionStorage.removeItem("jwt");
+      this.$router.push("/connexion");
+    },
+
+    getUserInfos() {},
+  },
+  mounted() {
+    this.getSessionStorage();
   },
 };
 </script>
