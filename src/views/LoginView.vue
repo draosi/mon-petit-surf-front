@@ -63,6 +63,7 @@ export default {
         if (res.ok) {
           const data = await res.json();
           sessionStorage.setItem("jwt", `${data.token}`);
+          sessionStorage.setItem("userId", data.userId);
 
           this.$router.push("/");
 

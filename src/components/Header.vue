@@ -22,10 +22,10 @@
             menuVisible ? 'header__menu-visible' : 'header__menu-invisible'
           "
         >
-          <RouterLink :to="{ name: 'home' }" class="header__txt"
+          <RouterLink :to="{ name: 'profile', params: { userId: userId } }" class="header__txt"
             >Profile</RouterLink
           >
-          <RouterLink :to="{ name: 'home' }" class="header__txt"
+          <RouterLink :to="{ name: 'favoris', params: { userId: userId } }" class="header__txt"
             >Favoris</RouterLink
           >
           <RouterLink
@@ -67,6 +67,7 @@ export default {
       closeMenu: closeMenu,
       openMenu: openMenu,
       connected: false,
+      userId: 0,
     };
   },
 
@@ -78,8 +79,13 @@ export default {
 
     getSessionStorage() {
       const session = sessionStorage.getItem("jwt");
+      const userId = sessionStorage.getItem("userId");
       if (session) {
         this.connected = true;
+      }
+
+      if (userId) {
+        this.userId = userId;
       }
     },
 
@@ -87,11 +93,9 @@ export default {
       sessionStorage.removeItem("jwt");
       this.$router.push("/connexion");
     },
-
-    getUserInfos() {},
   },
-  mounted() {
-    this.getSessionStorage();
+  async mounted() {
+    await this.getSessionStorage();
   },
 };
 </script>
