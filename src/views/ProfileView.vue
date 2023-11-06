@@ -7,7 +7,7 @@
   <main class="profile">
     <section class="profile__infos">
       <h1>Mon profile</h1>
-      <div class="profile__user" :class="{'visible' : isVisible}">
+      <div class="profile__user" :class="{ visible: isVisible }">
         <div class="user">
           <div class="user__infos">
             <p>Pseudo :</p>
@@ -18,19 +18,31 @@
             <p>******</p>
           </div>
         </div>
-        <button class="profile__button" @click="edit">Modifier</button>
+        <div class="profile__button">
+          <button class="button" @click="edit">Modifier</button>
+        </div>
       </div>
-      <div class="profile__user" :class="{'visible' : !isVisible}">
+      <div class="profile__user" :class="{ visible: !isVisible }">
         <form @submit.prevent="updateUser(jwt, userId)" class="edit" novalidate>
           <div class="edit__infos">
-            <input v-model="editedUser.username" placeholder="Nouveau pseudo" class="edit__input">
-            <input v-model="editedUser.password" placeholder="Nouveu mot de passe" class="edit__input">
+            <input
+              v-model="editedUser.username"
+              placeholder="Nouveau pseudo"
+              class="edit__input"
+            />
+            <input
+              v-model="editedUser.password"
+              placeholder="Nouveu mot de passe"
+              class="edit__input"
+            />
           </div>
           <div class="edit__update">
             <button type="submit" class="edit__button">Envoyer</button>
-            <button class="edit__button" @click="edit">Annuler</button>
           </div>
         </form>
+        <div class="profile__button">
+          <button class="button" @click="edit">Annuler</button>
+        </div>
       </div>
     </section>
     <section>
@@ -53,10 +65,10 @@ export default {
       jwt: "",
       userInfos: {},
       editedUser: {
-        username: '',
-        password: ''
+        username: "",
+        password: "",
       },
-      isVisible: false
+      isVisible: false,
     };
   },
   components: {
@@ -81,32 +93,32 @@ export default {
     },
 
     edit() {
-      this.isVisible = !this.isVisible
+      this.isVisible = !this.isVisible;
     },
 
     async updateUser(jwt, id) {
       const res = await fetch(`https://localhost:7080/api/Users/put/${id}`, {
-        method: 'PUT',
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${jwt}`,
         },
-        body: JSON.stringify(this.editedUser)
-      })
+        body: JSON.stringify(this.editedUser),
+      });
 
-      if(res.ok) {
-        alert("Profile modifié avec succès")
+      if (res.ok) {
+        alert("Profile modifié avec succès");
         this.$router.push("/");
       } else {
-        alert("Une erreur s'est produite")
+        alert("Une erreur s'est produite");
       }
-    }
+    },
   },
   async mounted() {
     const userId = this.$route.params.userId;
     this.userId = userId;
-    const jwt = sessionStorage.getItem('jwt')
-    this.jwt = jwt
+    const jwt = sessionStorage.getItem("jwt");
+    this.jwt = jwt;
 
     await this.getUserInfos(this.jwt, this.userId);
   },
