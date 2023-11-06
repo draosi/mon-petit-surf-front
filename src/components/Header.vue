@@ -91,6 +91,7 @@ export default {
 
     clearSessionStorage() {
       sessionStorage.removeItem("jwt");
+      sessionStorage.removeItem("userId");
       this.$router.push("/connexion");
     },
   },
