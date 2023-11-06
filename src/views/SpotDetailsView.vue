@@ -59,6 +59,13 @@
           :wind="surfDatas.wind"
         />
       </section>
+      <section class="utilities">
+        <select v-model="selectedUtility" class="utilities__size utilities__select">
+          <option disabled value="">Selectionnez un equipement</option>
+          <option v-for="(item, index) in utilities" :key="index">{{ item.title }}</option>
+        </select>
+        <button class="utilities__size utilities__button">Ajouter cet equipement au spot</button>
+      </section>
     </div>
     <div v-else class="loader">
       <Loader />
@@ -82,10 +89,12 @@ export default {
       surfDatas: [],
       userInfos: [],
       userFavorites: [],
+      utilities: [],
       userId: 0,
       spotId: 0,
       jwt: "",
       isFavorite: false,
+      selectedUtility: "",
     };
   },
   components: {
@@ -214,7 +223,7 @@ export default {
           },
         }
       );
-      const response = await res.json()
+      const response = await res.json();
       this.userFavorites = response;
     },
     async favoriteExist(array, spotId) {
@@ -236,12 +245,12 @@ export default {
         }
       );
 
-      const response = await res
-      if(response.ok) {
-        alert("Favoris ajouté avec succès")
-        this.isFavorite = !this.isFavorite
+      const response = await res;
+      if (response.ok) {
+        alert("Favoris ajouté avec succès");
+        this.isFavorite = !this.isFavorite;
       } else {
-        alert("un problème à eu lieu")
+        alert("un problème à eu lieu");
       }
       // console.log(response);
     },
@@ -256,20 +265,27 @@ export default {
         }
       );
 
-      const response = await res
-      if(response.ok) {
-        alert("Favoris supprimé avec succès")
-        this.isFavorite = !this.isFavorite
+      const response = await res;
+      if (response.ok) {
+        alert("Favoris supprimé avec succès");
+        this.isFavorite = !this.isFavorite;
       } else {
-        alert("un problème à eu lieu")
+        alert("un problème à eu lieu");
       }
       // console.log(response);
+    },
+
+    async getUtilities() {
+      const res = await fetch("https://localhost:7080/api/Spots/getUtilities");
+      const response = await res.json();
+      this.utilities = response;
+      console.log(this.utilities);
     },
   },
 
   async mounted() {
     const spotId = this.$route.params;
-    this.spotId = parseInt(spotId.spotId, 10)
+    this.spotId = parseInt(spotId.spotId, 10);
     // console.log(this.spotId);
     const jwt = sessionStorage.getItem("jwt");
     this.jwt = jwt;
@@ -284,6 +300,7 @@ export default {
       await this.getUser(this.jwt, this.userId);
       await this.getUserFavorites(this.jwt, this.userId);
       await this.favoriteExist(this.userFavorites, this.spotId);
+      await this.getUtilities();
     }
   },
 };
