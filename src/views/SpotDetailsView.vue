@@ -22,12 +22,14 @@
               alt="bin"
               class="infos__add"
               :class="{ infos__display: isFavorite === false }"
+              @click="removeFromFavorites(jwt, userId, spotId)"
             />
             <img
               src="@/assets/images/Fav.png"
               alt="favorite"
               class="infos__add"
               :class="{ infos__display: isFavorite === true }"
+              @click="addToFavorites(jwt, userId, spotId)"
             />
           </div>
         </div>
@@ -80,6 +82,9 @@ export default {
       surfDatas: [],
       userInfos: [],
       userFavorites: [],
+      userId: 0,
+      spotId: 0,
+      jwt: "",
       isFavorite: false,
     };
   },
@@ -210,7 +215,7 @@ export default {
         }
       );
       const response = await res.json();
-      this.userFavorites = response
+      this.userFavorites = response;
       // console.log(this.userFavorites);
     },
     async favoriteExist(array, spotId) {
@@ -219,19 +224,61 @@ export default {
         this.isFavorite = true;
       }
     },
+    async addToFavorites(jwt, userId, spotId) {
+      const res = await fetch(
+        `https://localhost:7080/api/Users/${userId}/favorites/${spotId}`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${jwt}`,
+          },
+        }
+      );
+
+      const response = await res
+      if(response.ok) {
+        alert("Favoris ajouté avec succès")
+      } else {
+        alert("un problème à eu lieu")
+      }
+      // console.log(response);
+    },
+    async removeFromFavorites(jwt, userId, spotId) {
+      const res = await fetch(
+        `https://localhost:7080/api/Users/${userId}/favorites/${spotId}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${jwt}`,
+          },
+        }
+      );
+
+      const response = await res
+      if(response.ok) {
+        alert("Favoris supprimé avec succès")
+      } else {
+        alert("un problème à eu lieu")
+      }
+      // console.log(response);
+    },
   },
 
   async mounted() {
     const spotId = this.$route.params;
-    await this.createSpotInfos(spotId.spotId);
-
+    this.spotId = parseInt(spotId.spotId, 10)
+    console.log(this.spotId);
     const jwt = sessionStorage.getItem("jwt");
+    this.jwt = jwt;
     const userId = sessionStorage.getItem("userId");
+    this.userId = userId;
 
-    if (jwt && userId) {
-      await this.getUser(jwt, userId);
-      await this.getUserFavorites(jwt, userId);
-      await this.favoriteExist(this.userFavorites, spotId.spotId);
+    await this.createSpotInfos(this.spotId);
+
+    if (this.jwt && this.userId) {
+      await this.getUser(this.jwt, this.userId);
+      await this.getUserFavorites(this.jwt, this.userId);
+      await this.favoriteExist(this.userFavorites, this.spotId);
     }
   },
 };
