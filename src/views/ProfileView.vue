@@ -7,18 +7,30 @@
   <main class="profile">
     <section class="profile__infos">
       <h1>Mon profile</h1>
-      <div class="profile__edit">
-        <div class="edit">
-          <div class="edit__user">
+      <div class="profile__user" :class="{'visible' : isVisible}">
+        <div class="user">
+          <div class="user__infos">
             <p>Pseudo :</p>
             <p>{{ userInfos.username }}</p>
           </div>
-          <div class="edit__user">
+          <div class="user__infos">
             <p>Mot de passe</p>
             <p>******</p>
           </div>
         </div>
-        <button class="profile__button">Modifier</button>
+        <button class="profile__button" @click="edit">Modifier</button>
+      </div>
+      <div class="profile__user" :class="{'visible' : !isVisible}">
+        <form @submit.prevent="updateUser" class="edit">
+          <div class="edit__infos">
+            <input v-model="editedUser.Username" placeholder="Nouveau pseudo" class="edit__input">
+            <input v-model="editedUser.Password" placeholder="Nouveu mot de passe" class="edit__input">
+          </div>
+          <div class="edit__update">
+            <button type="submit" class="edit__button">Envoyer</button>
+            <button class="edit__button" @click="edit">Annuler</button>
+          </div>
+        </form>
       </div>
     </section>
     <section>
@@ -39,6 +51,11 @@ export default {
     return {
       userId: 0,
       userInfos: {},
+      editedUser: {
+        Username: '',
+        Password: ''
+      },
+      isVisible: false
     };
   },
   components: {
@@ -62,6 +79,12 @@ export default {
       this.userInfos = response;
       console.log(this.userInfos);
     },
+
+    edit() {
+      this.isVisible = !this.isVisible
+    },
+
+    async updateUser() {}
   },
   async mounted() {
     const userId = this.$route.params.userId;
