@@ -11,8 +11,8 @@
           v-if="surfDatas.length !== 0 && spotInfos.length !== 0"
           class="infos__title"
         >
-          <h1>{{ spotInfos.spotName }} ({{ spotInfos.department }})</h1>
-          <h2>{{ transformDate(surfDatas.time[0]) }}</h2>
+          <h1 class="infos__txt">{{ spotInfos.spotName }} ({{ spotInfos.department }})</h1>
+          <h2 class="infos__txt">{{ transformDate(surfDatas.time[0]) }}</h2>
         </div>
         <div
           v-if="surfDatas.length !== 0 && spotInfos.length !== 0"

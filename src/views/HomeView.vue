@@ -36,7 +36,7 @@
           @change="filterSpots"
           class="sort__select sort__txt"
         >
-          <option disabled value="">Selectionnez une région</option>
+          <option disabled value="">Région</option>
           <option v-for="option in regions" :value="option.title">
             {{ option.title }}
           </option>

@@ -6,16 +6,16 @@
   <Header />
   <main class="profile">
     <section class="profile__infos">
-      <h1>Mon profile</h1>
+      <h1 class="profile__title">Mon profile</h1>
       <div class="profile__user" :class="{ visible: isVisible }">
         <div class="user">
           <div class="user__infos">
-            <p>Pseudo :</p>
-            <p>{{ userInfos.username }}</p>
+            <p class="user__txt">Pseudo :</p>
+            <p class="user__txt">{{ userInfos.username }}</p>
           </div>
           <div class="user__infos">
-            <p>Mot de passe</p>
-            <p>******</p>
+            <p class="user__txt">Mot de passe</p>
+            <p class="user__txt">******</p>
           </div>
         </div>
         <div class="profile__button">

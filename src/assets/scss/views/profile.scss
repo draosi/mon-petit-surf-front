@@ -17,6 +17,10 @@
     width: 80%;
   }
 
+  &__title {
+    font-size: $title;
+  }
+
   &__user {
     display: flex;
     flex-direction: column;
@@ -45,6 +49,10 @@
     justify-content: space-between;
     align-items: center;
     width: 100%;
+  }
+
+  &__txt {
+    font-size: $subTitle;
   }
 }
 
@@ -84,6 +92,7 @@
     border-radius: 10px;
     cursor: pointer;
     font-family: $font;
+    font-size: $txt;
     transition: all 0.5s ease-out;
 
     &:hover {
@@ -117,6 +126,7 @@
   border-radius: 10px;
   cursor: pointer;
   font-family: $font;
+  font-size: $txt;
   transition: all 0.5s ease-out;
 
   &:hover {
@@ -135,6 +145,7 @@
   &__title {
     text-align: center;
     margin-bottom: 20px;
+    font-size: $title;
   }
 
   &__list {
@@ -158,11 +169,13 @@
 
   &__txt {
     width: 400px;
+    font-size: $subTitle;
   }
 
   &__link {
     text-decoration: none;
     color: black;
+    font-size: $txt;
 
     &:hover {
       color: $primary;
