@@ -61,6 +61,8 @@ export default {
     return {
       spotInfos: [],
       surfDatas: [],
+      userInfos: {},
+      isFavorite: false,
     };
   },
   components: {
@@ -163,10 +165,42 @@ export default {
       const date = new Date(string);
       return date.toLocaleDateString("fr-FR", options);
     },
+
+    async getUser(jwt, userId) {
+      const res = await fetch(
+        `https://localhost:7080/api/Users/get/${userId}`,
+        {
+          method: "GET", // Vous utilisez GET ici pour récupérer des données
+          headers: {
+            Authorization: `Bearer ${jwt}`,
+          },
+        }
+      );
+      const response = await res.json()
+      this.userInfos = response
+      console.log(this.userInfos);
+      console.log(this.userInfos.usersRegisterSpots);
+    },
+    async favoriteExist(array, spotId) {
+      const exist = array.some(e => e.spot_id === spotId)
+      if (exist) {
+        this.isFavorite = true;
+        console.log(this.isFavorite);
+      }
+    }
   },
+
   async mounted() {
     const spotId = this.$route.params;
     await this.createSpotInfos(spotId.spotId);
+    
+    const jwt = sessionStorage.getItem('jwt')
+    const userId = sessionStorage.getItem('userId')
+
+    if(jwt && userId) {
+      await this.getUser(jwt, userId)
+      await this.favoriteExist(this.userInfos.usersRegisterSpots, spotId)
+    }
   },
 };
 </script>
