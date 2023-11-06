@@ -53,8 +53,14 @@
           :key="index"
           class="favorites__spot"
         >
-          <p class="favorites__txt">{{ item.spotName }} / {{ item.department }}</p>
-          <RouterLink to="/" class="favorites__link">Détails</RouterLink>
+          <p class="favorites__txt">
+            {{ item.spotName }} / {{ item.department }}
+          </p>
+          <RouterLink
+            :to="{ name: 'spotDetails', params: { spotId: item.id } }"
+            class="favorites__link"
+            >Détails</RouterLink
+          >
         </li>
       </ul>
     </section>
