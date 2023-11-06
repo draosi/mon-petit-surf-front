@@ -59,13 +59,13 @@
           :wind="surfDatas.wind"
         />
       </section>
-      <section class="utilities">
+      <!-- <section class="utilities">
         <select v-model="selectedUtility" class="utilities__size utilities__select">
           <option disabled value="">Selectionnez un equipement</option>
           <option v-for="(item, index) in utilities" :key="index">{{ item.title }}</option>
         </select>
         <button class="utilities__size utilities__button">Ajouter cet equipement au spot</button>
-      </section>
+      </section> -->
     </div>
     <div v-else class="loader">
       <Loader />
@@ -89,12 +89,12 @@ export default {
       surfDatas: [],
       userInfos: [],
       userFavorites: [],
-      utilities: [],
+      // utilities: [],
       userId: 0,
       spotId: 0,
       jwt: "",
       isFavorite: false,
-      selectedUtility: "",
+      // selectedUtility: "",
     };
   },
   components: {
@@ -111,7 +111,7 @@ export default {
       const response = await res.json();
       // console.log(response);
       this.spotInfos = response;
-      // console.log(this.spotInfos);
+      console.log(this.spotInfos);
       return response;
     },
 
@@ -225,6 +225,7 @@ export default {
       );
       const response = await res.json();
       this.userFavorites = response;
+      console.log(this.userFavorites);
     },
     async favoriteExist(array, spotId) {
       const exist = array.some((e) => e.spotId === spotId);
@@ -275,12 +276,12 @@ export default {
       // console.log(response);
     },
 
-    async getUtilities() {
-      const res = await fetch("https://localhost:7080/api/Spots/getUtilities");
-      const response = await res.json();
-      this.utilities = response;
-      console.log(this.utilities);
-    },
+    // async getUtilities() {
+    //   const res = await fetch("https://localhost:7080/api/Spots/getUtilities");
+    //   const response = await res.json();
+    //   this.utilities = response;
+    //   console.log(this.utilities);
+    // },
   },
 
   async mounted() {
