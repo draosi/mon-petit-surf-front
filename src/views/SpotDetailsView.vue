@@ -239,6 +239,7 @@ export default {
       const response = await res
       if(response.ok) {
         alert("Favoris ajouté avec succès")
+        this.isFavorite = !this.isFavorite
       } else {
         alert("un problème à eu lieu")
       }
@@ -258,6 +259,7 @@ export default {
       const response = await res
       if(response.ok) {
         alert("Favoris supprimé avec succès")
+        this.isFavorite = !this.isFavorite
       } else {
         alert("un problème à eu lieu")
       }
