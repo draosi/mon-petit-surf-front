@@ -14,7 +14,7 @@
           <h1>{{ spotInfos.spotName }} ({{ spotInfos.department }})</h1>
           <h2>{{ transformDate(surfDatas.time[0]) }}</h2>
         </div>
-        <div class="infos__favorite">
+        <div class="infos__favorite" v-if="jwt">
           <div></div>
           <div>
             <img
