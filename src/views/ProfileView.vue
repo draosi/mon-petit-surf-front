@@ -84,7 +84,14 @@ export default {
       this.isVisible = !this.isVisible
     },
 
-    async updateUser() {}
+    async updateUser(id) {
+      const res = await fetch(`https://localhost:7080/api/Users/put/${id}`, {
+        method: 'PUT',
+        headers: {
+          "Content-Type": "application/json",
+        }
+      })
+    }
   },
   async mounted() {
     const userId = this.$route.params.userId;
