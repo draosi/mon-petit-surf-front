@@ -45,10 +45,18 @@
         </div>
       </div>
     </section>
-    <section>
-      <div v-for="(item, index) in userfavorites" :key="index">
-        <div>{{ item }}</div>
-      </div>
+    <section class="favorites">
+      <h1 class="favorites__title">Mes favoris</h1>
+      <ul class="favorites__list">
+        <li
+          v-for="(item, index) in userFavorites"
+          :key="index"
+          class="favorites__spot"
+        >
+          <p class="favorites__txt">{{ item.spotName }} / {{ item.department }}</p>
+          <RouterLink to="/" class="favorites__link">Détails</RouterLink>
+        </li>
+      </ul>
     </section>
   </main>
   <Footer />
@@ -64,7 +72,7 @@ export default {
       userId: 0,
       jwt: "",
       userInfos: {},
-      userfavorites: {},
+      userFavorites: [],
       editedUser: {
         username: "",
         password: "",
@@ -93,16 +101,32 @@ export default {
       console.log(this.userInfos);
     },
     async getUserFavorites(jwt, userId) {
-      const res = await fetch(`https://localhost:7080/api/Users/${userId}/favorites`, {
-        method: 'GET',
-        headers: {
+      const res = await fetch(
+        `https://localhost:7080/api/Users/${userId}/favorites`,
+        {
+          method: "GET",
+          headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${jwt}`,
           },
-      })
+        }
+      );
       const response = await res.json();
-      this.userfavorites = response;
-      console.log(this.userfavorites);
+
+      for (const ele of response) {
+        const data = await fetch(
+          `https://localhost:7080/api/Spots/getSpot/${ele.spotId}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        const responseData = await data.json();
+        this.userFavorites.push(responseData);
+        console.log(this.userFavorites);
+      }
     },
 
     edit() {
@@ -134,7 +158,7 @@ export default {
     this.jwt = jwt;
 
     await this.getUserInfos(this.jwt, this.userId);
-    await this.getUserFavorites(this.jwt, this.userId)
+    await this.getUserFavorites(this.jwt, this.userId);
   },
 };
 </script>
