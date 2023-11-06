@@ -9,12 +9,18 @@
       <h1>Mon profile</h1>
       <div class="profile__modify">
         <div class="modify">
-          <h3>Pseudo : {{ userInfos.username }}</h3>
-          <button>Modifier</button>
+          <div class="modify__infos">
+            <h3>Pseudo :</h3>
+            <p>{{ userInfos.username }}</p>
+          </div>
+          <button class="modify__button">Modifier</button>
         </div>
         <div class="modify">
-          <h3>Mot de passe : ****</h3>
-          <button>Modifier</button>
+          <div class="modify__infos">
+            <h3>Mot de passe :</h3>
+            <p>*****</p>
+          </div>
+          <button class="modify__button">Modifier</button>
         </div>
       </div>
     </section>
