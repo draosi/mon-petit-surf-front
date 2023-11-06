@@ -7,26 +7,23 @@
   <main class="profile">
     <section class="profile__infos">
       <h1>Mon profile</h1>
-      <div class="profile__modify">
-        <div class="modify">
-          <div class="modify__infos">
-            <h3>Pseudo :</h3>
+      <div class="profile__edit">
+        <div class="edit">
+          <div class="edit__user">
+            <p>Pseudo :</p>
             <p>{{ userInfos.username }}</p>
           </div>
-          <button class="modify__button">Modifier</button>
-        </div>
-        <div class="modify">
-          <div class="modify__infos">
-            <h3>Mot de passe :</h3>
-            <p>*****</p>
+          <div class="edit__user">
+            <p>Mot de passe</p>
+            <p>******</p>
           </div>
-          <button class="modify__button">Modifier</button>
         </div>
+        <button class="profile__button">Modifier</button>
       </div>
     </section>
     <section>
       <div v-for="(item, index) in userInfos.usersRegisterSpots" :key="index">
-        <div></div>
+        <div>{{ item }}</div>
       </div>
     </section>
   </main>
@@ -49,7 +46,7 @@ export default {
     Footer,
   },
   methods: {
-    async getProfil() {
+    async getUserInfos() {
       const jwt = sessionStorage.getItem("jwt");
       const res = await fetch(
         `https://localhost:7080/api/Users/get/${this.userId}`,
@@ -69,7 +66,7 @@ export default {
   async mounted() {
     const userId = this.$route.params.userId;
     this.userId = userId;
-    await this.getProfil();
+    await this.getUserInfos();
   },
 };
 </script>
