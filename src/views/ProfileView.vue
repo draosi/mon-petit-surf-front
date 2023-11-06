@@ -46,7 +46,7 @@
       </div>
     </section>
     <section>
-      <div v-for="(item, index) in userInfos.usersRegisterSpots" :key="index">
+      <div v-for="(item, index) in userfavorites" :key="index">
         <div>{{ item }}</div>
       </div>
     </section>
@@ -64,6 +64,7 @@ export default {
       userId: 0,
       jwt: "",
       userInfos: {},
+      userfavorites: {},
       editedUser: {
         username: "",
         password: "",
@@ -90,6 +91,18 @@ export default {
       const response = await res.json();
       this.userInfos = response;
       console.log(this.userInfos);
+    },
+    async getUserFavorites(jwt, userId) {
+      const res = await fetch(`https://localhost:7080/api/Users/${userId}/favorites`, {
+        method: 'GET',
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${jwt}`,
+          },
+      })
+      const response = await res.json();
+      this.userfavorites = response;
+      console.log(this.userfavorites);
     },
 
     edit() {
@@ -121,6 +134,7 @@ export default {
     this.jwt = jwt;
 
     await this.getUserInfos(this.jwt, this.userId);
+    await this.getUserFavorites(this.jwt, this.userId)
   },
 };
 </script>
