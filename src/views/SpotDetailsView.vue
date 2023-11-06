@@ -102,7 +102,7 @@ export default {
       const response = await res.json();
       // console.log(response);
       this.spotInfos = response;
-      console.log(this.spotInfos);
+      // console.log(this.spotInfos);
       return response;
     },
 
@@ -214,17 +214,18 @@ export default {
           },
         }
       );
-      const response = await res.json();
+      const response = await res.json()
       this.userFavorites = response;
-      // console.log(this.userFavorites);
     },
     async favoriteExist(array, spotId) {
-      const exist = array.some((e) => e.spotId == spotId);
+      const exist = array.some((e) => e.spotId === spotId);
+      console.log(exist);
       if (exist) {
         this.isFavorite = true;
       }
     },
     async addToFavorites(jwt, userId, spotId) {
+      // console.log(jwt, userId, spotId);
       const res = await fetch(
         `https://localhost:7080/api/Users/${userId}/favorites/${spotId}`,
         {
@@ -267,11 +268,13 @@ export default {
   async mounted() {
     const spotId = this.$route.params;
     this.spotId = parseInt(spotId.spotId, 10)
-    console.log(this.spotId);
+    // console.log(this.spotId);
     const jwt = sessionStorage.getItem("jwt");
     this.jwt = jwt;
+    // console.log(this.jwt);
     const userId = sessionStorage.getItem("userId");
-    this.userId = userId;
+    this.userId = parseInt(userId, 10);
+    // console.log(this.userId);
 
     await this.createSpotInfos(this.spotId);
 
