@@ -4,8 +4,8 @@
 
 <template>
   <Header />
-  <main>
-    <h1></h1>
+  <main class="favorite">
+    <h1 class="favorite__title">Mes favoris</h1>
     <ul>
       <li>
         <div></div>
