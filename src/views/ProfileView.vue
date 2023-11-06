@@ -4,14 +4,26 @@
 
 <template>
   <Header />
-  <div>
-    <h1 class="profile">Page profile</h1>
-    <p>
-      Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ducimus sed,
-      vitae est eius vero numquam at? Maxime totam, enim modi nemo numquam
-      deserunt rem molestias laudantium odit necessitatibus omnis sunt!
-    </p>
-  </div>
+  <main class="profile">
+    <section class="profile__infos">
+      <h1>Mon profile</h1>
+      <div class="profile__modify">
+        <div class="modify">
+          <h3>Pseudo : {{ userInfos.username }}</h3>
+          <button>Modifier</button>
+        </div>
+        <div class="modify">
+          <h3>Mot de passe : ****</h3>
+          <button>Modifier</button>
+        </div>
+      </div>
+    </section>
+    <section>
+      <div v-for="(item, index) in userInfos.usersRegisterSpots" :key="index">
+        <div></div>
+      </div>
+    </section>
+  </main>
   <Footer />
 </template>
 
@@ -23,7 +35,7 @@ export default {
   data() {
     return {
       userId: 0,
-      userInfos: {}
+      userInfos: {},
     };
   },
   components: {
@@ -32,19 +44,19 @@ export default {
   },
   methods: {
     async getProfil() {
-      const jwt = sessionStorage.getItem('jwt')
+      const jwt = sessionStorage.getItem("jwt");
       const res = await fetch(
         `https://localhost:7080/api/Users/get/${this.userId}`,
         {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            "Authorization": `Bearer ${jwt}`,
+            Authorization: `Bearer ${jwt}`,
           },
         }
       );
       const response = await res.json();
-      this.userInfos = response
+      this.userInfos = response;
       console.log(this.userInfos);
     },
   },
