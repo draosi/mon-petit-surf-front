@@ -7,17 +7,17 @@
   <main>
     <div v-if="spotInfos.length !== 0 && surfDatas.length !== 0" class="main">
       <section class="infos">
-      <div
-        v-if="surfDatas.length !== 0 && spotInfos.length !== 0"
-        class="infos__title"
-      >
+        <div
+          v-if="surfDatas.length !== 0 && spotInfos.length !== 0"
+          class="infos__title"
+        >
           <h1>{{ spotInfos.spotName }} ({{ spotInfos.department }})</h1>
           <h2>{{ transformDate(surfDatas.time[0]) }}</h2>
-      </div>
-      <div
-        v-if="surfDatas.length !== 0 && spotInfos.length !== 0"
-        class="infos__location"
-      >
+        </div>
+        <div
+          v-if="surfDatas.length !== 0 && spotInfos.length !== 0"
+          class="infos__location"
+        >
           <div v-if="spotInfos.length !== 0" class="infos__map">
             <Map
               :latitude="spotInfos.latitude"
@@ -28,9 +28,9 @@
             <Weather :meteoData="surfDatas.meteo" />
           </div>
         </div>
-      <div v-else>
-        <Loader />
-      </div>
+        <div v-else>
+          <Loader />
+        </div>
       </section>
       <section class="chart">
         <Chart

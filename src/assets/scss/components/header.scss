@@ -34,7 +34,7 @@
     width: 100%;
     top: 50px;
 
-    @media screen and (max-width: 575px) {
+    @media only screen and (max-width: $extraSmall) {
       display: flex;
       flex-direction: column;
       align-items: flex-start;
@@ -56,16 +56,18 @@
 
     background-color: $primary;
     width: 200px;
-    padding: 5px 30px 5px 0;
+    padding: 5px 30px 10px 0;
+    border-top: 1.5px solid white;
     border-bottom-left-radius: 10px;
 
-    @media screen and (max-width: 575px) {
+    @media only screen and (max-width: $extraSmall) {
       display: flex;
       flex-direction: column;
       justify-content: flex-start;
       align-items: flex-start;
       width: 100%;
-      padding: 5px 0 5px 15px;
+      padding: 5px 0 10px 30px;
+      border-radius: 0;
     }
   }
 
