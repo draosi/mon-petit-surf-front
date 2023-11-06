@@ -21,10 +21,10 @@
         <button class="profile__button" @click="edit">Modifier</button>
       </div>
       <div class="profile__user" :class="{'visible' : !isVisible}">
-        <form @submit.prevent="updateUser" class="edit">
+        <form @submit.prevent="updateUser(jwt, userId)" class="edit" novalidate>
           <div class="edit__infos">
-            <input v-model="editedUser.Username" placeholder="Nouveau pseudo" class="edit__input">
-            <input v-model="editedUser.Password" placeholder="Nouveu mot de passe" class="edit__input">
+            <input v-model="editedUser.username" placeholder="Nouveau pseudo" class="edit__input">
+            <input v-model="editedUser.password" placeholder="Nouveu mot de passe" class="edit__input">
           </div>
           <div class="edit__update">
             <button type="submit" class="edit__button">Envoyer</button>
@@ -50,10 +50,11 @@ export default {
   data() {
     return {
       userId: 0,
+      jwt: "",
       userInfos: {},
       editedUser: {
-        Username: '',
-        Password: ''
+        username: '',
+        password: ''
       },
       isVisible: false
     };
@@ -63,10 +64,9 @@ export default {
     Footer,
   },
   methods: {
-    async getUserInfos() {
-      const jwt = sessionStorage.getItem("jwt");
+    async getUserInfos(jwt, userId) {
       const res = await fetch(
-        `https://localhost:7080/api/Users/get/${this.userId}`,
+        `https://localhost:7080/api/Users/get/${userId}`,
         {
           method: "GET",
           headers: {
@@ -84,19 +84,31 @@ export default {
       this.isVisible = !this.isVisible
     },
 
-    async updateUser(id) {
+    async updateUser(jwt, id) {
       const res = await fetch(`https://localhost:7080/api/Users/put/${id}`, {
         method: 'PUT',
         headers: {
           "Content-Type": "application/json",
-        }
+          Authorization: `Bearer ${jwt}`,
+        },
+        body: JSON.stringify(this.editedUser)
       })
+
+      if(res.ok) {
+        alert("Profile modifié avec succès")
+        this.$router.push("/");
+      } else {
+        alert("Une erreur s'est produite")
+      }
     }
   },
   async mounted() {
     const userId = this.$route.params.userId;
     this.userId = userId;
-    await this.getUserInfos();
+    const jwt = sessionStorage.getItem('jwt')
+    this.jwt = jwt
+
+    await this.getUserInfos(this.jwt, this.userId);
   },
 };
 </script>
