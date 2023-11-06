@@ -21,13 +21,13 @@
               src="@/assets/images/bin.png"
               alt="bin"
               class="infos__add"
-              :class="{ 'infos__display': isFavorite === false }"
+              :class="{ infos__display: isFavorite === false }"
             />
             <img
               src="@/assets/images/Fav.png"
               alt="favorite"
               class="infos__add"
-              :class="{ 'infos__display': isFavorite === true }"
+              :class="{ infos__display: isFavorite === true }"
             />
           </div>
         </div>
@@ -78,7 +78,8 @@ export default {
     return {
       spotInfos: [],
       surfDatas: [],
-      userInfos: {},
+      userInfos: [],
+      userFavorites: [],
       isFavorite: false,
     };
   },
@@ -166,7 +167,7 @@ export default {
         };
 
         this.surfDatas = spotInformations;
-        console.log(this.surfDatas);
+        // console.log(this.surfDatas);
       } else {
         console.error("Echec dans la récupération des données");
       }
@@ -195,14 +196,27 @@ export default {
       );
       const response = await res.json();
       this.userInfos = response;
-      console.log(this.userInfos);
-      console.log(this.userInfos.usersRegisterSpots);
+      // console.log(this.userInfos);
+      // console.log(this.userInfos.usersRegisterSpots);
+    },
+    async getUserFavorites(jwt, userId) {
+      const res = await fetch(
+        `https://localhost:7080/api/Users/${userId}/favorites`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${jwt}`,
+          },
+        }
+      );
+      const response = await res.json();
+      this.userFavorites = response
+      // console.log(this.userFavorites);
     },
     async favoriteExist(array, spotId) {
-      const exist = array.some((e) => e.spot_id === spotId);
+      const exist = array.some((e) => e.spotId == spotId);
       if (exist) {
         this.isFavorite = true;
-        console.log(this.isFavorite);
       }
     },
   },
@@ -216,7 +230,8 @@ export default {
 
     if (jwt && userId) {
       await this.getUser(jwt, userId);
-      await this.favoriteExist(this.userInfos.usersRegisterSpots, spotId);
+      await this.getUserFavorites(jwt, userId);
+      await this.favoriteExist(this.userFavorites, spotId.spotId);
     }
   },
 };
