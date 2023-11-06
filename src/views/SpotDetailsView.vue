@@ -14,6 +14,23 @@
           <h1>{{ spotInfos.spotName }} ({{ spotInfos.department }})</h1>
           <h2>{{ transformDate(surfDatas.time[0]) }}</h2>
         </div>
+        <div class="infos__favorite">
+          <div></div>
+          <div>
+            <img
+              src="@/assets/images/bin.png"
+              alt="bin"
+              class="infos__add"
+              :class="{ 'infos__display': isFavorite === false }"
+            />
+            <img
+              src="@/assets/images/Fav.png"
+              alt="favorite"
+              class="infos__add"
+              :class="{ 'infos__display': isFavorite === true }"
+            />
+          </div>
+        </div>
         <div
           v-if="surfDatas.length !== 0 && spotInfos.length !== 0"
           class="infos__location"
@@ -176,30 +193,30 @@ export default {
           },
         }
       );
-      const response = await res.json()
-      this.userInfos = response
+      const response = await res.json();
+      this.userInfos = response;
       console.log(this.userInfos);
       console.log(this.userInfos.usersRegisterSpots);
     },
     async favoriteExist(array, spotId) {
-      const exist = array.some(e => e.spot_id === spotId)
+      const exist = array.some((e) => e.spot_id === spotId);
       if (exist) {
         this.isFavorite = true;
         console.log(this.isFavorite);
       }
-    }
+    },
   },
 
   async mounted() {
     const spotId = this.$route.params;
     await this.createSpotInfos(spotId.spotId);
-    
-    const jwt = sessionStorage.getItem('jwt')
-    const userId = sessionStorage.getItem('userId')
 
-    if(jwt && userId) {
-      await this.getUser(jwt, userId)
-      await this.favoriteExist(this.userInfos.usersRegisterSpots, spotId)
+    const jwt = sessionStorage.getItem("jwt");
+    const userId = sessionStorage.getItem("userId");
+
+    if (jwt && userId) {
+      await this.getUser(jwt, userId);
+      await this.favoriteExist(this.userInfos.usersRegisterSpots, spotId);
     }
   },
 };
