@@ -16,7 +16,7 @@
     </div>
     <div class="header__toggle container">
       <div v-if="connected" class="header__responsive">
-        <div
+        <nav
           v-if="menuVisible"
           :class="
             menuVisible ? 'header__menu-visible' : 'header__menu-invisible'
@@ -34,10 +34,10 @@
             @click="clearSessionStorage"
             >Deconnexion</RouterLink
           >
-        </div>
+        </nav>
       </div>
       <div v-else>
-        <div
+        <nav
           v-if="menuVisible"
           :class="
             menuVisible ? 'header__menu-visible' : 'header__menu-invisible'
@@ -49,7 +49,7 @@
           <RouterLink :to="{ name: 'inscription' }" class="header__txt"
             >Inscription</RouterLink
           >
-        </div>
+        </nav>
       </div>
     </div>
   </header>
