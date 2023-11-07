@@ -90,6 +90,7 @@ export default {
       userInfos: [],
       userFavorites: [],
       utilities: [],
+      spotUtilities: [],
       userId: 0,
       spotId: 0,
       jwt: "",
@@ -280,7 +281,7 @@ export default {
       const res = await fetch("https://localhost:7080/api/Spots/getUtilities");
       const response = await res.json();
       this.utilities = response;
-      console.log(this.utilities);
+      // console.log(this.utilities);
     },
     async addUtilityToSpot(jwt, spotId) {
       const utilityId = this.selectedUtility
@@ -308,6 +309,19 @@ export default {
         this.selectedUtility = "",
         window.location.reload()
       }
+    },
+    async getSpotUtilities(jwt, spotId) {
+      const res = await fetch(`https://localhost:7080/api/Spots/${spotId}/utilities`, {
+        method: 'GET',
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${jwt}`,
+          },
+      })
+
+      const response = await res.json()
+      this.spotUtilities = response
+      console.log(this.spotUtilities);
     }
   },
 
@@ -324,11 +338,12 @@ export default {
 
     await this.createSpotInfos(this.spotId);
 
-    if (this.jwt && this.userId) {
+    if (this.jwt && this.userId && this.spotId) {
       await this.getUser(this.jwt, this.userId);
       await this.getUserFavorites(this.jwt, this.userId);
       await this.favoriteExist(this.userFavorites, this.spotId);
       await this.getUtilities();
+      await this.getSpotUtilities(this.jwt, this.spotId)
     }
   },
 };
