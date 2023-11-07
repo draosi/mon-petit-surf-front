@@ -85,10 +85,12 @@
   }
 
   &__input {
-    width: 100%;
+    width: calc(100% - 5px);
     height: 35px;
     border: 2px solid black;
     border-radius: 10px;
+    padding-left: 5px;
+    font-family: $font;
   }
 
   &__update {

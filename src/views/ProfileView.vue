@@ -32,7 +32,7 @@
             />
             <input
               v-model="editedUser.password"
-              placeholder="Nouveu mot de passe"
+              placeholder="Nouveau mot de passe"
               class="edit__input"
             />
           </div>
