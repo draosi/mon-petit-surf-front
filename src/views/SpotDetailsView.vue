@@ -15,8 +15,8 @@
           <h2>{{ transformDate(surfDatas.time[0]) }}</h2>
         </div>
         <div class="infos__favorite" v-if="jwt">
-          <ul v-for="(item, index) in spotUtilities" :key="index" class="infos__list">
-            <li>
+          <ul class="infos__list">
+            <li v-for="(item, index) in spotUtilities" :key="index" >
               <img :src="`${item.imageUrl}`" :alt="`${item.title}`" class="infos__img"/>
             </li>
           </ul>
