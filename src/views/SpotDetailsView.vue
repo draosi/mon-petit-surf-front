@@ -15,7 +15,15 @@
           <h2 class="infos__txt">{{ transformDate(surfDatas.time[0]) }}</h2>
         </div>
         <div class="infos__favorite" v-if="jwt">
-          <div></div>
+          <ul class="infos__list">
+            <li v-for="(item, index) in spotUtilities" :key="index">
+              <img
+                :src="`${item.imageUrl}`"
+                :alt="`${item.title}`"
+                class="infos__img"
+              />
+            </li>
+          </ul>
           <div>
             <img
               src="@/assets/images/bin.png"
@@ -59,13 +67,32 @@
           :wind="surfDatas.wind"
         />
       </section>
-      <!-- <section class="utilities">
-        <select v-model="selectedUtility" class="utilities__size utilities__select">
+      <section v-if="jwt" class="utilities">
+        <select v-model="selectedUtility" class="utilities__select">
           <option disabled value="">Selectionnez un equipement</option>
-          <option v-for="(item, index) in utilities" :key="index">{{ item.title }}</option>
+          <option
+            v-for="(item, index) in utilities"
+            :key="index"
+            :value="item.id"
+          >
+            {{ item.title }}
+          </option>
         </select>
-        <button class="utilities__size utilities__button">Ajouter cet equipement au spot</button>
-      </section> -->
+        <div class="utilities__btn">
+          <button
+            class="utilities__button"
+            @click="addUtilityToSpot(jwt, spotId)"
+          >
+            Ajouter
+          </button>
+          <button
+            class="utilities__button"
+            @click="deleteUtilityFromSpot(jwt, spotId)"
+          >
+            Supprimer
+          </button>
+        </div>
+      </section>
     </div>
     <div v-else class="loader">
       <Loader />
@@ -81,6 +108,12 @@ import Map from "@/components/Map.vue";
 import Weather from "@/components/Weather.vue";
 import Chart from "@/components/Chart.vue";
 import Loader from "@/components/Loader.vue";
+import bin from "@/assets/images/bin.png";
+import network from "@/assets/images/network.png";
+import parking from "@/assets/images/parking.png";
+import restaurants from "@/assets/images/restaurants.png";
+import showers from "@/assets/images/shower.png";
+import toilet from "@/assets/images/toilet.png";
 
 export default {
   data() {
@@ -89,12 +122,21 @@ export default {
       surfDatas: [],
       userInfos: [],
       userFavorites: [],
-      // utilities: [],
+      utilities: [],
+      spotUtilities: [],
+      utilitiesImages: {
+        Poubelle: bin,
+        Réseaux: network,
+        "Place de parking": parking,
+        Restauration: restaurants,
+        Douche: showers,
+        Toilette: toilet,
+      },
       userId: 0,
       spotId: 0,
       jwt: "",
       isFavorite: false,
-      // selectedUtility: "",
+      selectedUtility: "",
     };
   },
   components: {
@@ -276,12 +318,99 @@ export default {
       // console.log(response);
     },
 
-    // async getUtilities() {
-    //   const res = await fetch("https://localhost:7080/api/Spots/getUtilities");
-    //   const response = await res.json();
-    //   this.utilities = response;
-    //   console.log(this.utilities);
-    // },
+    async getUtilities() {
+      const res = await fetch("https://localhost:7080/api/Spots/getUtilities");
+      const response = await res.json();
+      this.utilities = response;
+      // console.log(this.utilities);
+    },
+    async addUtilityToSpot(jwt, spotId) {
+      const utilityId = this.selectedUtility;
+      const data = {
+        SpotId: spotId,
+        UtilityId: utilityId,
+      };
+
+      if (utilityId) {
+        const res = await fetch(
+          `https://localhost:7080/api/Spots/${spotId}/utility/${utilityId}`,
+          {
+            method: "POST",
+            body: JSON.stringify(data),
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${jwt}`,
+            },
+          }
+        );
+
+        if (res.ok) {
+          alert("equipement ajouté avec succès");
+          await this.getSpotUtilities(jwt, spotId);
+        } else {
+          alert("un problème à eu lieu lors de l'ajout de l'equipement");
+        }
+
+        this.selectedUtility = "";
+      }
+    },
+    async deleteUtilityFromSpot(jwt, spotId) {
+      const utilityId = this.selectedUtility;
+      if (utilityId) {
+        const res = await fetch(
+          `https://localhost:7080/api/Spots/${spotId}/utility/${utilityId}`,
+          {
+            method: "DELETE",
+            headers: {
+              Authorization: `Bearer ${jwt}`,
+            },
+          }
+        );
+        console.log(res);
+
+        if (res.ok) {
+          alert("Equipement supprimé avec succès");
+          await this.getSpotUtilities(jwt, spotId);
+        } else if (res.status === 400) {
+          const error = await res.text();
+          alert("Erreur 400" + error);
+        } else {
+          alert("un problème à eu lieu lors de la suppression");
+        }
+
+        this.selectedUtility = "";
+        // window.location.reload();
+      }
+    },
+    async getSpotUtilities(jwt, spotId) {
+      console.log(jwt, spotId);
+      const res = await fetch(
+        `https://localhost:7080/api/Spots/${spotId}/utilities`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${jwt}`,
+          },
+        }
+      );
+
+      if (res.status === 200) {
+        const response = await res.json();
+        console.log(response);
+
+        this.spotUtilities = response.map((e) => {
+          return {
+            ...e,
+            imageUrl: this.utilitiesImages[e.title],
+          };
+        });
+        console.log(this.spotUtilities);
+      } else {
+        console.error("erreyr pour récupérer les equipement");
+        console.log(res);
+      }
+    },
   },
 
   async mounted() {
@@ -297,11 +426,12 @@ export default {
 
     await this.createSpotInfos(this.spotId);
 
-    if (this.jwt && this.userId) {
+    if (this.jwt && this.userId && this.spotId) {
       await this.getUser(this.jwt, this.userId);
       await this.getUserFavorites(this.jwt, this.userId);
       await this.favoriteExist(this.userFavorites, this.spotId);
       await this.getUtilities();
+      await this.getSpotUtilities(this.jwt, this.spotId);
     }
   },
 };
