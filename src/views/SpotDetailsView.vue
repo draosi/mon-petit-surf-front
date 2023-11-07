@@ -67,7 +67,7 @@
           :wind="surfDatas.wind"
         />
       </section>
-      <section class="utilities">
+      <section v-if="jwt" class="utilities">
         <select v-model="selectedUtility" class="utilities__select">
           <option disabled value="">Selectionnez un equipement</option>
           <option
@@ -85,7 +85,12 @@
           >
             Ajouter
           </button>
-          <button class="utilities__button">Supprimer</button>
+          <button
+            class="utilities__button"
+            @click="deleteUtilityFromSpot(jwt, spotId)"
+          >
+            Supprimer
+          </button>
         </div>
       </section>
     </div>
@@ -341,11 +346,40 @@ export default {
 
         if (res.ok) {
           alert("equipement ajouté avec succès");
+          await this.getSpotUtilities(jwt, spotId);
         } else {
-          alert("un problème à eu lieu lors de l'ajoout de l'equipement");
+          alert("un problème à eu lieu lors de l'ajout de l'equipement");
         }
 
-        (this.selectedUtility = ""), window.location.reload();
+        (this.selectedUtility = "")
+      }
+    },
+    async deleteUtilityFromSpot(jwt, spotId) {
+      const utilityId = this.selectedUtility;
+      if (utilityId) {
+        const res = await fetch(
+          `https://localhost:7080/api/Spots/${spotId}/utility/${utilityId}`,
+          {
+            method: "DELETE",
+            headers: {
+              Authorization: `Bearer ${jwt}`,
+            },
+          }
+        );
+        console.log(res);
+
+        if (res.ok) {
+          alert("Equipement supprimé avec succès");
+          await this.getSpotUtilities(jwt, spotId);
+        } else if (res.status === 400) {
+          const error = await res.text()
+          alert("Erreur 400" + error)
+        } else {
+          alert("un problème à eu lieu lors de la suppression");
+        }
+
+        (this.selectedUtility = "")
+        // window.location.reload();
       }
     },
     async getSpotUtilities(jwt, spotId) {
