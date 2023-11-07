@@ -14,6 +14,25 @@
           <h1 class="infos__txt">{{ spotInfos.spotName }} ({{ spotInfos.department }})</h1>
           <h2 class="infos__txt">{{ transformDate(surfDatas.time[0]) }}</h2>
         </div>
+        <div class="infos__favorite" v-if="jwt">
+          <div></div>
+          <div>
+            <img
+              src="@/assets/images/bin.png"
+              alt="bin"
+              class="infos__add"
+              :class="{ infos__display: isFavorite === false }"
+              @click="removeFromFavorites(jwt, userId, spotId)"
+            />
+            <img
+              src="@/assets/images/Fav.png"
+              alt="favorite"
+              class="infos__add"
+              :class="{ infos__display: isFavorite === true }"
+              @click="addToFavorites(jwt, userId, spotId)"
+            />
+          </div>
+        </div>
         <div
           v-if="surfDatas.length !== 0 && spotInfos.length !== 0"
           class="infos__location"
@@ -40,6 +59,13 @@
           :wind="surfDatas.wind"
         />
       </section>
+      <!-- <section class="utilities">
+        <select v-model="selectedUtility" class="utilities__size utilities__select">
+          <option disabled value="">Selectionnez un equipement</option>
+          <option v-for="(item, index) in utilities" :key="index">{{ item.title }}</option>
+        </select>
+        <button class="utilities__size utilities__button">Ajouter cet equipement au spot</button>
+      </section> -->
     </div>
     <div v-else class="loader">
       <Loader />
@@ -61,6 +87,14 @@ export default {
     return {
       spotInfos: [],
       surfDatas: [],
+      userInfos: [],
+      userFavorites: [],
+      // utilities: [],
+      userId: 0,
+      spotId: 0,
+      jwt: "",
+      isFavorite: false,
+      // selectedUtility: "",
     };
   },
   components: {
@@ -147,7 +181,7 @@ export default {
         };
 
         this.surfDatas = spotInformations;
-        console.log(this.surfDatas);
+        // console.log(this.surfDatas);
       } else {
         console.error("Echec dans la récupération des données");
       }
@@ -163,10 +197,112 @@ export default {
       const date = new Date(string);
       return date.toLocaleDateString("fr-FR", options);
     },
+
+    async getUser(jwt, userId) {
+      const res = await fetch(
+        `https://localhost:7080/api/Users/get/${userId}`,
+        {
+          method: "GET", // Vous utilisez GET ici pour récupérer des données
+          headers: {
+            Authorization: `Bearer ${jwt}`,
+          },
+        }
+      );
+      const response = await res.json();
+      this.userInfos = response;
+      // console.log(this.userInfos);
+      // console.log(this.userInfos.usersRegisterSpots);
+    },
+    async getUserFavorites(jwt, userId) {
+      const res = await fetch(
+        `https://localhost:7080/api/Users/${userId}/favorites`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${jwt}`,
+          },
+        }
+      );
+      const response = await res.json();
+      this.userFavorites = response;
+      console.log(this.userFavorites);
+    },
+    async favoriteExist(array, spotId) {
+      const exist = array.some((e) => e.spotId === spotId);
+      console.log(exist);
+      if (exist) {
+        this.isFavorite = true;
+      }
+    },
+    async addToFavorites(jwt, userId, spotId) {
+      // console.log(jwt, userId, spotId);
+      const res = await fetch(
+        `https://localhost:7080/api/Users/${userId}/favorites/${spotId}`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${jwt}`,
+          },
+        }
+      );
+
+      const response = await res;
+      if (response.ok) {
+        alert("Favoris ajouté avec succès");
+        this.isFavorite = !this.isFavorite;
+      } else {
+        alert("un problème à eu lieu");
+      }
+      // console.log(response);
+    },
+    async removeFromFavorites(jwt, userId, spotId) {
+      const res = await fetch(
+        `https://localhost:7080/api/Users/${userId}/favorites/${spotId}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${jwt}`,
+          },
+        }
+      );
+
+      const response = await res;
+      if (response.ok) {
+        alert("Favoris supprimé avec succès");
+        this.isFavorite = !this.isFavorite;
+      } else {
+        alert("un problème à eu lieu");
+      }
+      // console.log(response);
+    },
+
+    // async getUtilities() {
+    //   const res = await fetch("https://localhost:7080/api/Spots/getUtilities");
+    //   const response = await res.json();
+    //   this.utilities = response;
+    //   console.log(this.utilities);
+    // },
   },
+
   async mounted() {
     const spotId = this.$route.params;
-    await this.createSpotInfos(spotId.spotId);
+    this.spotId = parseInt(spotId.spotId, 10);
+    // console.log(this.spotId);
+    const jwt = sessionStorage.getItem("jwt");
+    this.jwt = jwt;
+    // console.log(this.jwt);
+    const userId = sessionStorage.getItem("userId");
+    this.userId = parseInt(userId, 10);
+    // console.log(this.userId);
+
+    await this.createSpotInfos(this.spotId);
+
+    if (this.jwt && this.userId) {
+      await this.getUser(this.jwt, this.userId);
+      await this.getUserFavorites(this.jwt, this.userId);
+      await this.favoriteExist(this.userFavorites, this.spotId);
+      await this.getUtilities();
+    }
   },
 };
 </script>
