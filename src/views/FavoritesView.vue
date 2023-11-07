@@ -46,7 +46,11 @@
         <div class="button">
           <button class="button__btn">Supprimer</button>
           <button class="button__btn">
-            <RouterLink to="/" class="button__link">Détails</RouterLink>
+            <RouterLink
+              :to="{ name: 'spotDetails', params: { spotId: item.id } }"
+              class="button__link"
+              >Détails</RouterLink
+            >
           </button>
         </div>
       </li>
