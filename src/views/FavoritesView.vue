@@ -44,7 +44,12 @@
           </div>
         </div>
         <div class="button">
-          <button class="button__btn" @click="removeFromFavorites(jwt, userId, item.id)">Supprimer</button>
+          <button
+            class="button__btn"
+            @click="removeFromFavorites(jwt, userId, item.id)"
+          >
+            Supprimer
+          </button>
           <button class="button__btn">
             <RouterLink
               :to="{ name: 'spotDetails', params: { spotId: item.id } }"
@@ -168,10 +173,12 @@ export default {
         }
       );
 
-      if(res.ok) {
-        alert("Favoris supprimer avec succès")
+      if (res.ok) {
+        alert("Favoris supprimer avec succès");
+        await this.getUserFavorites(this.jwt, this.userId);
+        await this.getWavesInfos(this.favorites);
       } else {
-        alert("Un problème est survenu")
+        alert("Un problème est survenu");
       }
     },
   },
