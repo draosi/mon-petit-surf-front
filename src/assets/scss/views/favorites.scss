@@ -28,6 +28,11 @@
     align-items: flex-start;
     justify-content: space-between;
     // height: 50px;
+
+    @media only screen and (max-width: $extraSmall) {
+      flex-direction: column;
+      gap: 15px;
+    }
   }
 
   &__infos {
@@ -42,6 +47,14 @@
     border: 1.5px solid $primary;
     border-radius: 5px;
     background-color: $secondary;
+
+    @media only screen and (max-width: $small) {
+      width: calc(300px);
+    }
+
+    @media only screen and (max-width: $extraSmall) {
+      width: calc(100% - 10px);
+    }
   }
 }
 
@@ -87,6 +100,12 @@
   width: 25%;
   height: 100%;
 
+  @media only screen and (max-width: $extraSmall) {
+    justify-content: space-between;
+    width: 100%;
+    align-items: center;
+  }
+
   &__btn {
     padding: 15px 5px;
     width: 80px;
@@ -101,10 +120,28 @@
       background-color: $primary;
       color: white;
     }
+
+    @media only screen and (max-width: $small) {
+      width: calc(80px);
+    }
+
+    @media only screen and (max-width: $extraSmall) {
+      width: 40%;
+    }
   }
 
   &__link {
+    display: flex;
+    justify-content: center;
     text-decoration: none;
     color: black;
+
+    @media only screen and (max-width: $small) {
+      width: calc(70px);
+    }
+
+    @media only screen and (max-width: $extraSmall) {
+      width: 100%;
+    }
   }
 }
