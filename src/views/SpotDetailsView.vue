@@ -15,7 +15,7 @@
           <h2>{{ transformDate(surfDatas.time[0]) }}</h2>
         </div>
         <div class="infos__favorite" v-if="jwt">
-          <div></div>
+          <div v-for="(item, index) in spotUtilities" :key="index"></div>
           <div>
             <img
               src="@/assets/images/bin.png"
@@ -60,11 +60,25 @@
         />
       </section>
       <section class="utilities">
-        <select v-model="selectedUtility" class="utilities__size utilities__select">
+        <select
+          v-model="selectedUtility"
+          class="utilities__size utilities__select"
+        >
           <option disabled value="">Selectionnez un equipement</option>
-          <option v-for="(item, index) in utilities" :key="index" :value="item.id">{{ item.title }}</option>
+          <option
+            v-for="(item, index) in utilities"
+            :key="index"
+            :value="item.id"
+          >
+            {{ item.title }}
+          </option>
         </select>
-        <button class="utilities__size utilities__button" @click="addUtilityToSpot(jwt, spotId)">Ajouter cet equipement au spot</button>
+        <button
+          class="utilities__size utilities__button"
+          @click="addUtilityToSpot(jwt, spotId)"
+        >
+          Ajouter cet equipement au spot
+        </button>
       </section>
     </div>
     <div v-else class="loader">
@@ -81,6 +95,12 @@ import Map from "@/components/Map.vue";
 import Weather from "@/components/Weather.vue";
 import Chart from "@/components/Chart.vue";
 import Loader from "@/components/Loader.vue";
+import bin from "@/assets/images/bin.png";
+import network from "@/assets/images/network.png";
+import parking from "@/assets/images/parking.png";
+import restaurants from "@/assets/images/restaurants.png";
+import showers from "@/assets/images/showers.png";
+import toilet from "@/assets/images/toilet.png";
 
 export default {
   data() {
@@ -91,6 +111,14 @@ export default {
       userFavorites: [],
       utilities: [],
       spotUtilities: [],
+      utilitiesImages: {
+        Poubelle: bin,
+        Réseaux: network,
+        "Place de parking": parking,
+        Restauration: restaurants,
+        Douche: showers,
+        Toilette: toilet,
+      },
       userId: 0,
       spotId: 0,
       jwt: "",
@@ -281,48 +309,60 @@ export default {
       const res = await fetch("https://localhost:7080/api/Spots/getUtilities");
       const response = await res.json();
       this.utilities = response;
-      // console.log(this.utilities);
+      console.log(this.utilities);
     },
     async addUtilityToSpot(jwt, spotId) {
-      const utilityId = this.selectedUtility
+      const utilityId = this.selectedUtility;
       const data = {
         SpotId: spotId,
-        UtilityId: utilityId
-      }
+        UtilityId: utilityId,
+      };
 
       if (utilityId) {
-        const res = await fetch(`https://localhost:7080/api/Spots/${spotId}/utility/${utilityId}`,{
-          method: 'POST',
-          body: JSON.stringify(data),
+        const res = await fetch(
+          `https://localhost:7080/api/Spots/${spotId}/utility/${utilityId}`,
+          {
+            method: "POST",
+            body: JSON.stringify(data),
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${jwt}`,
+            },
+          }
+        );
+
+        if (res.ok) {
+          alert("equipement ajouté avec succès");
+        } else {
+          alert("un problème à eu lieu lors de l'ajoout de l'equipement");
+        }
+
+        (this.selectedUtility = ""), window.location.reload();
+      }
+    },
+    async getSpotUtilities(jwt, spotId) {
+      const res = await fetch(
+        `https://localhost:7080/api/Spots/${spotId}/utilities`,
+        {
+          method: "GET",
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${jwt}`,
           },
-        })
-
-        if (res.ok) {
-          alert("equipement ajouté avec succès")
-        } else {
-          alert("un problème à eu lieu lors de l'ajoout de l'equipement")
         }
+      );
 
-        this.selectedUtility = "",
-        window.location.reload()
-      }
-    },
-    async getSpotUtilities(jwt, spotId) {
-      const res = await fetch(`https://localhost:7080/api/Spots/${spotId}/utilities`, {
-        method: 'GET',
-        headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${jwt}`,
-          },
+      const response = await res.json();
+
+      this.spotUtilities = response.map((e) => {
+        return {
+          ...e,
+          imageUrl: this.utilitiesImages[e.title]
+        }
       })
-
-      const response = await res.json()
-      this.spotUtilities = response
+      // this.spotUtilities = response;
       console.log(this.spotUtilities);
-    }
+    },
   },
 
   async mounted() {
@@ -343,7 +383,7 @@ export default {
       await this.getUserFavorites(this.jwt, this.userId);
       await this.favoriteExist(this.userFavorites, this.spotId);
       await this.getUtilities();
-      await this.getSpotUtilities(this.jwt, this.spotId)
+      await this.getSpotUtilities(this.jwt, this.spotId);
     }
   },
 };
