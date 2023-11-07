@@ -26,10 +26,7 @@
     border: 1.5px solid black;
     border-radius: 10px;
     font-family: $font;
-
-    &::placeholder {
-      padding-left: 5px;
-    }
+    padding-left: 5px;
   }
 
   &__button {

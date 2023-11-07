@@ -34,7 +34,7 @@ import Footer from "@/components/Footer.vue";
 export default {
   data() {
     return {
-      usename: "",
+      username: "",
       password: "",
     };
   },
