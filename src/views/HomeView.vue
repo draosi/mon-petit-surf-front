@@ -52,8 +52,8 @@
       </div>
       <div v-else>
         <div v-if="filteredSpots.length">
-          <div class="spots">
-            <div
+          <ul class="spots">
+            <li
               class="spot"
               :class="{ 'spot__card--blue': cardBackground(index) }"
               v-for="(spot, index) in spotsOnPage"
@@ -72,8 +72,8 @@
                   />
                 </RouterLink>
               </div>
-            </div>
-          </div>
+            </li>
+          </ul>
           <div class="pagination" v-if="!noResult">
             <button
               @click="pagination(currentPage - 1)"
