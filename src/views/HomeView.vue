@@ -306,7 +306,7 @@ export default {
 
     async getMaxConditions(latitude, longitude) {
       const res = await fetch(
-        `https://marine-api.open-meteo.com/v1/marine?latitude=${latitude}&longitude=${longitude}&daily=wave_height_max,wave_period_max&timezone=GMT`
+        `https://marine-api.open-meteo.com/v1/marine?latitude=${latitude}&longitude=${longitude}&daily=wave_height_max,wave_period_max&timezone=Europe%2FBerlin`
       );
       const response = await res.json();
       // console.log(response);
