@@ -14,21 +14,32 @@
       >
         <div class="favorite__infos">
           <div class="informations">
-            <p>{{ item.spotName }}</p>
-            <img src="@/assets/images/arrow.png" alt="arrow" @click="toggleVisibility(index)"/>
+            <p class="informations__title">{{ item.spotName }}</p>
+            <img
+              src="@/assets/images/arrow.png"
+              alt="arrow"
+              @click="toggleVisibility(index)"
+              :class="{'informations__img' : isVisible[index]}"
+            />
           </div>
-          <div :class="isVisible[index] ? 'informations__visible' : 'informations__hidden'">
+          <div
+            :class="
+              isVisible[index]
+                ? 'informations__visible'
+                : 'informations__hidden'
+            "
+          >
             <div class="informations">
-              <p>Région</p>
-              <p>{{ item.department }}</p>
+              <p class="informations__txt">Région</p>
+              <p class="informations__txt">{{ item.department }}</p>
             </div>
             <div class="informations">
-              <p>Taille max des vagues</p>
-              <p>{{ item.wave }}</p>
+              <p class="informations__txt">Taille max des vagues</p>
+              <p class="informations__txt">{{ item.wave }}</p>
             </div>
             <div class="informations">
-              <p>Temps de période max</p>
-              <p>{{ item.period }}</p>
+              <p class="informations__txt">Temps de période max</p>
+              <p class="informations__txt">{{ item.period }}</p>
             </div>
           </div>
         </div>
@@ -54,7 +65,7 @@ export default {
       userId: 0,
       favorites: [],
       wavesInfos: [],
-      isVisible : []
+      isVisible: [],
     };
   },
   components: {
@@ -134,9 +145,10 @@ export default {
       }
     },
 
+    // Permet d'afficher ou non une div en fonction de son index
     toggleVisibility(index) {
-      this.isVisible[index] = !this.isVisible[index]
-    }
+      this.isVisible[index] = !this.isVisible[index];
+    },
   },
   async mounted() {
     const userId = this.$route.params.userId;
@@ -148,6 +160,8 @@ export default {
 
     await this.getWavesInfos(this.favorites);
     console.log(this.wavesInfos);
+
+    // Rempli un tableau avec le même nombre de valeur set à false qu'il y a de favoris
     this.isVisible = new Array(this.wavesInfos.length).fill(false);
   },
 };
