@@ -19,7 +19,7 @@
               src="@/assets/images/arrow.png"
               alt="arrow"
               @click="toggleVisibility(index)"
-              :class="{'informations__img' : isVisible[index]}"
+              :class="{ informations__img: isVisible[index] }"
             />
           </div>
           <div
@@ -35,17 +35,19 @@
             </div>
             <div class="informations">
               <p class="informations__txt">Taille max des vagues</p>
-              <p class="informations__txt">{{ item.wave }}</p>
+              <p class="informations__txt">{{ item.wave }} m</p>
             </div>
             <div class="informations">
               <p class="informations__txt">Temps de période max</p>
-              <p class="informations__txt">{{ item.period }}</p>
+              <p class="informations__txt">{{ item.period }} s</p>
             </div>
           </div>
         </div>
         <div class="button">
-          <button class="button__style">Supprimer</button>
-          <button class="button__style">Détails</button>
+          <button class="button__btn">Supprimer</button>
+          <button class="button__btn">
+            <RouterLink to="/" class="button__link">Détails</RouterLink>
+          </button>
         </div>
       </li>
     </ul>
