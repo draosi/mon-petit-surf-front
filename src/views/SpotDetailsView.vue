@@ -59,13 +59,13 @@
           :wind="surfDatas.wind"
         />
       </section>
-      <!-- <section class="utilities">
+      <section class="utilities">
         <select v-model="selectedUtility" class="utilities__size utilities__select">
           <option disabled value="">Selectionnez un equipement</option>
-          <option v-for="(item, index) in utilities" :key="index">{{ item.title }}</option>
+          <option v-for="(item, index) in utilities" :key="index" :value="item.id">{{ item.title }}</option>
         </select>
-        <button class="utilities__size utilities__button">Ajouter cet equipement au spot</button>
-      </section> -->
+        <button class="utilities__size utilities__button" @click="addUtilityToSpot(jwt, spotId)">Ajouter cet equipement au spot</button>
+      </section>
     </div>
     <div v-else class="loader">
       <Loader />
@@ -89,12 +89,12 @@ export default {
       surfDatas: [],
       userInfos: [],
       userFavorites: [],
-      // utilities: [],
+      utilities: [],
       userId: 0,
       spotId: 0,
       jwt: "",
       isFavorite: false,
-      // selectedUtility: "",
+      selectedUtility: "",
     };
   },
   components: {
@@ -276,12 +276,39 @@ export default {
       // console.log(response);
     },
 
-    // async getUtilities() {
-    //   const res = await fetch("https://localhost:7080/api/Spots/getUtilities");
-    //   const response = await res.json();
-    //   this.utilities = response;
-    //   console.log(this.utilities);
-    // },
+    async getUtilities() {
+      const res = await fetch("https://localhost:7080/api/Spots/getUtilities");
+      const response = await res.json();
+      this.utilities = response;
+      console.log(this.utilities);
+    },
+    async addUtilityToSpot(jwt, spotId) {
+      const utilityId = this.selectedUtility
+      const data = {
+        SpotId: spotId,
+        UtilityId: utilityId
+      }
+
+      if (utilityId) {
+        const res = await fetch(`https://localhost:7080/api/Spots/${spotId}/utility/${utilityId}`,{
+          method: 'POST',
+          body: JSON.stringify(data),
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${jwt}`,
+          },
+        })
+
+        if (res.ok) {
+          alert("equipement ajouté avec succès")
+        } else {
+          alert("un problème à eu lieu lors de l'ajoout de l'equipement")
+        }
+
+        this.selectedUtility = "",
+        window.location.reload()
+      }
+    }
   },
 
   async mounted() {
