@@ -15,7 +15,11 @@
           <h2>{{ transformDate(surfDatas.time[0]) }}</h2>
         </div>
         <div class="infos__favorite" v-if="jwt">
-          <div v-for="(item, index) in spotUtilities" :key="index"></div>
+          <ul v-for="(item, index) in spotUtilities" :key="index" class="infos__list">
+            <li>
+              <img :src="`${item.imageUrl}`" :alt="`${item.title}`" class="infos__img"/>
+            </li>
+          </ul>
           <div>
             <img
               src="@/assets/images/bin.png"
@@ -99,7 +103,7 @@ import bin from "@/assets/images/bin.png";
 import network from "@/assets/images/network.png";
 import parking from "@/assets/images/parking.png";
 import restaurants from "@/assets/images/restaurants.png";
-import showers from "@/assets/images/showers.png";
+import showers from "@/assets/images/shower.png";
 import toilet from "@/assets/images/toilet.png";
 
 export default {

@@ -25,6 +25,19 @@
     width: 100%;
   }
 
+  &__list {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 10px;
+    list-style: none;
+  }
+
+  &__img {
+    width: 32px;
+  }
+
   &__add {
     width: 32px;
     cursor: pointer;
