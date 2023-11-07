@@ -44,7 +44,7 @@
           </div>
         </div>
         <div class="button">
-          <button class="button__btn">Supprimer</button>
+          <button class="button__btn" @click="removeFromFavorites(jwt, userId, item.id)">Supprimer</button>
           <button class="button__btn">
             <RouterLink
               :to="{ name: 'spotDetails', params: { spotId: item.id } }"
@@ -69,6 +69,7 @@ export default {
     return {
       jwt: "",
       userId: 0,
+      spotId: 0,
       favorites: [],
       wavesInfos: [],
       isVisible: [],
@@ -154,6 +155,24 @@ export default {
     // Permet d'afficher ou non une div en fonction de son index
     toggleVisibility(index) {
       this.isVisible[index] = !this.isVisible[index];
+    },
+
+    async removeFromFavorites(jwt, userId, spotId) {
+      const res = await fetch(
+        `https://localhost:7080/api/Users/${userId}/favorites/${spotId}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${jwt}`,
+          },
+        }
+      );
+
+      if(res.ok) {
+        alert("Favoris supprimer avec succès")
+      } else {
+        alert("Un problème est survenu")
+      }
     },
   },
   async mounted() {
