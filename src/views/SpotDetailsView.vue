@@ -16,8 +16,12 @@
         </div>
         <div class="infos__favorite" v-if="jwt">
           <ul class="infos__list">
-            <li v-for="(item, index) in spotUtilities" :key="index" >
-              <img :src="`${item.imageUrl}`" :alt="`${item.title}`" class="infos__img"/>
+            <li v-for="(item, index) in spotUtilities" :key="index">
+              <img
+                :src="`${item.imageUrl}`"
+                :alt="`${item.title}`"
+                class="infos__img"
+              />
             </li>
           </ul>
           <div>
@@ -64,10 +68,7 @@
         />
       </section>
       <section class="utilities">
-        <select
-          v-model="selectedUtility"
-          class="utilities__size utilities__select"
-        >
+        <select v-model="selectedUtility" class="utilities__select">
           <option disabled value="">Selectionnez un equipement</option>
           <option
             v-for="(item, index) in utilities"
@@ -77,12 +78,15 @@
             {{ item.title }}
           </option>
         </select>
-        <button
-          class="utilities__size utilities__button"
-          @click="addUtilityToSpot(jwt, spotId)"
-        >
-          Ajouter cet equipement au spot
-        </button>
+        <div class="utilities__btn">
+          <button
+            class="utilities__button"
+            @click="addUtilityToSpot(jwt, spotId)"
+          >
+            Ajouter
+          </button>
+          <button class="utilities__button">Supprimer</button>
+        </div>
       </section>
     </div>
     <div v-else class="loader">
@@ -361,9 +365,9 @@ export default {
       this.spotUtilities = response.map((e) => {
         return {
           ...e,
-          imageUrl: this.utilitiesImages[e.title]
-        }
-      })
+          imageUrl: this.utilitiesImages[e.title],
+        };
+      });
       // this.spotUtilities = response;
       console.log(this.spotUtilities);
     },
