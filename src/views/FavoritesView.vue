@@ -43,9 +43,9 @@
             </div>
           </div>
         </div>
-        <div class="favorite__button">
-          <button>Supprimer</button>
-          <button>Détails</button>
+        <div class="button">
+          <button class="button__style">Supprimer</button>
+          <button class="button__style">Détails</button>
         </div>
       </li>
     </ul>
