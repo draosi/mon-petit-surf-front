@@ -36,7 +36,7 @@
           @change="filterSpots"
           class="sort__select sort__txt"
         >
-          <option disabled value="">Selectionnez une région</option>
+          <option disabled value="">Région</option>
           <option v-for="option in regions" :value="option.title">
             {{ option.title }}
           </option>
@@ -60,7 +60,10 @@
               :key="index"
             >
               <div class="spot__card">
-                <RouterLink :to="`spot/details/${spot.id}`" class="spot__lien">
+                <RouterLink
+                  :to="{ name: 'spotDetails', params: { spotId: spot.id } }"
+                  class="spot__lien"
+                >
                   <HomeCard
                     :nom="spot.nom"
                     :region="spot.region"
@@ -173,7 +176,7 @@ export default {
       currentPage: 1,
       itemsPerPage: 5,
 
-      loading: false
+      loading: false,
     };
   },
 

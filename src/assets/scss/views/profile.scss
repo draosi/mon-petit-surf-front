@@ -1,5 +1,188 @@
 @import "../variables.scss";
 
 .profile {
-    color: $tertiary;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+  padding: 30px;
+
+  &__infos {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    width: 80%;
+  }
+
+  &__title {
+    font-size: $title;
+  }
+
+  &__user {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    width: 100%;
+  }
+
+  &__button {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+  }
+}
+
+.user {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+
+  &__infos {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
+
+  &__txt {
+    font-size: $subTitle;
+  }
+}
+
+.edit {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+
+  &__infos {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    width: 70%;
+  }
+
+  &__input {
+    width: 100%;
+    height: 35px;
+    border: 2px solid black;
+    border-radius: 10px;
+  }
+
+  &__update {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100px;
+  }
+
+  &__button {
+    width: 100%;
+    height: 100%;
+    background-color: white;
+    border: 2px solid black;
+    border-radius: 10px;
+    cursor: pointer;
+    font-family: $font;
+    font-size: $txt;
+    transition: all 0.5s ease-out;
+
+    &:hover {
+      background-color: $primary;
+      color: white;
+    }
+  }
+
+  &__cancel {
+    width: 25%;
+    height: 35px;
+    background-color: white;
+    border: 2px solid black;
+    border-radius: 10px;
+    cursor: pointer;
+    font-family: $font;
+    transition: all 0.5s ease-out;
+
+    &:hover {
+      background-color: $primary;
+      color: white;
+    }
+  }
+}
+
+.button {
+  width: 100px;
+  height: 35px;
+  background-color: white;
+  border: 2px solid black;
+  border-radius: 10px;
+  cursor: pointer;
+  font-family: $font;
+  font-size: $txt;
+  transition: all 0.5s ease-out;
+
+  &:hover {
+    background-color: $primary;
+    color: white;
+  }
+}
+
+.favorites {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 80%;
+
+  &__title {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: $title;
+  }
+
+  &__list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+  }
+
+  &__spot {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: calc(100% - 10px);
+    height: 45px;
+    padding: 0 5px;
+    border: 1.5px solid black;
+    border-radius: 5px;
+  }
+
+  &__txt {
+    width: 400px;
+    font-size: $subTitle;
+  }
+
+  &__link {
+    text-decoration: none;
+    color: black;
+    font-size: $txt;
+
+    &:hover {
+      color: $primary;
+    }
+  }
+}
+
+.visible {
+  display: none;
 }

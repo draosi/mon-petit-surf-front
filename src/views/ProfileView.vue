@@ -4,14 +4,67 @@
 
 <template>
   <Header />
-  <div>
-    <h1 class="profile">Page profile</h1>
-    <p>
-      Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ducimus sed,
-      vitae est eius vero numquam at? Maxime totam, enim modi nemo numquam
-      deserunt rem molestias laudantium odit necessitatibus omnis sunt!
-    </p>
-  </div>
+  <main class="profile">
+    <section class="profile__infos">
+      <h1 class="profile__title">Mon profile</h1>
+      <div class="profile__user" :class="{ visible: isVisible }">
+        <div class="user">
+          <div class="user__infos">
+            <p class="user__txt">Pseudo :</p>
+            <p class="user__txt">{{ userInfos.username }}</p>
+          </div>
+          <div class="user__infos">
+            <p class="user__txt">Mot de passe</p>
+            <p class="user__txt">******</p>
+          </div>
+        </div>
+        <div class="profile__button">
+          <button class="button" @click="edit">Modifier</button>
+        </div>
+      </div>
+      <div class="profile__user" :class="{ visible: !isVisible }">
+        <form @submit.prevent="updateUser(jwt, userId)" class="edit" novalidate>
+          <div class="edit__infos">
+            <input
+              v-model="editedUser.username"
+              placeholder="Nouveau pseudo"
+              class="edit__input"
+            />
+            <input
+              v-model="editedUser.password"
+              placeholder="Nouveu mot de passe"
+              class="edit__input"
+            />
+          </div>
+          <div class="edit__update">
+            <button type="submit" class="edit__button">Envoyer</button>
+          </div>
+        </form>
+        <div class="profile__button">
+          <button class="button" @click="edit">Annuler</button>
+        </div>
+      </div>
+    </section>
+    <section class="favorites">
+      <h1 class="favorites__title">Mes favoris</h1>
+      <ul class="favorites__list">
+        <li
+          v-for="(item, index) in userFavorites"
+          :key="index"
+          class="favorites__spot"
+        >
+          <p class="favorites__txt">
+            {{ item.spotName }} / {{ item.department }}
+          </p>
+          <RouterLink
+            :to="{ name: 'spotDetails', params: { spotId: item.id } }"
+            class="favorites__link"
+            >Détails</RouterLink
+          >
+        </li>
+      </ul>
+    </section>
+  </main>
   <Footer />
 </template>
 
@@ -23,7 +76,14 @@ export default {
   data() {
     return {
       userId: 0,
-      userInfos: {}
+      jwt: "",
+      userInfos: {},
+      userFavorites: [],
+      editedUser: {
+        username: "",
+        password: "",
+      },
+      isVisible: false,
     };
   },
   components: {
@@ -31,27 +91,80 @@ export default {
     Footer,
   },
   methods: {
-    async getProfil() {
-      const jwt = sessionStorage.getItem('jwt')
+    async getUserInfos(jwt, userId) {
       const res = await fetch(
-        `https://localhost:7080/api/Users/get/${this.userId}`,
+        `https://localhost:7080/api/Users/get/${userId}`,
         {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            "Authorization": `Bearer ${jwt}`,
+            Authorization: `Bearer ${jwt}`,
           },
         }
       );
       const response = await res.json();
-      this.userInfos = response
+      this.userInfos = response;
       console.log(this.userInfos);
+    },
+    async getUserFavorites(jwt, userId) {
+      const res = await fetch(
+        `https://localhost:7080/api/Users/${userId}/favorites`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${jwt}`,
+          },
+        }
+      );
+      const response = await res.json();
+
+      for (const ele of response) {
+        const data = await fetch(
+          `https://localhost:7080/api/Spots/getSpot/${ele.spotId}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        const responseData = await data.json();
+        this.userFavorites.push(responseData);
+        console.log(this.userFavorites);
+      }
+    },
+
+    edit() {
+      this.isVisible = !this.isVisible;
+    },
+
+    async updateUser(jwt, id) {
+      const res = await fetch(`https://localhost:7080/api/Users/put/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${jwt}`,
+        },
+        body: JSON.stringify(this.editedUser),
+      });
+
+      if (res.ok) {
+        alert("Profile modifié avec succès");
+        this.$router.push("/");
+      } else {
+        alert("Une erreur s'est produite");
+      }
     },
   },
   async mounted() {
     const userId = this.$route.params.userId;
     this.userId = userId;
-    await this.getProfil();
+    const jwt = sessionStorage.getItem("jwt");
+    this.jwt = jwt;
+
+    await this.getUserInfos(this.jwt, this.userId);
+    await this.getUserFavorites(this.jwt, this.userId);
   },
 };
 </script>

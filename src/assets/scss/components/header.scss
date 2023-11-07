@@ -18,7 +18,7 @@
   &__logo {
     padding-left: 30px;
     color: #fff;
-    font-size: 20px;
+    font-size: $title;
     text-decoration: none;
   }
 
@@ -46,6 +46,12 @@
   &__menu-invisible {
     display: none;
   }
+  
+  &__responsive {
+    @media only screen and (max-width: $extraSmall) {
+      width: 100%;
+    } 
+  }
 
   &__menu-visible {
     display: flex;
@@ -72,7 +78,7 @@
   }
 
   &__txt {
-    font-size: 16px;
+    font-size: $subTitle;
     color: #fff;
     text-decoration: none;
   }
