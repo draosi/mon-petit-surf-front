@@ -47,7 +47,7 @@
     </section>
     <section class="favorites">
       <h1 class="favorites__title">Mes favoris</h1>
-      <ul class="favorites__list">
+      <ul class="favorites__list" v-if="userFavorites.length != 0">
         <li
           v-for="(item, index) in userFavorites"
           :key="index"
@@ -63,6 +63,9 @@
           >
         </li>
       </ul>
+      <p v-else>
+        Vous n'avez enregistré aucun favoris...
+      </p>
     </section>
   </main>
   <Footer />
