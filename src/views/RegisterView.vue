@@ -4,7 +4,7 @@
 
 <template>
   <Header />
-  <div class="register">
+  <main class="register">
     <h1>Inscription</h1>
     <form @submit.prevent="register" class="register__form">
       <input
@@ -23,7 +23,7 @@
       />
       <button type="submit" class="register__button">Valider</button>
     </form>
-  </div>
+  </main>
   <Footer />
 </template>
 

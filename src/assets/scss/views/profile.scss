@@ -3,10 +3,11 @@
 .profile {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   gap: 30px;
   padding: 30px;
+  min-height: $minHeight;
 
   &__infos {
     display: flex;

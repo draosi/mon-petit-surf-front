@@ -4,7 +4,7 @@
 
 <template>
   <Header />
-  <div class="login">
+  <main class="login">
     <h1>Connexion</h1>
     <form @submit.prevent="login" class="login__form">
       <input
@@ -23,7 +23,7 @@
       />
       <button type="submit" class="login__button">Connexion</button>
     </form>
-  </div>
+  </main>
   <Footer />
 </template>
 

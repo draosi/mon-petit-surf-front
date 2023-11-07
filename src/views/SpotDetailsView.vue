@@ -4,8 +4,8 @@
 
 <template>
   <Header />
-  <main>
-    <div v-if="spotInfos.length !== 0 && surfDatas.length !== 0" class="main">
+  <main class="main">
+    <div v-if="spotInfos.length !== 0 && surfDatas.length !== 0" class="favorites">
       <section class="infos">
         <div
           v-if="surfDatas.length !== 0 && spotInfos.length !== 0"
