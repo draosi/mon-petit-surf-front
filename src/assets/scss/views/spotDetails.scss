@@ -23,6 +23,13 @@
     justify-content: space-between;
     align-items: center;
     width: 100%;
+
+    @media only screen and (max-width: $extraSmall) {
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 20px
+    }
   }
 
   &__list {
@@ -33,6 +40,12 @@
     gap: 20px;
     width: 80%;
     list-style: none;
+
+    @media only screen and (max-width: $extraSmall) {
+      justify-content: space-between;
+      gap: 0;
+      width: 100%;
+    }
   }
 
   &__img {
@@ -115,16 +128,22 @@
   height: 350px;
 
   @media only screen and (max-width: $small) {
-    height: 700px;
+    height: 600px;
   }
 }
 
 .utilities {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
-  // gap: 75px;
+  gap: 50px;
   width: 100%;
+
+  @media only screen and (max-width: $extraSmall) {
+    flex-direction: column;
+    justify-content: center;
+    gap: 25px
+  } 
 
   &__select {
     border: 2px solid black;
@@ -133,11 +152,24 @@
     font-family: $font;
     width: 250px;
     height: 35px;
+
+    @media only screen and (max-width: $small) {
+      width: 230px;
+    }
+
+    @media only screen and (max-width: $extraSmall) {
+      width: 100%;
+    }
   }
 
   &__btn {
     display: flex;
-    gap: 25px;
+    gap: 20px;
+
+    @media only screen and (max-width: $extraSmall) {
+      justify-content: space-between;
+      width: 100%;
+    }
   }
 
   &__button {
@@ -153,6 +185,14 @@
     &:hover {
       background-color: $primary;
       color: white;
+    }
+
+    @media only screen and (max-width: $small) {
+      width: 85px;
+    }
+
+    @media only screen and (max-width: $extraSmall) {
+      width: 40%;
     }
   }
 }
