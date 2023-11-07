@@ -41,11 +41,6 @@ const router = createRouter({
       name: 'profile',
       component: ProfileView
     },
-    {
-      path: '/cgu',
-      name: 'cgu',
-      component: CguView
-    },
   ]
 })
 
