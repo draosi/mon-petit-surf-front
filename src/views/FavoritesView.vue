@@ -6,7 +6,7 @@
   <Header />
   <main class="favorite">
     <h1 class="favorite__title">Mes favoris</h1>
-    <ul v-if="wavesInfos" class="favorite__list">
+    <ul v-if="wavesInfos.length != 0" class="favorite__list">
       <li
         v-for="(item, index) in wavesInfos"
         :key="index"
@@ -60,6 +60,9 @@
         </div>
       </li>
     </ul>
+    <div v-else>
+      <p>Vous n'avez aucun favoris enregistré</p>
+    </div>
   </main>
   <Footer />
 </template>
@@ -175,8 +178,7 @@ export default {
 
       if (res.ok) {
         alert("Favoris supprimer avec succès");
-        await this.getUserFavorites(this.jwt, this.userId);
-        await this.getWavesInfos(this.favorites);
+        window.location.reload()
       } else {
         alert("Un problème est survenu");
       }
