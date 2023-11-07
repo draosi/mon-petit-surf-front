@@ -46,6 +46,12 @@
   &__menu-invisible {
     display: none;
   }
+  
+  &__responsive {
+    @media only screen and (max-width: $extraSmall) {
+      width: 100%;
+    } 
+  }
 
   &__menu-visible {
     display: flex;

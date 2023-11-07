@@ -15,7 +15,7 @@
       />
     </div>
     <div class="header__toggle container">
-      <div v-if="connected">
+      <div v-if="connected" class="header__responsive">
         <div
           v-if="menuVisible"
           :class="
