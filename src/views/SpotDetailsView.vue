@@ -322,7 +322,7 @@ export default {
       const res = await fetch("https://localhost:7080/api/Spots/getUtilities");
       const response = await res.json();
       this.utilities = response;
-      console.log(this.utilities);
+      // console.log(this.utilities);
     },
     async addUtilityToSpot(jwt, spotId) {
       const utilityId = this.selectedUtility;
@@ -351,7 +351,7 @@ export default {
           alert("un problème à eu lieu lors de l'ajout de l'equipement");
         }
 
-        (this.selectedUtility = "")
+        this.selectedUtility = "";
       }
     },
     async deleteUtilityFromSpot(jwt, spotId) {
@@ -372,17 +372,18 @@ export default {
           alert("Equipement supprimé avec succès");
           await this.getSpotUtilities(jwt, spotId);
         } else if (res.status === 400) {
-          const error = await res.text()
-          alert("Erreur 400" + error)
+          const error = await res.text();
+          alert("Erreur 400" + error);
         } else {
           alert("un problème à eu lieu lors de la suppression");
         }
 
-        (this.selectedUtility = "")
+        this.selectedUtility = "";
         // window.location.reload();
       }
     },
     async getSpotUtilities(jwt, spotId) {
+      console.log(jwt, spotId);
       const res = await fetch(
         `https://localhost:7080/api/Spots/${spotId}/utilities`,
         {
@@ -394,16 +395,21 @@ export default {
         }
       );
 
-      const response = await res.json();
+      if (res.status === 200) {
+        const response = await res.json();
+        console.log(response);
 
-      this.spotUtilities = response.map((e) => {
-        return {
-          ...e,
-          imageUrl: this.utilitiesImages[e.title],
-        };
-      });
-      // this.spotUtilities = response;
-      console.log(this.spotUtilities);
+        this.spotUtilities = response.map((e) => {
+          return {
+            ...e,
+            imageUrl: this.utilitiesImages[e.title],
+          };
+        });
+        console.log(this.spotUtilities);
+      } else {
+        console.error("erreyr pour récupérer les equipement");
+        console.log(res);
+      }
     },
   },
 
