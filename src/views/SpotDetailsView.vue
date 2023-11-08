@@ -5,13 +5,18 @@
 <template>
   <Header />
   <main class="main">
-    <div v-if="spotInfos.length !== 0 && surfDatas.length !== 0" class="favorites">
+    <div
+      v-if="spotInfos.length !== 0 && surfDatas.length !== 0"
+      class="favorites"
+    >
       <section class="infos">
         <div
           v-if="surfDatas.length !== 0 && spotInfos.length !== 0"
           class="infos__title"
         >
-          <h1 class="infos__txt">{{ spotInfos.spotName }} ({{ spotInfos.department }})</h1>
+          <h1 class="infos__txt">
+            {{ spotInfos.spotName }} ({{ spotInfos.department }})
+          </h1>
           <h2 class="infos__txt">{{ transformDate(surfDatas.time[0]) }}</h2>
         </div>
         <div class="infos__favorite" v-if="jwt">
@@ -332,23 +337,29 @@ export default {
       };
 
       if (utilityId) {
-        const res = await fetch(
-          `https://localhost:7080/api/Spots/${spotId}/utility/${utilityId}`,
-          {
-            method: "POST",
-            body: JSON.stringify(data),
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${jwt}`,
-            },
-          }
-        );
+        const utilityExist = this.spotUtilities.some((e) => e.id === utilityId);
 
-        if (res.ok) {
-          alert("equipement ajouté avec succès");
-          await this.getSpotUtilities(jwt, spotId);
+        if (utilityExist) {
+          alert("Equipement déja associé à ce spot");
         } else {
-          alert("un problème à eu lieu lors de l'ajout de l'equipement");
+          const res = await fetch(
+            `https://localhost:7080/api/Spots/${spotId}/utility/${utilityId}`,
+            {
+              method: "POST",
+              body: JSON.stringify(data),
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${jwt}`,
+              },
+            }
+          );
+
+          if (res.ok) {
+            alert("equipement ajouté avec succès");
+            await this.getSpotUtilities(jwt, spotId);
+          } else {
+            alert("un problème à eu lieu lors de l'ajout de l'equipement");
+          }
         }
 
         this.selectedUtility = "";
@@ -357,25 +368,39 @@ export default {
     async deleteUtilityFromSpot(jwt, spotId) {
       const utilityId = this.selectedUtility;
       if (utilityId) {
-        const res = await fetch(
-          `https://localhost:7080/api/Spots/${spotId}/utility/${utilityId}`,
-          {
-            method: "DELETE",
-            headers: {
-              Authorization: `Bearer ${jwt}`,
-            },
-          }
-        );
-        console.log(res);
+        const utilityExist = this.spotUtilities.some((e) => e.id === utilityId);
 
-        if (res.ok) {
-          alert("Equipement supprimé avec succès");
-          await this.getSpotUtilities(jwt, spotId);
-        } else if (res.status === 400) {
-          const error = await res.text();
-          alert("Erreur 400" + error);
+        if (!utilityExist) {
+          alert(
+            "Cet equipement n'est pas associé à ce spot, vous ne pouvez donc pas le supprimer"
+          );
         } else {
-          alert("un problème à eu lieu lors de la suppression");
+          try {
+            const res = await fetch(
+              `https://localhost:7080/api/Spots/${spotId}/utility/${utilityId}`,
+              {
+                method: "DELETE",
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: `Bearer ${jwt}`,
+                },
+              }
+            );
+            console.log(res);
+  
+            if (res.ok) {
+              alert("Equipement supprimé avec succès");
+              await this.getSpotUtilities(jwt, spotId);
+            } else if (res.status === 400) {
+              const error = await res.text();
+              alert("Erreur 400" + error);
+            } else {
+              alert("un problème à eu lieu lors de la suppression");
+            }
+          } catch (err) {
+            console.error("Erreur lors de la suppression de l'equipement : " + err)
+          }
+
         }
 
         this.selectedUtility = "";
@@ -407,7 +432,7 @@ export default {
         });
         console.log(this.spotUtilities);
       } else {
-        console.error("erreyr pour récupérer les equipement");
+        console.error("Erreur pour récupérer les equipement");
         console.log(res);
       }
     },
