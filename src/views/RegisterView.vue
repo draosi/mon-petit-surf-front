@@ -62,11 +62,15 @@ export default {
           const data = await res.json()
           this.$router.push("/connexion");
         } else {
-          console.log("Erreur dans le réponse");
+          if (res.status === 500) {
+            console.log("Erreur interne au serveur");
+          } else {
+            console.log("Erreur inattendue. Code de statut : " + res.status);
+          }
         }
 
       } catch (err) {
-        console.error(err);
+        console.error("Une erreur s'est produite lors de l'inscription : " + err.message);
       }
     },
   },
