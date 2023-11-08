@@ -192,8 +192,6 @@ export default {
         } else {
           if (res.status === 404) {
             console.log("Données non trouvées");
-          } else if (res.status === 500) {
-            console.log("Erreur serveur interne");
           } else {
             const errorText = await res.text();
             console.log(`Erreur inattendue: ${errorText}`);
@@ -215,8 +213,6 @@ export default {
         } else {
           if (res.status === 404) {
             console.log("Données non trouvées");
-          } else if (res.status === 500) {
-            console.log("Erreur serveur interne");
           } else {
             const errorText = await res.text();
             console.log(`Erreur inattendue: ${errorText}`);
@@ -238,8 +234,6 @@ export default {
         } else {
           if (res.status === 404) {
             console.log("Données non trouvées");
-          } else if (res.status === 500) {
-            console.log("Erreur serveur interne");
           } else {
             const errorText = await res.text();
             console.log(`Erreur inattendue: ${errorText}`);
@@ -362,8 +356,6 @@ export default {
             console.log("favoris non trouvés");
           } else if (res.status === 401) {
             console.log("Non autorisé");
-          } else if (res.status === 403) {
-            console.log("Accès refusé");
           } else {
             const errorText = await res.text();
             console.log(`Erreur inattendue: ${errorText}`);
@@ -402,8 +394,6 @@ export default {
             console.log("Spot non trouvé");
           } else if (res.status === 401) {
             console.log("Non autorisé");
-          } else if (res.status === 403) {
-            console.log("Accès refusé");
           } else {
             const errorText = await res.text();
             console.log(`Erreur inattendue: ${errorText}`);
@@ -433,8 +423,6 @@ export default {
             console.log("Spot non trouvé");
           } else if (res.status === 401) {
             console.log("Non autorisé");
-          } else if (res.status === 403) {
-            console.log("Accès refusé");
           } else {
             const errorText = await res.text();
             console.log(`Erreur inattendue: ${errorText}`);
@@ -460,8 +448,6 @@ export default {
             console.log("Equipements non trouvés");
           } else if (res.status === 401) {
             console.log("Non autorisé");
-          } else if (res.status === 403) {
-            console.log("Accès refusé");
           } else {
             const errorText = await res.text();
             console.log(`Erreur inattendue: ${errorText}`);

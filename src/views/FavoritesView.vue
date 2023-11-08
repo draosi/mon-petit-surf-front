@@ -70,7 +70,6 @@
 <script>
 import Header from "@/components/Header.vue";
 import Footer from "@/components/Footer.vue";
-// import FavoriteCard from "@/components/FavoriteCard.vue";
 
 export default {
   data() {
@@ -86,58 +85,73 @@ export default {
   components: {
     Header,
     Footer,
-    // FavoriteCard,
   },
   methods: {
     async getUserFavorites(jwt, userId) {
-      const res = await fetch(
-        `https://localhost:7080/api/Users/${userId}/favorites`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${jwt}`,
-          },
-        }
-      );
-      const response = await res.json();
-
-      for (const ele of response) {
-        const data = await fetch(
-          `https://localhost:7080/api/Spots/getSpot/${ele.spotId}`,
+      try {
+        const res = await fetch(
+          `https://localhost:7080/api/Users/${userId}/favorites`,
           {
             method: "GET",
             headers: {
               "Content-Type": "application/json",
+              Authorization: `Bearer ${jwt}`,
             },
           }
         );
-        const responseData = await data.json();
-        this.favorites.push(responseData);
-        // console.log(this.favorites);
+
+        if (res.ok) {
+          const response = await res.json();
+          for (const ele of response) {
+            const data = await fetch(
+              `https://localhost:7080/api/Spots/getSpot/${ele.spotId}`,
+              {
+                method: "GET",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+              }
+            );
+            const responseData = await data.json();
+            this.favorites.push(responseData);
+          }
+        } else {
+          console.log(res);
+        }
+      } catch (err) {
+        console.error("Erreur lors de la récupération des favoris : " + err);
       }
     },
 
     async getMaxConditions(latitude, longitude) {
-      const res = await fetch(
-        `https://marine-api.open-meteo.com/v1/marine?latitude=${latitude}&longitude=${longitude}&daily=wave_height_max,wave_period_max&timezone=GMT`
-      );
-      const response = await res.json();
-      // console.log(response);
-      return response;
+      try {
+        const res = await fetch(
+          `https://marine-api.open-meteo.com/v1/marine?latitude=${latitude}&longitude=${longitude}&daily=wave_height_max,wave_period_max&timezone=GMT`
+        );
+
+        if (res.ok) {
+          const response = await res.json();
+          return response;
+        } else {
+          if (res.status === 404) {
+            console.log("Données non trouvées");
+          } else {
+            const errorText = await res.text();
+            console.log(`Erreur inattendue: ${errorText}`);
+          }
+        }
+      } catch (err) {
+        console.error("Erreur pour récupérer les conditions max:", err);
+      }
     },
 
     async getWavesInfos(array) {
       if (array) {
-        // console.log(array);
         const wavesPromises = array.map((e) => {
           return this.getMaxConditions(e.latitude, e.longitude);
         });
 
-        // console.log(wavesPromises);
-
         const waveData = await Promise.all(wavesPromises);
-        // console.log(waveData);
 
         const favoriteCards = array.map((e, i) => {
           const maxWave = waveData[i].daily.wave_height_max
@@ -166,21 +180,26 @@ export default {
     },
 
     async removeFromFavorites(jwt, userId, spotId) {
-      const res = await fetch(
-        `https://localhost:7080/api/Users/${userId}/favorites/${spotId}`,
-        {
-          method: "DELETE",
-          headers: {
-            Authorization: `Bearer ${jwt}`,
-          },
-        }
-      );
+      try {
+        const res = await fetch(
+          `https://localhost:7080/api/Users/${userId}/favorites/${spotId}`,
+          {
+            method: "DELETE",
+            headers: {
+              Authorization: `Bearer ${jwt}`,
+            },
+          }
+        );
 
-      if (res.ok) {
-        alert("Favoris supprimer avec succès");
-        window.location.reload()
-      } else {
-        alert("Un problème est survenu");
+        if (res.ok) {
+          alert("Favoris supprimer avec succès");
+          window.location.reload();
+        } else {
+          alert("Un problème est survenu");
+          console.log(res);
+        }
+      } catch (err) {
+        console.error("Erreur lors de la suppression du favoris : " + err);
       }
     },
   },
@@ -193,7 +212,6 @@ export default {
     await this.getUserFavorites(jwt, userId);
 
     await this.getWavesInfos(this.favorites);
-    console.log(this.wavesInfos);
 
     // Rempli un tableau avec le même nombre de valeur set à false qu'il y a de favoris
     this.isVisible = new Array(this.wavesInfos.length).fill(false);
