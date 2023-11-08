@@ -154,7 +154,9 @@ export default {
 
       if (res.ok) {
         alert("Profile modifié avec succès");
-        this.$router.push("/");
+        await this.getUserInfos(jwt, id)
+        this.edit()
+        // this.$router.push("/");
       } else {
         alert("Une erreur s'est produite");
       }
