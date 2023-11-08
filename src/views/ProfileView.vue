@@ -43,6 +43,9 @@
         <div class="profile__button">
           <button class="button" @click="edit">Annuler</button>
         </div>
+        <div class="profile__button">
+          <button class="button" @click="deleteUser(jwt, userId)">Supprimer</button>
+        </div>
       </div>
     </section>
     <section class="favorites">
@@ -160,6 +163,28 @@ export default {
       } else {
         alert("Une erreur s'est produite");
       }
+    },
+
+    async deleteUser(jwt, id) {
+      const res = await fetch(`https://localhost:7080/api/Users/delete/${id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${jwt}`,
+        },
+      })
+
+      if (res.ok) {
+        alert("Profile supprimé avec succès")
+        this.clearSessionStorage()
+      } else {
+        alert("Une erreur s'est produite")
+      }
+    },
+    clearSessionStorage() {
+      sessionStorage.removeItem("jwt");
+      sessionStorage.removeItem("userId");
+      this.$router.push("/connexion");
     },
   },
   async mounted() {
