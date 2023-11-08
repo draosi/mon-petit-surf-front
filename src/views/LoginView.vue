@@ -70,6 +70,7 @@ export default {
           console.log("Réponse de l'API :", data);
         } else {
           console.log("Erreur dans la réponse");
+          alert("Pseudo ou mot de passe incorrect")
         }
       } catch (err) {
         console.log(err);
