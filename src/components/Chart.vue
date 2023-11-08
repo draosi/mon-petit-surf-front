@@ -38,39 +38,13 @@ export default {
       const minutes = date.getMinutes().toString();
       return `${hours}h${minutes}`;
     },
-
-    oneDayWaveDataArray(array) {
-      const newArray = [];
-      array.forEach((e, i) => {
-        if (i % 3 === 0) {
-          newArray.push(e);
-        }
-      });
-      return newArray.slice(0, 8);
-    },
-
-    oneDayWindDataArray(array) {
-      const newArray = [];
-      array.forEach((e, i) => {
-        if (i % 6 === 0) {
-          newArray.push(e);
-        }
-      });
-      console.log(newArray);
-      return newArray.slice(0, 4);
-    },
   },
 
   async mounted() {
     if (this.time && this.waves && this.period && this.wind) {
-      // console.log("time", this.time);
-      // console.log("waves", this.waves);
-      // console.log("period", this.period);
-      // console.log("wind", this.wind);
-      // console.log(this.transformHours(this.time[0]));
-      this.chartWavesData = this.oneDayWaveDataArray(this.waves);
-      this.chartPeriodData = this.oneDayWaveDataArray(this.period)
-      this.chartWindData = this.oneDayWindDataArray(this.wind)
+      this.chartWavesData = this.waves.slice(0,8)
+      this.chartPeriodData = this.period.slice(0, 8)
+      this.chartWindData = this.wind.slice(0, 8)
     }
 
     const waveChart = document.getElementById("vague");
@@ -96,11 +70,6 @@ export default {
             type: "linear",
             position: "right",
             display: true,
-            ticks: {
-              callback: (value, index, values) => {
-                return `${value} km/h`;
-              },
-            },
             title: {
               display: true,
               text: "Vitesse du vent en kilometre par heure",
@@ -151,9 +120,7 @@ export default {
             position: "left",
             display: true,
             ticks: {
-              callback: (value, index, values) => {
-                return `${value} m`;
-              },
+              stepSize: 0.20
             },
             title: {
               display: true,
@@ -169,9 +136,7 @@ export default {
               drawOnChartArea: false,
             },
             ticks: {
-              callback: (value, index, values) => {
-                return `${value} s`;
-              },
+              stepSize: 0.5
             },
             title: {
               display: true,

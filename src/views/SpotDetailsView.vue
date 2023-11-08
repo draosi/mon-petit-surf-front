@@ -153,40 +153,104 @@ export default {
     Loader,
   },
   methods: {
+    // Méthode liée au spop
     async fetchSpot(id) {
-      const res = await fetch(`https://localhost:7080/api/Spots/getSpot/${id}`);
-      const response = await res.json();
-      // console.log(response);
-      this.spotInfos = response;
-      console.log(this.spotInfos);
-      return response;
+      try {
+        const res = await fetch(
+          `https://localhost:7080/api/Spots/getSpot/${id}`
+        );
+
+        if (res.ok) {
+          const response = await res.json();
+          this.spotInfos = response;
+          return response;
+        } else {
+          if (res.status === 404) {
+            console.log("Spot non trouvé");
+          } else if (res.status === 500) {
+            console.log("Erreur serveur interne");
+          } else {
+            const errorText = await res.text();
+            console.log(`Erreur inattendue: ${errorText}`);
+          }
+        }
+      } catch (err) {
+        console.error("Erreur pour récupérer les informations du spot:", err);
+      }
     },
 
+    // Méthodes liées aux conditions de surf
     async getWavesConditions(latitude, longitude) {
-      const res = await fetch(
-        `https://marine-api.open-meteo.com/v1/marine?latitude=${latitude}&longitude=${longitude}&hourly=wave_height,wave_direction,wave_period&timezone=GMT`
-      );
-      const response = await res.json();
-      // console.log(response);
-      return response;
+      try {
+        const res = await fetch(
+          `https://marine-api.open-meteo.com/v1/marine?latitude=${latitude}&longitude=${longitude}&hourly=wave_height,wave_direction,wave_period&timezone=GMT`
+        );
+
+        if (res.ok) {
+          const response = await res.json();
+          return response;
+        } else {
+          if (res.status === 404) {
+            console.log("Données non trouvées");
+          } else if (res.status === 500) {
+            console.log("Erreur serveur interne");
+          } else {
+            const errorText = await res.text();
+            console.log(`Erreur inattendue: ${errorText}`);
+          }
+        }
+      } catch (err) {
+        console.error("Erreur pour récupérer les conditions (vagues):", err);
+      }
     },
     async getWindConditions(latitude, longitude) {
-      const res = await fetch(
-        `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&hourly=windspeed_10m,winddirection_10m`
-      );
-      const response = await res.json();
-      // console.log(response);
-      return response;
+      try {
+        const res = await fetch(
+          `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&hourly=windspeed_10m,winddirection_10m`
+        );
+
+        if (res.ok) {
+          const response = await res.json();
+          return response;
+        } else {
+          if (res.status === 404) {
+            console.log("Données non trouvées");
+          } else if (res.status === 500) {
+            console.log("Erreur serveur interne");
+          } else {
+            const errorText = await res.text();
+            console.log(`Erreur inattendue: ${errorText}`);
+          }
+        }
+      } catch (err) {
+        console.error("Erreur pour récupérer les conditions (vent):", err);
+      }
     },
     async getMeteo(latitude, longitude) {
-      const res = await fetch(
-        `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&daily=temperature_2m_max,temperature_2m_min,sunrise,sunset,precipitation_sum&timezone=Europe%2FBerlin`
-      );
-      const response = await res.json();
-      // console.log(response);
-      return response;
+      try {
+        const res = await fetch(
+          `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&daily=temperature_2m_max,temperature_2m_min,sunrise,sunset,precipitation_sum&timezone=Europe%2FBerlin`
+        );
+
+        if (res.ok) {
+          const response = await res.json();
+          return response;
+        } else {
+          if (res.status === 404) {
+            console.log("Données non trouvées");
+          } else if (res.status === 500) {
+            console.log("Erreur serveur interne");
+          } else {
+            const errorText = await res.text();
+            console.log(`Erreur inattendue: ${errorText}`);
+          }
+        }
+      } catch (err) {
+        console.error("Erreur pour récupérer les conditions (météo):", err);
+      }
     },
 
+    // Méthode permettant de trier les conditions --> Toutes les trois heures
     sortSurfData(array) {
       const filteredArray = [];
       array.forEach((e, i) => {
@@ -197,6 +261,7 @@ export default {
       return filteredArray;
     },
 
+    // méthode permettant de créer l'objet spotInformations contenant les infos sur le spot ainsi que les consitions de surf associées
     async createSpotInfos(id) {
       const spot = await this.fetchSpot(id);
 
@@ -228,12 +293,12 @@ export default {
         };
 
         this.surfDatas = spotInformations;
-        // console.log(this.surfDatas);
       } else {
         console.error("Echec dans la récupération des données");
       }
     },
 
+    // Méthode modifiant le format de la date
     transformDate(string) {
       const options = {
         weekday: "long",
@@ -245,89 +310,166 @@ export default {
       return date.toLocaleDateString("fr-FR", options);
     },
 
+    // Méthodes liées à l'utilisateur et aux favoris
     async getUser(jwt, userId) {
-      const res = await fetch(
-        `https://localhost:7080/api/Users/get/${userId}`,
-        {
-          method: "GET", // Vous utilisez GET ici pour récupérer des données
-          headers: {
-            Authorization: `Bearer ${jwt}`,
-          },
+      try {
+        const res = await fetch(
+          `https://localhost:7080/api/Users/get/${userId}`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${jwt}`,
+            },
+          }
+        );
+
+        if (res.ok) {
+          const response = await res.json();
+          this.userInfos = response;
+        } else {
+          if (res.status === 404) {
+            console.log("Utilisateur non trouvé");
+          } else if (res.status === 401) {
+            console.log("Non autorisé");
+          } else if (res.status === 403) {
+            console.log("Accès refusé");
+          } else {
+            const errorText = await res.text();
+            console.log(`Erreur inattendue: ${errorText}`);
+          }
         }
-      );
-      const response = await res.json();
-      this.userInfos = response;
-      // console.log(this.userInfos);
-      // console.log(this.userInfos.usersRegisterSpots);
+      } catch (err) {
+        console.error("Erreur lors de la récupération de l'utilisateur:", err);
+      }
     },
     async getUserFavorites(jwt, userId) {
-      const res = await fetch(
-        `https://localhost:7080/api/Users/${userId}/favorites`,
-        {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${jwt}`,
-          },
+      try {
+        const res = await fetch(
+          `https://localhost:7080/api/Users/${userId}/favorites`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${jwt}`,
+            },
+          }
+        );
+
+        if (res.ok) {
+          const response = await res.json();
+          this.userFavorites = response;
+        } else {
+          if (res.status === 404) {
+            console.log("favoris non trouvés");
+          } else if (res.status === 401) {
+            console.log("Non autorisé");
+          } else if (res.status === 403) {
+            console.log("Accès refusé");
+          } else {
+            const errorText = await res.text();
+            console.log(`Erreur inattendue: ${errorText}`);
+          }
         }
-      );
-      const response = await res.json();
-      this.userFavorites = response;
-      console.log(this.userFavorites);
+      } catch (err) {
+        console.error(
+          "Erreur lors de la récupération des favoris de l'utilisateur:",
+          err
+        );
+      }
     },
     async favoriteExist(array, spotId) {
       const exist = array.some((e) => e.spotId === spotId);
-      console.log(exist);
       if (exist) {
         this.isFavorite = true;
       }
     },
     async addToFavorites(jwt, userId, spotId) {
-      // console.log(jwt, userId, spotId);
-      const res = await fetch(
-        `https://localhost:7080/api/Users/${userId}/favorites/${spotId}`,
-        {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${jwt}`,
-          },
-        }
-      );
+      try {
+        const res = await fetch(
+          `https://localhost:7080/api/Users/${userId}/favorites/${spotId}`,
+          {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${jwt}`,
+            },
+          }
+        );
 
-      const response = await res;
-      if (response.ok) {
-        alert("Favoris ajouté avec succès");
-        this.isFavorite = !this.isFavorite;
-      } else {
-        alert("un problème à eu lieu");
+        if (res.ok) {
+          alert("Favoris ajouté avec succès");
+          this.isFavorite = !this.isFavorite;
+        } else {
+          if (res.status === 404) {
+            console.log("Spot non trouvé");
+          } else if (res.status === 401) {
+            console.log("Non autorisé");
+          } else if (res.status === 403) {
+            console.log("Accès refusé");
+          } else {
+            const errorText = await res.text();
+            console.log(`Erreur inattendue: ${errorText}`);
+          }
+        }
+      } catch (err) {
+        console.error("Erreur lors de l'ajout aux favoris:", err);
       }
-      // console.log(response);
     },
     async removeFromFavorites(jwt, userId, spotId) {
-      const res = await fetch(
-        `https://localhost:7080/api/Users/${userId}/favorites/${spotId}`,
-        {
-          method: "DELETE",
-          headers: {
-            Authorization: `Bearer ${jwt}`,
-          },
-        }
-      );
+      try {
+        const res = await fetch(
+          `https://localhost:7080/api/Users/${userId}/favorites/${spotId}`,
+          {
+            method: "DELETE",
+            headers: {
+              Authorization: `Bearer ${jwt}`,
+            },
+          }
+        );
 
-      const response = await res;
-      if (response.ok) {
-        alert("Favoris supprimé avec succès");
-        this.isFavorite = !this.isFavorite;
-      } else {
-        alert("un problème à eu lieu");
+        if (res.ok) {
+          alert("Favoris supprimé avec succès");
+          this.isFavorite = !this.isFavorite;
+        } else {
+          if (res.status === 404) {
+            console.log("Spot non trouvé");
+          } else if (res.status === 401) {
+            console.log("Non autorisé");
+          } else if (res.status === 403) {
+            console.log("Accès refusé");
+          } else {
+            const errorText = await res.text();
+            console.log(`Erreur inattendue: ${errorText}`);
+          }
+        }
+      } catch (err) {
+        console.error("Erreur lors de la suppression du favoris:", err);
       }
-      // console.log(response);
     },
 
+    // Méthode liées aux équipements du spot
     async getUtilities() {
-      const res = await fetch("https://localhost:7080/api/Spots/getUtilities");
-      const response = await res.json();
-      this.utilities = response;
-      // console.log(this.utilities);
+      try {
+        const res = await fetch(
+          "https://localhost:7080/api/Spots/getUtilities"
+        );
+
+        if (res.ok) {
+          const response = await res.json();
+          this.utilities = response;
+        } else {
+          if (res.status === 404) {
+            console.log("Equipements non trouvés");
+          } else if (res.status === 401) {
+            console.log("Non autorisé");
+          } else if (res.status === 403) {
+            console.log("Accès refusé");
+          } else {
+            const errorText = await res.text();
+            console.log(`Erreur inattendue: ${errorText}`);
+          }
+        }
+      } catch (err) {
+        console.error("Erreur lors de la récupération des équipements:", err);
+      }
     },
     async addUtilityToSpot(jwt, spotId) {
       const utilityId = this.selectedUtility;
@@ -338,27 +480,30 @@ export default {
 
       if (utilityId) {
         const utilityExist = this.spotUtilities.some((e) => e.id === utilityId);
-
         if (utilityExist) {
           alert("Equipement déja associé à ce spot");
         } else {
-          const res = await fetch(
-            `https://localhost:7080/api/Spots/${spotId}/utility/${utilityId}`,
-            {
-              method: "POST",
-              body: JSON.stringify(data),
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${jwt}`,
-              },
-            }
-          );
+          try {
+            const res = await fetch(
+              `https://localhost:7080/api/Spots/${spotId}/utility/${utilityId}`,
+              {
+                method: "POST",
+                body: JSON.stringify(data),
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: `Bearer ${jwt}`,
+                },
+              }
+            );
 
-          if (res.ok) {
-            alert("equipement ajouté avec succès");
-            await this.getSpotUtilities(jwt, spotId);
-          } else {
-            alert("un problème à eu lieu lors de l'ajout de l'equipement");
+            if (res.ok) {
+              alert("equipement ajouté avec succès");
+              await this.getSpotUtilities(jwt, spotId);
+            } else {
+              alert("un problème à eu lieu lors de l'ajout de l'equipement");
+            }
+          } catch (err) {
+            console.error("Erreur lors de l'ajout de l'equipement:", err);
           }
         }
 
@@ -386,29 +531,28 @@ export default {
                 },
               }
             );
-            console.log(res);
-  
+
             if (res.ok) {
               alert("Equipement supprimé avec succès");
               await this.getSpotUtilities(jwt, spotId);
             } else if (res.status === 400) {
               const error = await res.text();
-              alert("Erreur 400" + error);
+              console.log(error);
             } else {
               alert("un problème à eu lieu lors de la suppression");
+              console.log(res);
             }
           } catch (err) {
-            console.error("Erreur lors de la suppression de l'equipement : " + err)
+            console.error(
+              "Erreur lors de la suppression de l'equipement : " + err
+            );
           }
-
         }
 
         this.selectedUtility = "";
-        // window.location.reload();
       }
     },
     async getSpotUtilities(jwt, spotId) {
-      console.log(jwt, spotId);
       const res = await fetch(
         `https://localhost:7080/api/Spots/${spotId}/utilities`,
         {
@@ -422,7 +566,6 @@ export default {
 
       if (res.status === 200) {
         const response = await res.json();
-        console.log(response);
 
         this.spotUtilities = response.map((e) => {
           return {
@@ -430,10 +573,8 @@ export default {
             imageUrl: this.utilitiesImages[e.title],
           };
         });
-        console.log(this.spotUtilities);
       } else {
         console.error("Erreur pour récupérer les equipement");
-        console.log(res);
       }
     },
   },
@@ -441,13 +582,10 @@ export default {
   async mounted() {
     const spotId = this.$route.params;
     this.spotId = parseInt(spotId.spotId, 10);
-    // console.log(this.spotId);
     const jwt = sessionStorage.getItem("jwt");
     this.jwt = jwt;
-    // console.log(this.jwt);
     const userId = sessionStorage.getItem("userId");
     this.userId = parseInt(userId, 10);
-    // console.log(this.userId);
 
     await this.createSpotInfos(this.spotId);
 
