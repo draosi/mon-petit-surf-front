@@ -65,11 +65,23 @@ export default {
 
           this.$router.push("/");
         } else {
-          console.log("Erreur dans la réponse");
-          alert("Pseudo ou mot de passe incorrect")
+          if (res.status === 401) {
+            console.log("Pseudo ou mot de  passe incorrect");
+            alert("Pseudo ou mot de  passe incorrect");
+          } else if (res.status === 500) {
+            console.log(
+              "Erreur interne au serveur, veuillez réessayer plus tard"
+            );
+            alert("Erreur interne au serveur, veuillez réessayer plus tard");
+          } else {
+            console.log("Erreur inattendue. Code de statut : " + res.status);
+            alert(
+              "Une erreur inattendue s'est produite. Veuillez réessayer plus tard."
+            );
+          }
         }
       } catch (err) {
-        console.error(err);
+        console.error("Une erreur s'est produite lors de la connexion : " + err.message);
       }
     },
   },
