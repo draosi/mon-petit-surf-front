@@ -300,8 +300,6 @@ export default {
       const res = await fetch("https://localhost:7080/api/Spots/getRegions");
       const response = await res.json();
       return response;
-      // this.regions = response;
-      // console.log(this.regions);
     },
 
     async getMaxConditions(latitude, longitude) {
@@ -309,13 +307,11 @@ export default {
         `https://marine-api.open-meteo.com/v1/marine?latitude=${latitude}&longitude=${longitude}&daily=wave_height_max,wave_period_max&timezone=Europe%2FBerlin`
       );
       const response = await res.json();
-      // console.log(response);
       return response;
     },
 
     async createSpotCards() {
       const spots = await this.fetchSpots();
-      // console.log(spots);
       const wavePromises = spots.map((e) =>
         this.getMaxConditions(e.latitude, e.longitude)
       );
@@ -336,9 +332,7 @@ export default {
           periode: maxPeriod,
         };
       });
-      // console.log(spotCards);
       this.spotCard = spotCards;
-      // console.log(this.spotCard);
     },
 
     async createRegionsArray() {
@@ -351,12 +345,11 @@ export default {
         };
       });
       this.regions = regions;
-      console.log(this.regions);
     },
 
     // Le paramètre "page" indique vers quelle page je souhaite naviguer
     // La condition verifie si la valeur du paramètre est supérieur à 1 et inférieur au nombre total de page
-    // la valeur de "this.currentPage" est mise à jour, startIndex, endIndex et spotsOnPage sont mis à jour également
+    // La valeur de "this.currentPage" est mise à jour, startIndex, endIndex et spotsOnPage sont mis à jour également
     pagination(page) {
       if (page >= 1 && page <= this.pageCount) {
         this.currentPage = page;

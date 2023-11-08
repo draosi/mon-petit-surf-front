@@ -58,22 +58,18 @@ export default {
           body: JSON.stringify(userInfos),
         });
 
-        console.log(res);
-
         if (res.ok) {
           const data = await res.json();
           sessionStorage.setItem("jwt", `${data.token}`);
           sessionStorage.setItem("userId", data.userId);
 
           this.$router.push("/");
-
-          console.log("Réponse de l'API :", data);
         } else {
           console.log("Erreur dans la réponse");
           alert("Pseudo ou mot de passe incorrect")
         }
       } catch (err) {
-        console.log(err);
+        console.error(err);
       }
     },
   },

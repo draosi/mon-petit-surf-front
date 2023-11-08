@@ -60,14 +60,13 @@ export default {
 
         if(res.ok) {
           const data = await res.json()
-          console.log("Réponse de l'API :", data);
           this.$router.push("/connexion");
         } else {
           console.log("Erreur dans le réponse");
         }
 
       } catch (err) {
-        console.log(err);
+        console.error(err);
       }
     },
   },

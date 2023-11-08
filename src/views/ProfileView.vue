@@ -110,7 +110,6 @@ export default {
       );
       const response = await res.json();
       this.userInfos = response;
-      console.log(this.userInfos);
     },
     async getUserFavorites(jwt, userId) {
       const res = await fetch(
@@ -137,7 +136,6 @@ export default {
         );
         const responseData = await data.json();
         this.userFavorites.push(responseData);
-        console.log(this.userFavorites);
       }
     },
 
@@ -159,7 +157,6 @@ export default {
         alert("Profile modifié avec succès");
         await this.getUserInfos(jwt, id)
         this.edit()
-        // this.$router.push("/");
       } else {
         alert("Une erreur s'est produite");
       }

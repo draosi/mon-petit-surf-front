@@ -74,7 +74,6 @@ export default {
   methods: {
     toggleMenu() {
       this.menuVisible = !this.menuVisible;
-      console.log(this.menuVisible);
     },
 
     getSessionStorage() {
@@ -95,8 +94,8 @@ export default {
       this.$router.push("/connexion");
     },
   },
-  async mounted() {
-    await this.getSessionStorage();
+  mounted() {
+    this.getSessionStorage();
   },
 };
 </script>
