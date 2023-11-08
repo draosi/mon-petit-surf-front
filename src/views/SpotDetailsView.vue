@@ -192,6 +192,8 @@ export default {
         } else {
           if (res.status === 404) {
             console.log("Données non trouvées");
+          } else if (res.status === 400) {
+            console.log("Requête invalide");
           } else {
             const errorText = await res.text();
             console.log(`Erreur inattendue: ${errorText}`);
@@ -213,6 +215,8 @@ export default {
         } else {
           if (res.status === 404) {
             console.log("Données non trouvées");
+          } else if (res.status === 400) {
+            console.log("Requête invalide");
           } else {
             const errorText = await res.text();
             console.log(`Erreur inattendue: ${errorText}`);
@@ -234,6 +238,8 @@ export default {
         } else {
           if (res.status === 404) {
             console.log("Données non trouvées");
+          } else if (res.status === 400) {
+            console.log("Requête invalide");
           } else {
             const errorText = await res.text();
             console.log(`Erreur inattendue: ${errorText}`);
@@ -325,8 +331,8 @@ export default {
             console.log("Utilisateur non trouvé");
           } else if (res.status === 401) {
             console.log("Non autorisé");
-          } else if (res.status === 403) {
-            console.log("Accès refusé");
+          } else if (res.status === 500) {
+            console.log("Erreur serveur interne");
           } else {
             const errorText = await res.text();
             console.log(`Erreur inattendue: ${errorText}`);
@@ -356,6 +362,8 @@ export default {
             console.log("favoris non trouvés");
           } else if (res.status === 401) {
             console.log("Non autorisé");
+          } else if (res.status === 500) {
+            console.log("Erreur serveur interne");
           } else {
             const errorText = await res.text();
             console.log(`Erreur inattendue: ${errorText}`);
@@ -390,10 +398,12 @@ export default {
           alert("Favoris ajouté avec succès");
           this.isFavorite = !this.isFavorite;
         } else {
-          if (res.status === 404) {
-            console.log("Spot non trouvé");
+          if (res.status === 400) {
+            console.log("Requête invalide");
           } else if (res.status === 401) {
             console.log("Non autorisé");
+          } else if (res.status === 500) {
+            console.log("Erreur serveur interne");
           } else {
             const errorText = await res.text();
             console.log(`Erreur inattendue: ${errorText}`);
@@ -419,10 +429,10 @@ export default {
           alert("Favoris supprimé avec succès");
           this.isFavorite = !this.isFavorite;
         } else {
-          if (res.status === 404) {
-            console.log("Spot non trouvé");
-          } else if (res.status === 401) {
+          if (res.status === 401) {
             console.log("Non autorisé");
+          } else if (res.status === 500) {
+            console.log("Erreur serveur interne");
           } else {
             const errorText = await res.text();
             console.log(`Erreur inattendue: ${errorText}`);
@@ -446,8 +456,8 @@ export default {
         } else {
           if (res.status === 404) {
             console.log("Equipements non trouvés");
-          } else if (res.status === 401) {
-            console.log("Non autorisé");
+          } else if (res.status === 500) {
+            console.log("Erreur serveur interne");
           } else {
             const errorText = await res.text();
             console.log(`Erreur inattendue: ${errorText}`);
@@ -487,6 +497,16 @@ export default {
               await this.getSpotUtilities(jwt, spotId);
             } else {
               alert("un problème à eu lieu lors de l'ajout de l'equipement");
+              if (res.status === 400) {
+                console.log("Requête invalide");
+              } else if (res.status === 401) {
+                console.log("Non autorisé");
+              } else if (res.status === 500) {
+                console.log("Erreur serveur interne");
+              } else {
+                const errorText = await res.text();
+                console.log(`Erreur inattendue: ${errorText}`);
+              }
             }
           } catch (err) {
             console.error("Erreur lors de l'ajout de l'equipement:", err);
@@ -521,12 +541,15 @@ export default {
             if (res.ok) {
               alert("Equipement supprimé avec succès");
               await this.getSpotUtilities(jwt, spotId);
-            } else if (res.status === 400) {
-              const error = await res.text();
-              console.log(error);
             } else {
-              alert("un problème à eu lieu lors de la suppression");
-              console.log(res);
+              if (res.status === 401) {
+                console.log("Non autorisé");
+              } else if (res.status === 500) {
+                console.log("Erreur serveur interne");
+              } else {
+                const errorText = await res.text();
+                console.log(`Erreur inattendue: ${errorText}`);
+              }
             }
           } catch (err) {
             console.error(
@@ -539,28 +562,41 @@ export default {
       }
     },
     async getSpotUtilities(jwt, spotId) {
-      const res = await fetch(
-        `https://localhost:7080/api/Spots/${spotId}/utilities`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${jwt}`,
-          },
+      try {
+        const res = await fetch(
+          `https://localhost:7080/api/Spots/${spotId}/utilities`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${jwt}`,
+            },
+          }
+        );
+
+        if (res.status === 200) {
+          const response = await res.json();
+
+          this.spotUtilities = response.map((e) => {
+            return {
+              ...e,
+              imageUrl: this.utilitiesImages[e.title],
+            };
+          });
+        } else {
+          if (res.status === 404) {
+            console.log("favoris non trouvés");
+          } else if (res.status === 401) {
+            console.log("Non autorisé");
+          } else if (res.status === 500) {
+            console.log("Erreur serveur interne");
+          } else {
+            const errorText = await res.text();
+            console.log(`Erreur inattendue: ${errorText}`);
+          }
         }
-      );
-
-      if (res.status === 200) {
-        const response = await res.json();
-
-        this.spotUtilities = response.map((e) => {
-          return {
-            ...e,
-            imageUrl: this.utilitiesImages[e.title],
-          };
-        });
-      } else {
-        console.error("Erreur pour récupérer les equipement");
+      } catch (err) {
+        console.error("Erreur lors de la suppression de l'equipement : " + err);
       }
     },
   },
