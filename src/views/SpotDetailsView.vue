@@ -585,7 +585,7 @@ export default {
           });
         } else {
           if (res.status === 404) {
-            console.log("favoris non trouvés");
+            console.log("Spot non trouvés");
           } else if (res.status === 401) {
             console.log("Non autorisé");
           } else if (res.status === 500) {
