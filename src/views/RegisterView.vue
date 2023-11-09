@@ -59,7 +59,6 @@ export default {
         })
 
         if(res.ok) {
-          const data = await res.json()
           this.$router.push("/connexion");
         } else {
           if (res.status === 500) {
