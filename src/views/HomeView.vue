@@ -291,23 +291,70 @@ export default {
     },
 
     async fetchSpots() {
-      const res = await fetch("https://localhost:7080/api/Spots/getSpots");
-      const response = await res.json();
-      return response;
+      try {
+        const res = await fetch("https://localhost:7080/api/Spots/getSpots");
+
+        if (res.ok) {
+          const response = await res.json();
+          return response;
+        } else {
+          if (res.status === 404) {
+            console.log("Spots non trouvés");
+          } else if (res.status === 500) {
+            console.log("Erreur serveur interne");
+          } else {
+            const errorText = await res.text();
+            console.log(`Erreur inattendue: ${errorText}`);
+          }
+        }
+      } catch (err) {
+        console.error("Erreur pour récupérer les informations du spot:", err);
+      }
     },
 
     async fetchRegions() {
-      const res = await fetch("https://localhost:7080/api/Spots/getRegions");
-      const response = await res.json();
-      return response;
+      try {
+        const res = await fetch("https://localhost:7080/api/Spots/getRegions");
+
+        if (res.ok) {
+          const response = await res.json();
+          return response;
+        } else {
+          if (res.status === 404) {
+            console.log("Régions non trouvées");
+          } else if (res.status === 500) {
+            console.log("Erreur serveur interne");
+          } else {
+            const errorText = await res.text();
+            console.log(`Erreur inattendue: ${errorText}`);
+          }
+        }
+      } catch (err) {
+        console.error("Erreur pour récupérer les informations du spot:", err);
+      }
     },
 
     async getMaxConditions(latitude, longitude) {
-      const res = await fetch(
-        `https://marine-api.open-meteo.com/v1/marine?latitude=${latitude}&longitude=${longitude}&daily=wave_height_max,wave_period_max&timezone=Europe%2FBerlin`
-      );
-      const response = await res.json();
-      return response;
+      try {
+        const res = await fetch(
+          `https://marine-api.open-meteo.com/v1/marine?latitude=${latitude}&longitude=${longitude}&daily=wave_height_max,wave_period_max&timezone=Europe%2FBerlin`
+        );
+        if (res.ok) {
+          const response = await res.json();
+          return response;
+        } else {
+          if (res.status === 404) {
+            console.log("Données non trouvées");
+          } else if (res.status === 400) {
+            console.log("Requête invalide");
+          } else {
+            const errorText = await res.text();
+            console.log(`Erreur inattendue: ${errorText}`);
+          }
+        }
+      } catch (err) {
+        console.error("Erreur pour récupérer les conditions (vagues):", err);
+      }
     },
 
     async createSpotCards() {
