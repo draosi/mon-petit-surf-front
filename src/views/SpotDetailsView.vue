@@ -153,7 +153,7 @@ export default {
     Loader,
   },
   methods: {
-    // Méthode liée au spop
+    // Méthode liée au spot
     async fetchSpot(id) {
       try {
         const res = await fetch(
