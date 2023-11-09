@@ -44,7 +44,9 @@
           <button class="button" @click="edit">Annuler</button>
         </div>
         <div class="profile__button">
-          <button class="button" @click="deleteUser(jwt, userId)">Supprimer</button>
+          <button class="button" @click="deleteUser(jwt, userId)">
+            Supprimer
+          </button>
         </div>
       </div>
     </section>
@@ -66,9 +68,7 @@
           >
         </li>
       </ul>
-      <p v-else>
-        Vous n'avez enregistré aucun favoris...
-      </p>
+      <p v-else>Vous n'avez enregistré aucun favoris...</p>
     </section>
   </main>
   <Footer />
@@ -98,90 +98,163 @@ export default {
   },
   methods: {
     async getUserInfos(jwt, userId) {
-      const res = await fetch(
-        `https://localhost:7080/api/Users/get/${userId}`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${jwt}`,
-          },
-        }
-      );
-      const response = await res.json();
-      this.userInfos = response;
-    },
-    async getUserFavorites(jwt, userId) {
-      const res = await fetch(
-        `https://localhost:7080/api/Users/${userId}/favorites`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${jwt}`,
-          },
-        }
-      );
-      const response = await res.json();
-
-      for (const ele of response) {
-        const data = await fetch(
-          `https://localhost:7080/api/Spots/getSpot/${ele.spotId}`,
+      try {
+        const res = await fetch(
+          `https://localhost:7080/api/Users/get/${userId}`,
           {
             method: "GET",
             headers: {
               "Content-Type": "application/json",
+              Authorization: `Bearer ${jwt}`,
             },
           }
         );
-        const responseData = await data.json();
-        this.userFavorites.push(responseData);
+
+        if (res.ok) {
+          const response = await res.json();
+          this.userInfos = response;
+        } else {
+          if (res.status === 404) {
+            console.log("Utilisateur non trouvé");
+          } else if (res.status === 500) {
+            console.log("Erreur serveur interne");
+          } else {
+            const errorText = await res.text();
+            console.log(`Erreur inattendue: ${errorText}`);
+          }
+        }
+      } catch (err) {
+        console.error(
+          "Erreur pour récupérer les informations sur l'utilisateur:",
+          err
+        );
       }
     },
+    async getUserFavorites(jwt, userId) {
+      try {
+        const res = await fetch(
+          `https://localhost:7080/api/Users/${userId}/favorites`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${jwt}`,
+            },
+          }
+        );
 
-    edit() {
-      this.isVisible = !this.isVisible;
+        if (res.ok) {
+          const response = await res.json();
+          for (const ele of response) {
+            const data = await fetch(
+              `https://localhost:7080/api/Spots/getSpot/${ele.spotId}`,
+              {
+                method: "GET",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+              }
+            );
+            const responseData = await data.json();
+            this.userFavorites.push(responseData);
+          }
+        } else {
+          if (res.status === 404) {
+            console.log("Favoris non trouvé");
+          } else if (res.status === 500) {
+            console.log("Erreur serveur interne");
+          } else {
+            const errorText = await res.text();
+            console.log(`Erreur inattendue: ${errorText}`);
+          }
+        }
+      } catch (err) {
+        console.error(
+          "Erreur pour récupérer les favoris de l'utilisateur:",
+          err
+        );
+      }
     },
 
     async updateUser(jwt, id) {
-      const res = await fetch(`https://localhost:7080/api/Users/put/${id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${jwt}`,
-        },
-        body: JSON.stringify(this.editedUser),
-      });
+      try {
+        const res = await fetch(`https://localhost:7080/api/Users/put/${id}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${jwt}`,
+          },
+          body: JSON.stringify(this.editedUser),
+        });
 
-      if (res.ok) {
-        alert("Profile modifié avec succès");
-        await this.getUserInfos(jwt, id)
-        this.edit()
-      } else {
-        alert("Une erreur s'est produite");
+        if (res.ok) {
+          alert("Profile modifié avec succès");
+          await this.getUserInfos(jwt, id);
+          this.edit();
+        } else {
+          alert("Une erreur s'est produite");
+          if (res.status === 400) {
+            console.log("Requête invalide");
+          } else if (res.status === 401) {
+            console.log("Non autorisé");
+          } else if (res.status === 500) {
+            console.log("Erreur serveur interne");
+          } else {
+            const errorText = await res.text();
+            console.log(`Erreur inattendue: ${errorText}`);
+          }
+        }
+      } catch (err) {
+        console.error(
+          "Erreur pour modifier les données de l'utilisateur:",
+          err
+        );
       }
     },
-
     async deleteUser(jwt, id) {
-      const res = await fetch(`https://localhost:7080/api/Users/delete/${id}`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${jwt}`,
-        },
-      })
+      try {
+        const res = await fetch(
+          `https://localhost:7080/api/Users/delete/${id}`,
+          {
+            method: "DELETE",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${jwt}`,
+            },
+          }
+        );
 
-      if (res.ok) {
-        alert("Profile supprimé avec succès")
-        this.clearSessionStorage()
-      } else {
-        alert("Une erreur s'est produite")
+        if (res.ok) {
+          alert("Profile supprimé avec succès");
+          this.clearSessionStorage();
+        } else {
+          alert("Une erreur s'est produite");
+          if (res.status === 400) {
+            console.log("Requête invalide");
+          } else if (res.status === 401) {
+            console.log("Non autorisé");
+          } else if (res.status === 500) {
+            console.log("Erreur serveur interne");
+          } else {
+            const errorText = await res.text();
+            console.log(`Erreur inattendue: ${errorText}`);
+          }
+        }
+      } catch (err) {
+        console.error(
+          "Erreur pour modifier les données de l'utilisateur:",
+          err
+        );
       }
     },
+
     clearSessionStorage() {
       sessionStorage.removeItem("jwt");
       sessionStorage.removeItem("userId");
       this.$router.push("/connexion");
+    },
+    edit() {
+      this.isVisible = !this.isVisible;
     },
   },
   async mounted() {
