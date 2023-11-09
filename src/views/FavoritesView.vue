@@ -116,7 +116,14 @@ export default {
             this.favorites.push(responseData);
           }
         } else {
-          console.log(res);
+          if (res.status === 404) {
+            console.log("Favoris non trouvé");
+          } else if (res.status === 500) {
+            console.log("Erreur serveur interne");
+          } else {
+            const errorText = await res.text();
+            console.log(`Erreur inattendue: ${errorText}`);
+          }
         }
       } catch (err) {
         console.error("Erreur lors de la récupération des favoris : " + err);
@@ -135,6 +142,8 @@ export default {
         } else {
           if (res.status === 404) {
             console.log("Données non trouvées");
+          } else if (res.status === 400) {
+            console.log("Requête invalide");
           } else {
             const errorText = await res.text();
             console.log(`Erreur inattendue: ${errorText}`);
@@ -196,7 +205,14 @@ export default {
           window.location.reload();
         } else {
           alert("Un problème est survenu");
-          console.log(res);
+          if (res.status === 401) {
+            console.log("Non autorisé");
+          } else if (res.status === 500) {
+            console.log("Erreur serveur interne");
+          } else {
+            const errorText = await res.text();
+            console.log(`Erreur inattendue: ${errorText}`);
+          }
         }
       } catch (err) {
         console.error("Erreur lors de la suppression du favoris : " + err);
