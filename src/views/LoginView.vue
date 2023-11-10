@@ -65,7 +65,7 @@ export default {
 
           this.$router.push("/");
         } else {
-          if (res.status === 401) {
+          if (res.status === 400) {
             console.log("Pseudo ou mot de  passe incorrect");
             alert("Pseudo ou mot de  passe incorrect");
           } else if (res.status === 500) {
