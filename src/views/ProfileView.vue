@@ -14,7 +14,7 @@
             <p class="user__txt">{{ userInfos.username }}</p>
           </div>
           <div class="user__infos">
-            <p class="user__txt">Mot de passe</p>
+            <p class="user__txt">Mot de passe :</p>
             <p class="user__txt">******</p>
           </div>
         </div>
