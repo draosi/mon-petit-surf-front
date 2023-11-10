@@ -12,7 +12,7 @@
           @change="filterSpots"
           class="sort__select sort__txt"
         >
-          <option disabled value="">Taille moyenne</option>
+          <option disabled value="">Taille maximum</option>
           <option v-for="option in waveHeight" :value="option.title">
             {{ option.title }}
           </option>
@@ -24,7 +24,7 @@
           @change="filterSpots"
           class="sort__select sort__txt"
         >
-          <option disabled value="">Période moyenne</option>
+          <option disabled value="">Période maximum</option>
           <option v-for="option in wavePeriod" :value="option.title">
             {{ option.title }}
           </option>
