@@ -53,14 +53,14 @@ router.beforeEach((to, from, next) => {
   if (to.meta.requiresAuth) {
     const token = sessionStorage.getItem("jwt");
     if (token) {
-      // User is authenticated, proceed to the route
+      // Utilisateur authentifié, accès autorisé
       next();
     } else {
-      // User is not authenticated, redirect to login
+      // Utilisateur non authentifié, redirection vers la page login
       next("/connexion");
     }
   } else {
-    // Non-protected route, allow access
+    // Route non protégée, accès autorisé
     next();
   }
 });
