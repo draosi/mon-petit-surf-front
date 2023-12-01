@@ -447,7 +447,7 @@ export default {
     async getUtilities() {
       try {
         const res = await fetch(
-          "https://localhost:7080/api/Spots/getUtilities"
+          "https://localhost:7080/api/Utilities/getUtilities"
         );
 
         if (res.ok) {
@@ -481,7 +481,7 @@ export default {
         } else {
           try {
             const res = await fetch(
-              `https://localhost:7080/api/Spots/${spotId}/utility/${utilityId}`,
+              `https://localhost:7080/api/Utilities/${spotId}/utility/${utilityId}`,
               {
                 method: "POST",
                 body: JSON.stringify(data),
@@ -528,7 +528,7 @@ export default {
         } else {
           try {
             const res = await fetch(
-              `https://localhost:7080/api/Spots/${spotId}/utility/${utilityId}`,
+              `https://localhost:7080/api/Utilities/${spotId}/utility/${utilityId}`,
               {
                 method: "DELETE",
                 headers: {
@@ -564,7 +564,7 @@ export default {
     async getSpotUtilities(jwt, spotId) {
       try {
         const res = await fetch(
-          `https://localhost:7080/api/Spots/${spotId}/utilities`,
+          `https://localhost:7080/api/Utilities/${spotId}/utilities`,
           {
             method: "GET",
             headers: {

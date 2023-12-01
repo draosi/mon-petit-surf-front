@@ -314,7 +314,7 @@ export default {
 
     async fetchRegions() {
       try {
-        const res = await fetch("https://localhost:7080/api/Spots/getRegions");
+        const res = await fetch("https://localhost:7080/api/Regions/getRegions");
 
         if (res.ok) {
           const response = await res.json();
