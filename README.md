@@ -6,13 +6,22 @@ Bienvenue dans Mon Petit Surf, une application Vue.js qui vous permet de consult
 - Node.js
 
 
+## Configuration des variables d'environnements
+1. Créer un fichier .env à la racine du projet
+
+2. Créer la variable d'environnement 'VITE_API_URL=...' dans votre fichier .env
+
+3. Ajouter le fichier .env à votre .gitignore
+
+
 ## Dépendances
 - vue - version 3.3.4
 - vue-router - Version 4.2.4
 - chart.js - Version 4.4.0
+- dotenv - Version 16.3.1
 
 
-### Installation et execution
+## Installation et execution
 1. Clonez le référentiel :
 ```sh
 git clone https://github.com/draosi/mon-petit-surf-front.git
