@@ -1,29 +1,34 @@
 # mon-petit-surf
+Bienvenue dans Mon Petit Surf, une application Vue.js qui vous permet de consulter les conditions de surf d'une soixantaine de spots de la côte française.
 
-This template should help get you started developing with Vue 3 in Vite.
 
-## Recommended IDE Setup
+## Configuration
+- Node.js
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
 
-## Customize configuration
+## Dépendances
+- vue - version 3.3.4
+- vue-router - Version 4.2.4
+- chart.js - Version 4.4.0
 
-See [Vite Configuration Reference](https://vitejs.dev/config/).
 
-## Project Setup
+### Installation et execution
+1. Clonez le référentiel :
+```sh
+git clone https://github.com/draosi/mon-petit-surf-front.git
+```
 
+2. Naviguez vers le dossier du projet :
+```sh
+cd mon-petit-surf-front
+```
+
+3. Installez les dépendances :
 ```sh
 npm install
 ```
 
-### Compile and Hot-Reload for Development
-
+4. Lancez l'application en mode développement :
 ```sh
 npm run dev
-```
-
-### Compile and Minify for Production
-
-```sh
-npm run build
 ```
