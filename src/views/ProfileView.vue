@@ -100,7 +100,7 @@ export default {
     async getUserInfos(jwt, userId) {
       try {
         const res = await fetch(
-          `https://localhost:7080/api/Users/get/${userId}`,
+          `${import.meta.env.VITE_API_URL}Users/get/${userId}`,
           {
             method: "GET",
             headers: {
@@ -133,7 +133,7 @@ export default {
     async getUserFavorites(jwt, userId) {
       try {
         const res = await fetch(
-          `https://localhost:7080/api/Users/${userId}/favorites`,
+          `${import.meta.env.VITE_API_URL}Users/${userId}/favorites`,
           {
             method: "GET",
             headers: {
@@ -147,7 +147,7 @@ export default {
           const response = await res.json();
           for (const ele of response) {
             const data = await fetch(
-              `https://localhost:7080/api/Spots/getSpot/${ele.spotId}`,
+              `${import.meta.env.VITE_API_URL}Spots/getSpot/${ele.spotId}`,
               {
                 method: "GET",
                 headers: {
@@ -178,7 +178,7 @@ export default {
 
     async updateUser(jwt, id) {
       try {
-        const res = await fetch(`https://localhost:7080/api/Users/put/${id}`, {
+        const res = await fetch(`${import.meta.env.VITE_API_URL}Users/put/${id}`, {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
@@ -214,7 +214,7 @@ export default {
     async deleteUser(jwt, id) {
       try {
         const res = await fetch(
-          `https://localhost:7080/api/Users/delete/${id}`,
+          `${import.meta.env.VITE_API_URL}Users/delete/${id}`,
           {
             method: "DELETE",
             headers: {

@@ -50,7 +50,7 @@ export default {
       };
 
       try {
-        const res = await fetch("https://localhost:7080/api/Users/login", {
+        const res = await fetch(`${import.meta.env.VITE_API_URL}Users/login`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

@@ -157,7 +157,7 @@ export default {
     async fetchSpot(id) {
       try {
         const res = await fetch(
-          `https://localhost:7080/api/Spots/getSpot/${id}`
+          `${import.meta.env.VITE_API_URL}Spots/getSpot/${id}`
         );
 
         if (res.ok) {
@@ -314,7 +314,7 @@ export default {
     async getUser(jwt, userId) {
       try {
         const res = await fetch(
-          `https://localhost:7080/api/Users/get/${userId}`,
+          `${import.meta.env.VITE_API_URL}Users/get/${userId}`,
           {
             method: "GET",
             headers: {
@@ -345,7 +345,7 @@ export default {
     async getUserFavorites(jwt, userId) {
       try {
         const res = await fetch(
-          `https://localhost:7080/api/Users/${userId}/favorites`,
+          `${import.meta.env.VITE_API_URL}Users/${userId}/favorites`,
           {
             method: "GET",
             headers: {
@@ -385,7 +385,7 @@ export default {
     async addToFavorites(jwt, userId, spotId) {
       try {
         const res = await fetch(
-          `https://localhost:7080/api/Users/${userId}/favorites/${spotId}`,
+          `${import.meta.env.VITE_API_URL}Users/${userId}/favorites/${spotId}`,
           {
             method: "POST",
             headers: {
@@ -416,7 +416,7 @@ export default {
     async removeFromFavorites(jwt, userId, spotId) {
       try {
         const res = await fetch(
-          `https://localhost:7080/api/Users/${userId}/favorites/${spotId}`,
+          `${import.meta.env.VITE_API_URL}Users/${userId}/favorites/${spotId}`,
           {
             method: "DELETE",
             headers: {
@@ -447,7 +447,7 @@ export default {
     async getUtilities() {
       try {
         const res = await fetch(
-          "https://localhost:7080/api/Utilities/getUtilities"
+          `${import.meta.env.VITE_API_URL}Utilities/getUtilities`
         );
 
         if (res.ok) {
@@ -481,7 +481,7 @@ export default {
         } else {
           try {
             const res = await fetch(
-              `https://localhost:7080/api/Utilities/${spotId}/utility/${utilityId}`,
+              `${import.meta.env.VITE_API_URL}Utilities/${spotId}/utility/${utilityId}`,
               {
                 method: "POST",
                 body: JSON.stringify(data),
@@ -528,7 +528,7 @@ export default {
         } else {
           try {
             const res = await fetch(
-              `https://localhost:7080/api/Utilities/${spotId}/utility/${utilityId}`,
+              `${import.meta.env.VITE_API_URL}Utilities/${spotId}/utility/${utilityId}`,
               {
                 method: "DELETE",
                 headers: {
@@ -564,7 +564,7 @@ export default {
     async getSpotUtilities(jwt, spotId) {
       try {
         const res = await fetch(
-          `https://localhost:7080/api/Utilities/${spotId}/utilities`,
+          `${import.meta.env.VITE_API_URL}Utilities/${spotId}/utilities`,
           {
             method: "GET",
             headers: {

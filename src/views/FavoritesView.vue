@@ -90,7 +90,7 @@ export default {
     async getUserFavorites(jwt, userId) {
       try {
         const res = await fetch(
-          `https://localhost:7080/api/Users/${userId}/favorites`,
+          `${import.meta.env.VITE_API_URL}Users/${userId}/favorites`,
           {
             method: "GET",
             headers: {
@@ -104,7 +104,7 @@ export default {
           const response = await res.json();
           for (const ele of response) {
             const data = await fetch(
-              `https://localhost:7080/api/Spots/getSpot/${ele.spotId}`,
+              `${import.meta.env.VITE_API_URL}Spots/getSpot/${ele.spotId}`,
               {
                 method: "GET",
                 headers: {
@@ -191,7 +191,7 @@ export default {
     async removeFromFavorites(jwt, userId, spotId) {
       try {
         const res = await fetch(
-          `https://localhost:7080/api/Users/${userId}/favorites/${spotId}`,
+          `${import.meta.env.VITE_API_URL}Users/${userId}/favorites/${spotId}`,
           {
             method: "DELETE",
             headers: {
