@@ -12,10 +12,13 @@ Bienvenue dans Mon Petit Surf, une application Vue.js qui vous permet de consult
 ### Installation et execution
 
 1. Clonez le référentiel :
+```sh
+git clone https://github.com/draosi/mon-petit-surf-front.git
+```
 
 2. Naviguez vers le dossier du projet :
 ```sh
-cd MON-PETIT-SURF
+cd mon-petit-surf-front
 ```
 
 3. Installez les dépendances :
