@@ -314,7 +314,9 @@ export default {
 
     async fetchRegions() {
       try {
-        const res = await fetch("https://localhost:7080/api/Regions/getRegions");
+        // const res = await fetch("https://localhost:7080/api/Regions/getRegions");
+        // console.log(import.meta.VUR_APP_API_URL);
+        const res = await fetch(`${import.meta.env.VITE_API_URL}Regions/getRegions`);
 
         if (res.ok) {
           const response = await res.json();
