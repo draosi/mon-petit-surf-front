@@ -7,26 +7,27 @@
   <main class="main">
     <div
       v-if="spotInfos.length !== 0 && surfDatas.length !== 0"
-      class="favorites"
-    >
+      class="favorites">
       <section class="infos">
         <div
           v-if="surfDatas.length !== 0 && spotInfos.length !== 0"
-          class="infos__title"
-        >
+          class="infos__title">
           <h1 class="infos__txt">
             {{ spotInfos.spotName }} ({{ spotInfos.department }})
           </h1>
           <h2 class="infos__txt">{{ transformDate(surfDatas.time[0]) }}</h2>
         </div>
-        <div class="infos__favorite" v-if="jwt">
+        <div
+          class="infos__favorite"
+          v-if="jwt">
           <ul class="infos__list">
-            <li v-for="(item, index) in spotUtilities" :key="index">
+            <li
+              v-for="(item, index) in spotUtilities"
+              :key="index">
               <img
                 :src="`${item.imageUrl}`"
                 :alt="`${item.title}`"
-                class="infos__img"
-              />
+                class="infos__img" />
             </li>
           </ul>
           <div>
@@ -35,28 +36,28 @@
               alt="bin"
               class="infos__add"
               :class="{ infos__display: isFavorite === false }"
-              @click="removeFromFavorites(jwt, userId, spotId)"
-            />
+              @click="removeFromFavorites(jwt, userId, spotId)" />
             <img
               src="@/assets/images/Fav.png"
               alt="favorite"
               class="infos__add"
               :class="{ infos__display: isFavorite === true }"
-              @click="addToFavorites(jwt, userId, spotId)"
-            />
+              @click="addToFavorites(jwt, userId, spotId)" />
           </div>
         </div>
         <div
           v-if="surfDatas.length !== 0 && spotInfos.length !== 0"
-          class="infos__location"
-        >
-          <div v-if="spotInfos.length !== 0" class="infos__map">
+          class="infos__location">
+          <div
+            v-if="spotInfos.length !== 0"
+            class="infos__map">
             <Map
               :latitude="spotInfos.latitude"
-              :longitude="spotInfos.longitude"
-            />
+              :longitude="spotInfos.longitude" />
           </div>
-          <div v-if="surfDatas.length !== 0" class="infos__weather">
+          <div
+            v-if="surfDatas.length !== 0"
+            class="infos__weather">
             <Weather :meteoData="surfDatas.meteo" />
           </div>
         </div>
@@ -69,37 +70,43 @@
           :time="surfDatas.time"
           :waves="surfDatas.wavesSize"
           :period="surfDatas.wavesPeriod"
-          :wind="surfDatas.wind"
-        />
+          :wind="surfDatas.wind" />
       </section>
-      <section v-if="jwt" class="utilities">
-        <select v-model="selectedUtility" class="utilities__select">
-          <option disabled value="">Selectionnez un equipement</option>
+      <section
+        v-if="jwt"
+        class="utilities">
+        <select
+          v-model="selectedUtility"
+          class="utilities__select">
+          <option
+            disabled
+            value="">
+            Selectionnez un equipement
+          </option>
           <option
             v-for="(item, index) in utilities"
             :key="index"
-            :value="item.id"
-          >
+            :value="item.id">
             {{ item.title }}
           </option>
         </select>
         <div class="utilities__btn">
           <button
             class="utilities__button"
-            @click="addUtilityToSpot(jwt, spotId)"
-          >
+            @click="addUtilityToSpot(jwt, spotId)">
             Ajouter
           </button>
           <button
             class="utilities__button"
-            @click="deleteUtilityFromSpot(jwt, spotId)"
-          >
+            @click="deleteUtilityFromSpot(jwt, spotId)">
             Supprimer
           </button>
         </div>
       </section>
     </div>
-    <div v-else class="loader">
+    <div
+      v-else
+      class="loader">
       <Loader />
     </div>
   </main>
@@ -107,18 +114,18 @@
 </template>
 
 <script>
-import Header from "@/components/Header.vue";
-import Footer from "@/components/Footer.vue";
-import Map from "@/components/Map.vue";
-import Weather from "@/components/Weather.vue";
-import Chart from "@/components/Chart.vue";
-import Loader from "@/components/Loader.vue";
-import bin from "@/assets/images/bin.png";
-import network from "@/assets/images/network.png";
-import parking from "@/assets/images/parking.png";
-import restaurants from "@/assets/images/restaurants.png";
-import showers from "@/assets/images/shower.png";
-import toilet from "@/assets/images/toilet.png";
+import Header from "@/components/Header.vue"
+import Footer from "@/components/Footer.vue"
+import Map from "@/components/Map.vue"
+import Weather from "@/components/Weather.vue"
+import Chart from "@/components/Chart.vue"
+import Loader from "@/components/Loader.vue"
+import bin from "@/assets/images/bin.png"
+import network from "@/assets/images/network.png"
+import parking from "@/assets/images/parking.png"
+import restaurants from "@/assets/images/restaurants.png"
+import showers from "@/assets/images/shower.png"
+import toilet from "@/assets/images/toilet.png"
 
 export default {
   data() {
@@ -135,14 +142,14 @@ export default {
         "Place de parking": parking,
         Restauration: restaurants,
         Douche: showers,
-        Toilette: toilet,
+        Toilette: toilet
       },
       userId: 0,
       spotId: 0,
       jwt: "",
       isFavorite: false,
-      selectedUtility: "",
-    };
+      selectedUtility: ""
+    }
   },
   components: {
     Header,
@@ -150,7 +157,7 @@ export default {
     Map,
     Weather,
     Chart,
-    Loader,
+    Loader
   },
   methods: {
     // Méthode liée au spot
@@ -158,24 +165,24 @@ export default {
       try {
         const res = await fetch(
           `${import.meta.env.VITE_API_URL}Spots/getSpot/${id}`
-        );
+        )
 
         if (res.ok) {
-          const response = await res.json();
-          this.spotInfos = response;
-          return response;
+          const response = await res.json()
+          this.spotInfos = response
+          return response
         } else {
           if (res.status === 404) {
-            console.log("Spot non trouvé");
+            console.log("Spot non trouvé")
           } else if (res.status === 500) {
-            console.log("Erreur serveur interne");
+            console.log("Erreur serveur interne")
           } else {
-            const errorText = await res.text();
-            console.log(`Erreur inattendue: ${errorText}`);
+            const errorText = await res.text()
+            console.log(`Erreur inattendue: ${errorText}`)
           }
         }
       } catch (err) {
-        console.error("Erreur pour récupérer les informations du spot:", err);
+        console.error("Erreur pour récupérer les informations du spot:", err)
       }
     },
 
@@ -184,96 +191,96 @@ export default {
       try {
         const res = await fetch(
           `https://marine-api.open-meteo.com/v1/marine?latitude=${latitude}&longitude=${longitude}&hourly=wave_height,wave_direction,wave_period&timezone=GMT`
-        );
+        )
 
         if (res.ok) {
-          const response = await res.json();
-          return response;
+          const response = await res.json()
+          return response
         } else {
           if (res.status === 404) {
-            console.log("Données non trouvées");
+            console.log("Données non trouvées")
           } else if (res.status === 400) {
-            console.log("Requête invalide");
+            console.log("Requête invalide")
           } else {
-            const errorText = await res.text();
-            console.log(`Erreur inattendue: ${errorText}`);
+            const errorText = await res.text()
+            console.log(`Erreur inattendue: ${errorText}`)
           }
         }
       } catch (err) {
-        console.error("Erreur pour récupérer les conditions (vagues):", err);
+        console.error("Erreur pour récupérer les conditions (vagues):", err)
       }
     },
     async getWindConditions(latitude, longitude) {
       try {
         const res = await fetch(
           `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&hourly=windspeed_10m,winddirection_10m`
-        );
+        )
 
         if (res.ok) {
-          const response = await res.json();
-          return response;
+          const response = await res.json()
+          return response
         } else {
           if (res.status === 404) {
-            console.log("Données non trouvées");
+            console.log("Données non trouvées")
           } else if (res.status === 400) {
-            console.log("Requête invalide");
+            console.log("Requête invalide")
           } else {
-            const errorText = await res.text();
-            console.log(`Erreur inattendue: ${errorText}`);
+            const errorText = await res.text()
+            console.log(`Erreur inattendue: ${errorText}`)
           }
         }
       } catch (err) {
-        console.error("Erreur pour récupérer les conditions (vent):", err);
+        console.error("Erreur pour récupérer les conditions (vent):", err)
       }
     },
     async getMeteo(latitude, longitude) {
       try {
         const res = await fetch(
           `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&daily=temperature_2m_max,temperature_2m_min,sunrise,sunset,precipitation_sum&timezone=Europe%2FBerlin`
-        );
+        )
 
         if (res.ok) {
-          const response = await res.json();
-          return response;
+          const response = await res.json()
+          return response
         } else {
           if (res.status === 404) {
-            console.log("Données non trouvées");
+            console.log("Données non trouvées")
           } else if (res.status === 400) {
-            console.log("Requête invalide");
+            console.log("Requête invalide")
           } else {
-            const errorText = await res.text();
-            console.log(`Erreur inattendue: ${errorText}`);
+            const errorText = await res.text()
+            console.log(`Erreur inattendue: ${errorText}`)
           }
         }
       } catch (err) {
-        console.error("Erreur pour récupérer les conditions (météo):", err);
+        console.error("Erreur pour récupérer les conditions (météo):", err)
       }
     },
 
     // Méthode permettant de trier les conditions --> Toutes les trois heures
     sortSurfData(array) {
-      const filteredArray = [];
+      const filteredArray = []
       array.forEach((e, i) => {
         if (i % 3 === 0) {
-          filteredArray.push(e);
+          filteredArray.push(e)
         }
-      });
-      return filteredArray;
+      })
+      return filteredArray
     },
 
     // méthode permettant de créer l'objet spotInformations contenant les infos sur le spot ainsi que les consitions de surf associées
     async createSpotInfos(id) {
-      const spot = await this.fetchSpot(id);
+      const spot = await this.fetchSpot(id)
 
       const wavesData = await this.getWavesConditions(
         spot.latitude,
         spot.longitude
-      );
+      )
       const windData = await this.getWindConditions(
         spot.latitude,
         spot.longitude
-      );
-      const meteoData = await this.getMeteo(spot.latitude, spot.longitude);
+      )
+      const meteoData = await this.getMeteo(spot.latitude, spot.longitude)
 
       if (spot && wavesData && windData && meteoData) {
         const spotInformations = {
@@ -288,13 +295,13 @@ export default {
             sunrise: meteoData.daily.sunrise[0],
             sunset: meteoData.daily.sunset[0],
             temperatureMax: meteoData.daily.temperature_2m_max[0],
-            temperatureMin: meteoData.daily.temperature_2m_min[0],
-          },
-        };
+            temperatureMin: meteoData.daily.temperature_2m_min[0]
+          }
+        }
 
-        this.surfDatas = spotInformations;
+        this.surfDatas = spotInformations
       } else {
-        console.error("Echec dans la récupération des données");
+        console.error("Echec dans la récupération des données")
       }
     },
 
@@ -304,10 +311,10 @@ export default {
         weekday: "long",
         day: "numeric",
         month: "long",
-        year: "numeric",
-      };
-      const date = new Date(string);
-      return date.toLocaleDateString("fr-FR", options);
+        year: "numeric"
+      }
+      const date = new Date(string)
+      return date.toLocaleDateString("fr-FR", options)
     },
 
     // Méthodes liées à l'utilisateur et aux favoris
@@ -318,28 +325,28 @@ export default {
           {
             method: "GET",
             headers: {
-              Authorization: `Bearer ${jwt}`,
-            },
+              Authorization: `Bearer ${jwt}`
+            }
           }
-        );
+        )
 
         if (res.ok) {
-          const response = await res.json();
-          this.userInfos = response;
+          const response = await res.json()
+          this.userInfos = response
         } else {
           if (res.status === 404) {
-            console.log("Utilisateur non trouvé");
+            console.log("Utilisateur non trouvé")
           } else if (res.status === 401) {
-            console.log("Non autorisé");
+            console.log("Non autorisé")
           } else if (res.status === 500) {
-            console.log("Erreur serveur interne");
+            console.log("Erreur serveur interne")
           } else {
-            const errorText = await res.text();
-            console.log(`Erreur inattendue: ${errorText}`);
+            const errorText = await res.text()
+            console.log(`Erreur inattendue: ${errorText}`)
           }
         }
       } catch (err) {
-        console.error("Erreur lors de la récupération de l'utilisateur:", err);
+        console.error("Erreur lors de la récupération de l'utilisateur:", err)
       }
     },
     async getUserFavorites(jwt, userId) {
@@ -349,37 +356,37 @@ export default {
           {
             method: "GET",
             headers: {
-              Authorization: `Bearer ${jwt}`,
-            },
+              Authorization: `Bearer ${jwt}`
+            }
           }
-        );
+        )
 
         if (res.ok) {
-          const response = await res.json();
-          this.userFavorites = response;
+          const response = await res.json()
+          this.userFavorites = response
         } else {
           if (res.status === 404) {
-            console.log("favoris non trouvés");
+            console.log("favoris non trouvés")
           } else if (res.status === 401) {
-            console.log("Non autorisé");
+            console.log("Non autorisé")
           } else if (res.status === 500) {
-            console.log("Erreur serveur interne");
+            console.log("Erreur serveur interne")
           } else {
-            const errorText = await res.text();
-            console.log(`Erreur inattendue: ${errorText}`);
+            const errorText = await res.text()
+            console.log(`Erreur inattendue: ${errorText}`)
           }
         }
       } catch (err) {
         console.error(
           "Erreur lors de la récupération des favoris de l'utilisateur:",
           err
-        );
+        )
       }
     },
     async favoriteExist(array, spotId) {
-      const exist = array.some((e) => e.spotId === spotId);
+      const exist = array.some(e => e.spotId === spotId)
       if (exist) {
-        this.isFavorite = true;
+        this.isFavorite = true
       }
     },
     async addToFavorites(jwt, userId, spotId) {
@@ -389,28 +396,28 @@ export default {
           {
             method: "POST",
             headers: {
-              Authorization: `Bearer ${jwt}`,
-            },
+              Authorization: `Bearer ${jwt}`
+            }
           }
-        );
+        )
 
         if (res.ok) {
-          alert("Favoris ajouté avec succès");
-          this.isFavorite = !this.isFavorite;
+          alert("Favoris ajouté avec succès")
+          this.isFavorite = !this.isFavorite
         } else {
           if (res.status === 400) {
-            console.log("Requête invalide");
+            console.log("Requête invalide")
           } else if (res.status === 401) {
-            console.log("Non autorisé");
+            console.log("Non autorisé")
           } else if (res.status === 500) {
-            console.log("Erreur serveur interne");
+            console.log("Erreur serveur interne")
           } else {
-            const errorText = await res.text();
-            console.log(`Erreur inattendue: ${errorText}`);
+            const errorText = await res.text()
+            console.log(`Erreur inattendue: ${errorText}`)
           }
         }
       } catch (err) {
-        console.error("Erreur lors de l'ajout aux favoris:", err);
+        console.error("Erreur lors de l'ajout aux favoris:", err)
       }
     },
     async removeFromFavorites(jwt, userId, spotId) {
@@ -420,26 +427,26 @@ export default {
           {
             method: "DELETE",
             headers: {
-              Authorization: `Bearer ${jwt}`,
-            },
+              Authorization: `Bearer ${jwt}`
+            }
           }
-        );
+        )
 
         if (res.ok) {
-          alert("Favoris supprimé avec succès");
-          this.isFavorite = !this.isFavorite;
+          alert("Favoris supprimé avec succès")
+          this.isFavorite = !this.isFavorite
         } else {
           if (res.status === 401) {
-            console.log("Non autorisé");
+            console.log("Non autorisé")
           } else if (res.status === 500) {
-            console.log("Erreur serveur interne");
+            console.log("Erreur serveur interne")
           } else {
-            const errorText = await res.text();
-            console.log(`Erreur inattendue: ${errorText}`);
+            const errorText = await res.text()
+            console.log(`Erreur inattendue: ${errorText}`)
           }
         }
       } catch (err) {
-        console.error("Erreur lors de la suppression du favoris:", err);
+        console.error("Erreur lors de la suppression du favoris:", err)
       }
     },
 
@@ -448,117 +455,121 @@ export default {
       try {
         const res = await fetch(
           `${import.meta.env.VITE_API_URL}Utilities/getUtilities`
-        );
+        )
 
         if (res.ok) {
-          const response = await res.json();
-          this.utilities = response;
+          const response = await res.json()
+          this.utilities = response
         } else {
           if (res.status === 404) {
-            console.log("Equipements non trouvés");
+            console.log("Equipements non trouvés")
           } else if (res.status === 500) {
-            console.log("Erreur serveur interne");
+            console.log("Erreur serveur interne")
           } else {
-            const errorText = await res.text();
-            console.log(`Erreur inattendue: ${errorText}`);
+            const errorText = await res.text()
+            console.log(`Erreur inattendue: ${errorText}`)
           }
         }
       } catch (err) {
-        console.error("Erreur lors de la récupération des équipements:", err);
+        console.error("Erreur lors de la récupération des équipements:", err)
       }
     },
     async addUtilityToSpot(jwt, spotId) {
-      const utilityId = this.selectedUtility;
+      const utilityId = this.selectedUtility
       const data = {
         SpotId: spotId,
-        UtilityId: utilityId,
-      };
+        UtilityId: utilityId
+      }
 
       if (utilityId) {
-        const utilityExist = this.spotUtilities.some((e) => e.id === utilityId);
+        const utilityExist = this.spotUtilities.some(e => e.id === utilityId)
         if (utilityExist) {
-          alert("Equipement déja associé à ce spot");
+          alert("Equipement déja associé à ce spot")
         } else {
           try {
             const res = await fetch(
-              `${import.meta.env.VITE_API_URL}Utilities/${spotId}/utility/${utilityId}`,
+              `${
+                import.meta.env.VITE_API_URL
+              }Utilities/${spotId}/utility/${utilityId}`,
               {
                 method: "POST",
                 body: JSON.stringify(data),
                 headers: {
                   "Content-Type": "application/json",
-                  Authorization: `Bearer ${jwt}`,
-                },
+                  Authorization: `Bearer ${jwt}`
+                }
               }
-            );
+            )
 
             if (res.ok) {
-              alert("equipement ajouté avec succès");
-              await this.getSpotUtilities(jwt, spotId);
+              alert("equipement ajouté avec succès")
+              await this.getSpotUtilities(jwt, spotId)
             } else {
-              alert("un problème à eu lieu lors de l'ajout de l'equipement");
+              alert("un problème à eu lieu lors de l'ajout de l'equipement")
               if (res.status === 400) {
-                console.log("Requête invalide");
+                console.log("Requête invalide")
               } else if (res.status === 401) {
-                console.log("Non autorisé");
+                console.log("Non autorisé")
               } else if (res.status === 500) {
-                console.log("Erreur serveur interne");
+                console.log("Erreur serveur interne")
               } else {
-                const errorText = await res.text();
-                console.log(`Erreur inattendue: ${errorText}`);
+                const errorText = await res.text()
+                console.log(`Erreur inattendue: ${errorText}`)
               }
             }
           } catch (err) {
-            console.error("Erreur lors de l'ajout de l'equipement:", err);
+            console.error("Erreur lors de l'ajout de l'equipement:", err)
           }
         }
 
-        this.selectedUtility = "";
+        this.selectedUtility = ""
       }
     },
     async deleteUtilityFromSpot(jwt, spotId) {
-      const utilityId = this.selectedUtility;
+      const utilityId = this.selectedUtility
       if (utilityId) {
-        const utilityExist = this.spotUtilities.some((e) => e.id === utilityId);
+        const utilityExist = this.spotUtilities.some(e => e.id === utilityId)
 
         if (!utilityExist) {
           alert(
             "Cet equipement n'est pas associé à ce spot, vous ne pouvez donc pas le supprimer"
-          );
+          )
         } else {
           try {
             const res = await fetch(
-              `${import.meta.env.VITE_API_URL}Utilities/${spotId}/utility/${utilityId}`,
+              `${
+                import.meta.env.VITE_API_URL
+              }Utilities/${spotId}/utility/${utilityId}`,
               {
                 method: "DELETE",
                 headers: {
                   "Content-Type": "application/json",
-                  Authorization: `Bearer ${jwt}`,
-                },
+                  Authorization: `Bearer ${jwt}`
+                }
               }
-            );
+            )
 
             if (res.ok) {
-              alert("Equipement supprimé avec succès");
-              await this.getSpotUtilities(jwt, spotId);
+              alert("Equipement supprimé avec succès")
+              await this.getSpotUtilities(jwt, spotId)
             } else {
               if (res.status === 401) {
-                console.log("Non autorisé");
+                console.log("Non autorisé")
               } else if (res.status === 500) {
-                console.log("Erreur serveur interne");
+                console.log("Erreur serveur interne")
               } else {
-                const errorText = await res.text();
-                console.log(`Erreur inattendue: ${errorText}`);
+                const errorText = await res.text()
+                console.log(`Erreur inattendue: ${errorText}`)
               }
             }
           } catch (err) {
             console.error(
               "Erreur lors de la suppression de l'equipement : " + err
-            );
+            )
           }
         }
 
-        this.selectedUtility = "";
+        this.selectedUtility = ""
       }
     },
     async getSpotUtilities(jwt, spotId) {
@@ -569,55 +580,55 @@ export default {
             method: "GET",
             headers: {
               "Content-Type": "application/json",
-              Authorization: `Bearer ${jwt}`,
-            },
+              Authorization: `Bearer ${jwt}`
+            }
           }
-        );
+        )
 
         if (res.status === 200) {
-          const response = await res.json();
+          const response = await res.json()
 
-          this.spotUtilities = response.map((e) => {
+          this.spotUtilities = response.map(e => {
             return {
               ...e,
-              imageUrl: this.utilitiesImages[e.title],
-            };
-          });
+              imageUrl: this.utilitiesImages[e.title]
+            }
+          })
         } else {
           if (res.status === 404) {
-            console.log("Spot non trouvés");
+            console.log("Spot non trouvés")
           } else if (res.status === 401) {
-            console.log("Non autorisé");
+            console.log("Non autorisé")
           } else if (res.status === 500) {
-            console.log("Erreur serveur interne");
+            console.log("Erreur serveur interne")
           } else {
-            const errorText = await res.text();
-            console.log(`Erreur inattendue: ${errorText}`);
+            const errorText = await res.text()
+            console.log(`Erreur inattendue: ${errorText}`)
           }
         }
       } catch (err) {
-        console.error("Erreur lors de la suppression de l'equipement : " + err);
+        console.error("Erreur lors de la suppression de l'equipement : " + err)
       }
-    },
+    }
   },
 
   async mounted() {
-    const spotId = this.$route.params;
-    this.spotId = parseInt(spotId.spotId, 10);
-    const jwt = sessionStorage.getItem("jwt");
-    this.jwt = jwt;
-    const userId = sessionStorage.getItem("userId");
-    this.userId = parseInt(userId, 10);
+    const spotId = this.$route.params
+    this.spotId = parseInt(spotId.spotId, 10)
+    const jwt = sessionStorage.getItem("jwt")
+    this.jwt = jwt
+    const userId = sessionStorage.getItem("userId")
+    this.userId = parseInt(userId, 10)
 
-    await this.createSpotInfos(this.spotId);
+    await this.createSpotInfos(this.spotId)
 
     if (this.jwt && this.userId && this.spotId) {
-      await this.getUser(this.jwt, this.userId);
-      await this.getUserFavorites(this.jwt, this.userId);
-      await this.favoriteExist(this.userFavorites, this.spotId);
-      await this.getUtilities();
-      await this.getSpotUtilities(this.jwt, this.spotId);
+      await this.getUser(this.jwt, this.userId)
+      await this.getUserFavorites(this.jwt, this.userId)
+      await this.favoriteExist(this.userFavorites, this.spotId)
+      await this.getUtilities()
+      await this.getSpotUtilities(this.jwt, this.spotId)
     }
-  },
-};
+  }
+}
 </script>
