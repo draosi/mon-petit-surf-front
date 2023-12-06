@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import Chart from "chart.js/auto";
+import Chart from "chart.js/auto"
 
 export default {
   dat() {
@@ -22,33 +22,33 @@ export default {
       chartWavesData: [],
       chartPeriodData: [],
       chartWindData: []
-    };
+    }
   },
   props: {
     time: Array,
     waves: Array,
     period: Array,
-    wind: Array,
+    wind: Array
   },
 
   methods: {
     transformHours(string) {
-      const date = new Date(string);
-      const hours = date.getHours().toString();
-      const minutes = date.getMinutes().toString();
-      return `${hours}h${minutes}`;
-    },
+      const date = new Date(string)
+      const hours = date.getHours().toString()
+      const minutes = date.getMinutes().toString()
+      return `${hours}h${minutes}`
+    }
   },
 
   async mounted() {
     if (this.time && this.waves && this.period && this.wind) {
-      this.chartWavesData = this.waves.slice(0,8)
+      this.chartWavesData = this.waves.slice(0, 8)
       this.chartPeriodData = this.period.slice(0, 8)
       this.chartWindData = this.wind.slice(0, 8)
     }
 
-    const waveChart = document.getElementById("vague");
-    const windChart = document.getElementById("wind");
+    const waveChart = document.getElementById("vague")
+    const windChart = document.getElementById("wind")
 
     new Chart(windChart, {
       type: "bar",
@@ -59,9 +59,9 @@ export default {
             label: "Vent",
             data: this.chartWindData,
             yAxisID: "wind",
-            backgroundColor: "rgba(255, 191, 0, 0.5)",
-          },
-        ],
+            backgroundColor: "rgba(255, 191, 0, 0.5)"
+          }
+        ]
       },
       options: {
         maintainAspectRatio: false,
@@ -72,17 +72,17 @@ export default {
             display: true,
             title: {
               display: true,
-              text: "Vitesse du vent en kilometre par heure",
-            },
-          },
+              text: "Vitesse du vent en kilometre par heure"
+            }
+          }
         },
         plugins: {
           tooltip: {
-            displayColors: false,
-          },
-        },
-      },
-    });
+            displayColors: false
+          }
+        }
+      }
+    })
 
     new Chart(waveChart, {
       type: "line",
@@ -95,22 +95,22 @@ export default {
           "12h00",
           "15h00",
           "18h00",
-          "21h00",
+          "21h00"
         ],
         datasets: [
           {
             label: "Taille",
             data: this.chartWavesData,
             tension: 0.4,
-            yAxisID: "wave",
+            yAxisID: "wave"
           },
           {
             label: "Période",
             data: this.chartPeriodData,
             tension: 0.4,
-            yAxisID: "period",
-          },
-        ],
+            yAxisID: "period"
+          }
+        ]
       },
       options: {
         maintainAspectRatio: false,
@@ -120,12 +120,12 @@ export default {
             position: "left",
             display: true,
             ticks: {
-              stepSize: 0.20
+              stepSize: 0.2
             },
             title: {
               display: true,
-              text: "Taille des vagues en mètre",
-            },
+              text: "Taille des vagues en mètre"
+            }
           },
           period: {
             type: "linear",
@@ -133,26 +133,26 @@ export default {
             display: true,
             // Permet qu'il n'y ai qu'une seul ligne pour les deux axes des y
             grid: {
-              drawOnChartArea: false,
+              drawOnChartArea: false
             },
             ticks: {
               stepSize: 0.5
             },
             title: {
               display: true,
-              text: "Temps de période en seconde",
-            },
-          },
+              text: "Temps de période en seconde"
+            }
+          }
         },
         // Permet de modifier le tooltip
         plugins: {
           tooltip: {
             displayColors: false,
-            yAlign: "bottom",
-          },
-        },
-      },
-    });
-  },
-};
+            yAlign: "bottom"
+          }
+        }
+      }
+    })
+  }
+}
 </script>
