@@ -75,16 +75,22 @@
       <section class="direction">
         <div class="direction__swell">
           <p>Houle</p>
-          <img
-            src="@/assets/images/right-arrow.png"
-            alt="arrow"
-            class="direction__img" />
+          <div style="position: relative; width: 35px; height: 35px">
+            <img
+              src="@/assets/images/right-arrow.png"
+              alt="arrow"
+              class="direction__img"
+              style="transform: rotate(180deg)" />
+          </div>
         </div>
         <div class="direction__wind">
-          <img
-            src="@/assets/images/right-arrow.png"
-            alt="arrow"
-            class="direction__img" />
+          <div style="position: relative; width: 35px; height: 35px">
+            <img
+              src="@/assets/images/right-arrow.png"
+              alt="arrow"
+              class="direction__img"
+              style="transform: rotate(18deg)" />
+          </div>
           <p>Vent</p>
         </div>
       </section>
