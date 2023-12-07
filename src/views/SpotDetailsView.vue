@@ -77,19 +77,19 @@
           <p>Houle</p>
           <div style="position: relative; width: 35px; height: 35px">
             <img
-              src="@/assets/images/right-arrow.png"
+              src="@/assets/images/direction.png"
               alt="arrow"
               class="direction__img"
-              style="transform: rotate(180deg)" />
+              :style="`transform: translate(-50%, -50%) rotate(${surfDatas.waveDirection}deg)`" />
           </div>
         </div>
         <div class="direction__wind">
           <div style="position: relative; width: 35px; height: 35px">
             <img
-              src="@/assets/images/right-arrow.png"
+              src="@/assets/images/direction.png"
               alt="arrow"
               class="direction__img"
-              style="transform: rotate(18deg)" />
+              :style="`transform: translate(-50%, -50%) rotate(${surfDatas.windDirection}deg)`" />
           </div>
           <p>Vent</p>
         </div>
@@ -279,6 +279,24 @@ export default {
         console.error("Erreur pour récupérer les conditions (météo):", err)
       }
     },
+    async getDirection(latitude, longitude) {
+      try {
+        const res = await fetch(
+          `https://marine-api.open-meteo.com/v1/marine?latitude=${latitude}&longitude=${longitude}&hourly=wave_direction,wind_wave_direction&timezone=Europe%2FBerlin`
+        )
+
+        if (res.ok) {
+          const response = await res.json()
+          console.log(response)
+          return response
+        }
+      } catch (err) {
+        console.error(
+          "Erreur pour récupérer la direction de la houle et du vent",
+          err
+        )
+      }
+    },
 
     // Méthode permettant de trier les conditions --> Toutes les trois heures
     sortSurfData(array) {
@@ -305,14 +323,18 @@ export default {
       )
       const meteoData = await this.getMeteo(spot.latitude, spot.longitude)
 
-      if (spot && wavesData && windData && meteoData) {
+      const direction = await this.getDirection(spot.latitude, spot.longitude)
+
+      if (spot && wavesData && windData && meteoData && direction) {
         const spotInformations = {
           id: spot.id,
           name: spot.spotName,
           time: this.sortSurfData(wavesData.hourly.time),
           wavesSize: this.sortSurfData(wavesData.hourly.wave_height),
           wavesPeriod: this.sortSurfData(wavesData.hourly.wave_period),
+          waveDirection: direction.hourly.wave_direction[12],
           wind: this.sortSurfData(windData.hourly.windspeed_10m),
+          windDirection: direction.hourly.wind_wave_direction[12],
           meteo: {
             precipitationSum: meteoData.daily.precipitation_sum[0],
             sunrise: meteoData.daily.sunrise[0],

@@ -144,7 +144,7 @@
   gap: 5%;
   width: 100%;
 
-  @media only screen and (max-width: $small) {
+  @media only screen and (max-width: $extraSmall) {
     justify-content: space-between;
   }
 
@@ -154,9 +154,8 @@
     align-items: center;
     gap: 25px;
     width: 65%;
-    position: relative;
 
-    @media only screen and (max-width: $small) {
+    @media only screen and (max-width: $extraSmall) {
       justify-content: flex-start;
       width: 50%;
     }
@@ -168,9 +167,8 @@
     align-items: center;
     gap: 25px;
     width: 30%;
-    position: relative;
 
-    @media only screen and (max-width: $small) {
+    @media only screen and (max-width: $extraSmall) {
       justify-content: flex-end;
       width: 50%;
     }
@@ -179,9 +177,8 @@
   &__img {
     width: 32px;
     position: absolute;
-    top: 0;
-    left: 0;
-    transform: translate(-50%, -50%);
+    top: 50%;
+    left: 50%;
   }
 }
 
