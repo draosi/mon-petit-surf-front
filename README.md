@@ -19,6 +19,7 @@ Bienvenue dans Mon Petit Surf, une application Vue.js qui vous permet de consult
 - vue-router - Version 4.2.4
 - chart.js - Version 4.4.0
 - dotenv - Version 16.3.1
+- jwt-decode - Version 4.0.O
 
 
 ## Installation et execution
