@@ -126,6 +126,7 @@ import parking from "@/assets/images/parking.png"
 import restaurants from "@/assets/images/restaurants.png"
 import showers from "@/assets/images/shower.png"
 import toilet from "@/assets/images/toilet.png"
+import { jwtDecode } from "jwt-decode"
 
 export default {
   data() {
@@ -609,6 +610,12 @@ export default {
       } catch (err) {
         console.error("Erreur lors de la suppression de l'equipement : " + err)
       }
+    },
+    getUserId(jwt) {
+      const token = jwtDecode(jwt)
+      console.log(token)
+      const decodedUserId = token.nameid
+      this.userId = parseInt(decodedUserId)
     }
   },
 
@@ -617,8 +624,10 @@ export default {
     this.spotId = parseInt(spotId.spotId, 10)
     const jwt = sessionStorage.getItem("jwt")
     this.jwt = jwt
-    const userId = sessionStorage.getItem("userId")
-    this.userId = parseInt(userId, 10)
+    // const userId = sessionStorage.getItem("userId")
+    // this.userId = parseInt(userId, 10)
+
+    this.getUserId(this.jwt)
 
     await this.createSpotInfos(this.spotId)
 

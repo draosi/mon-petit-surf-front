@@ -97,6 +97,7 @@
 <script>
 import Header from "@/components/Header.vue"
 import Footer from "@/components/Footer.vue"
+import { jwtDecode } from "jwt-decode"
 
 export default {
   data() {
@@ -272,13 +273,21 @@ export default {
     },
     edit() {
       this.isVisible = !this.isVisible
+    },
+    getUserId(jwt) {
+      const token = jwtDecode(jwt)
+      console.log(token)
+      const decodedUserId = token.nameid
+      this.userId = parseInt(decodedUserId)
     }
   },
   async mounted() {
-    const userId = this.$route.params.userId
-    this.userId = userId
+    // const userId = this.$route.params.userId
+    // this.userId = userId
     const jwt = sessionStorage.getItem("jwt")
     this.jwt = jwt
+
+    this.getUserId(this.jwt)
 
     await this.getUserInfos(this.jwt, this.userId)
     await this.getUserFavorites(this.jwt, this.userId)
