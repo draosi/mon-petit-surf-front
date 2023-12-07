@@ -68,6 +68,7 @@
 <script>
 import Header from "@/components/Header.vue"
 import Footer from "@/components/Footer.vue"
+import { jwtDecode } from "jwt-decode"
 
 export default {
   data() {
@@ -215,15 +216,22 @@ export default {
       } catch (err) {
         console.error("Erreur lors de la suppression du favoris : " + err)
       }
+    },
+
+    getUserId(jwt) {
+      const token = jwtDecode(jwt)
+      console.log(token)
+      const decodedUserId = token.nameid
+      this.userId = parseInt(decodedUserId)
     }
   },
   async mounted() {
-    const userId = this.$route.params.userId
-    this.userId = userId
     const jwt = sessionStorage.getItem("jwt")
     this.jwt = jwt
 
-    await this.getUserFavorites(jwt, userId)
+    this.getUserId(this.jwt)
+
+    await this.getUserFavorites(jwt, this.userId)
 
     await this.getWavesInfos(this.favorites)
 
