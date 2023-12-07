@@ -624,10 +624,10 @@ export default {
     this.spotId = parseInt(spotId.spotId, 10)
     const jwt = sessionStorage.getItem("jwt")
     this.jwt = jwt
-    // const userId = sessionStorage.getItem("userId")
-    // this.userId = parseInt(userId, 10)
 
-    this.getUserId(this.jwt)
+    if (this.jwt) {
+      this.getUserId(this.jwt)
+    }
 
     await this.createSpotInfos(this.spotId)
 
