@@ -72,6 +72,22 @@
           :period="surfDatas.wavesPeriod"
           :wind="surfDatas.wind" />
       </section>
+      <section class="direction">
+        <div class="direction__swell">
+          <p>Houle</p>
+          <img
+            src="@/assets/images/right-arrow.png"
+            alt="arrow"
+            class="direction__img" />
+        </div>
+        <div class="direction__wind">
+          <img
+            src="@/assets/images/right-arrow.png"
+            alt="arrow"
+            class="direction__img" />
+          <p>Vent</p>
+        </div>
+      </section>
       <section
         v-if="jwt"
         class="utilities">
