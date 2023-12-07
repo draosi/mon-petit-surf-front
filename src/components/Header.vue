@@ -29,7 +29,7 @@
           <RouterLink
             :to="{ name: 'profile', params: { userId: userId } }"
             class="header__txt">
-            Profile
+            Profil
           </RouterLink>
           <RouterLink
             :to="{ name: 'favoris', params: { userId: userId } }"
@@ -44,7 +44,9 @@
           </RouterLink>
         </nav>
       </div>
-      <div v-else>
+      <div
+        v-else
+        class="header__responsive">
         <nav
           v-if="menuVisible"
           :class="
