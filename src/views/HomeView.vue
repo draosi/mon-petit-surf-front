@@ -17,8 +17,9 @@
             Taille maximum
           </option>
           <option
-            v-for="option in waveHeight"
-            :value="option.title">
+            v-for="(option, index) in waveHeight"
+            :value="option.title"
+            :key="index">
             {{ option.title }}
           </option>
         </select>
@@ -34,8 +35,9 @@
             Période maximum
           </option>
           <option
-            v-for="option in wavePeriod"
-            :value="option.title">
+            v-for="(option, index) in wavePeriod"
+            :value="option.title"
+            :key="index">
             {{ option.title }}
           </option>
         </select>
@@ -51,8 +53,9 @@
             Région
           </option>
           <option
-            v-for="option in regions"
-            :value="option.title">
+            v-for="(option, index) in regions"
+            :value="option.title"
+            :key="index">
             {{ option.title }}
           </option>
         </select>
