@@ -75,7 +75,9 @@
       <section class="direction">
         <div class="direction__swell">
           <p>Houle</p>
-          <div style="position: relative; width: 35px; height: 35px">
+          <div
+            style="position: relative; width: 50px; height: 50px"
+            class="direction__compass">
             <img
               src="@/assets/images/direction.png"
               alt="arrow"
@@ -84,14 +86,16 @@
           </div>
         </div>
         <div class="direction__wind">
-          <div style="position: relative; width: 35px; height: 35px">
+          <p>Vent</p>
+          <div
+            style="position: relative; width: 50px; height: 50px"
+            class="direction__compass">
             <img
               src="@/assets/images/direction.png"
               alt="arrow"
               class="direction__img"
               :style="`transform: translate(-50%, -50%) rotate(${surfDatas.windDirection}deg)`" />
           </div>
-          <p>Vent</p>
         </div>
       </section>
       <section
@@ -345,6 +349,7 @@ export default {
         }
 
         this.surfDatas = spotInformations
+        console.log(this.surfDatas)
       } else {
         console.error("Echec dans la récupération des données")
       }
