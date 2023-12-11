@@ -97,7 +97,7 @@
                   class="direction__img"
                   src="@/assets/images/direction.png"
                   alt="arrow"
-                  :style="`transform: translate(-50%, -50%) rotate(${value}deg)`" />
+                  :style="`transform: translate(-50%, -50%) rotate(-${value}deg)`" />
               </td>
             </tr>
           </tbody>
@@ -362,7 +362,7 @@ export default {
       }
     },
 
-    // Méthode permettant de créer le tableau contenat les direction du swell et du vent
+    // Méthode permettant de créer le tableau contenant les directions du swell et du vent
     surfDirection() {
       if (this.surfDatas) {
         const surfDirection = [
