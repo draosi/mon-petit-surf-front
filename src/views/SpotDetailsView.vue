@@ -73,30 +73,35 @@
           :wind="surfDatas.wind" />
       </section>
       <section class="direction">
-        <div class="direction__swell">
-          <p>Houle</p>
-          <div
-            style="position: relative; width: 50px; height: 50px"
-            class="direction__compass">
-            <img
-              src="@/assets/images/direction.png"
-              alt="arrow"
-              class="direction__img"
-              :style="`transform: translate(-50%, -50%) rotate(${surfDatas.waveDirection}deg)`" />
-          </div>
-        </div>
-        <div class="direction__wind">
-          <p>Vent</p>
-          <div
-            style="position: relative; width: 50px; height: 50px"
-            class="direction__compass">
-            <img
-              src="@/assets/images/direction.png"
-              alt="arrow"
-              class="direction__img"
-              :style="`transform: translate(-50%, -50%) rotate(${surfDatas.windDirection}deg)`" />
-          </div>
-        </div>
+        <table class="direction__table">
+          <thead>
+            <tr>
+              <th></th>
+              <th>06h00</th>
+              <th>09h00</th>
+              <th>12h00</th>
+              <th>15h00</th>
+              <th>18h00</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              v-for="(data, index) in direction"
+              :key="index">
+              <td class="direction__title">{{ data.label }}</td>
+              <td
+                v-for="(value, i) in data.value"
+                :key="i"
+                style="position: relative; width: 50px; height: 50px">
+                <img
+                  class="direction__img"
+                  src="@/assets/images/direction.png"
+                  alt="arrow"
+                  :style="`transform: translate(-50%, -50%) rotate(${value}deg)`" />
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </section>
       <section
         v-if="jwt"
@@ -159,6 +164,7 @@ export default {
     return {
       spotInfos: [],
       surfDatas: [],
+      direction: [],
       userInfos: [],
       userFavorites: [],
       utilities: [],
@@ -336,9 +342,11 @@ export default {
           time: this.sortSurfData(wavesData.hourly.time),
           wavesSize: this.sortSurfData(wavesData.hourly.wave_height),
           wavesPeriod: this.sortSurfData(wavesData.hourly.wave_period),
-          waveDirection: direction.hourly.wave_direction[12],
+          waveDirection: this.sortSurfData(direction.hourly.wave_direction),
           wind: this.sortSurfData(windData.hourly.windspeed_10m),
-          windDirection: direction.hourly.wind_wave_direction[12],
+          windDirection: this.sortSurfData(
+            direction.hourly.wind_wave_direction
+          ),
           meteo: {
             precipitationSum: meteoData.daily.precipitation_sum[0],
             sunrise: meteoData.daily.sunrise[0],
@@ -349,9 +357,21 @@ export default {
         }
 
         this.surfDatas = spotInformations
-        console.log(this.surfDatas)
       } else {
         console.error("Echec dans la récupération des données")
+      }
+    },
+
+    // Méthode permettant de créer le tableau contenat les direction du swell et du vent
+    surfDirection() {
+      if (this.surfDatas) {
+        const surfDirection = [
+          { label: "Houle", value: this.surfDatas.waveDirection.slice(2, 7) },
+          { label: "Vent", value: this.surfDatas.windDirection.slice(2, 7) }
+        ]
+
+        this.direction = surfDirection
+        console.log(this.direction)
       }
     },
 
@@ -679,6 +699,7 @@ export default {
     }
 
     await this.createSpotInfos(this.spotId)
+    this.surfDirection()
 
     if (this.jwt && this.userId && this.spotId) {
       await this.getUser(this.jwt, this.userId)

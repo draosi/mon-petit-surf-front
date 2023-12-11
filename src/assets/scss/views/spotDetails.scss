@@ -130,6 +130,7 @@
 .chart {
   width: 100%;
   height: 350px;
+  position: relative;
 
   @media only screen and (max-width: $small) {
     height: 600px;
@@ -137,41 +138,21 @@
 }
 
 .direction {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  gap: 5%;
   width: 100%;
 
-  @media only screen and (max-width: $extraSmall) {
-    justify-content: space-between;
+  &__table {
+    width: 100%;
   }
 
-  &__swell {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-    width: 65%;
-
-    @media only screen and (max-width: $small) {
-      width: 50%;
-    }
+  &__title {
+    text-align: left;
+    width: 20%;
   }
 
-  &__wind {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-    width: 30%;
-
-    @media only screen and (max-width: $small) {
-      width: 50%;
-    }
+  &__compass {
+    border: 1.5px solid black;
+    border-radius: 100px;
+    background-color: $primary;
   }
 
   &__img {
@@ -179,11 +160,6 @@
     position: absolute;
     top: 50%;
     left: 50%;
-  }
-
-  &__compass {
-    border: 1.5px solid black;
-    border-radius: 100px;
   }
 }
 

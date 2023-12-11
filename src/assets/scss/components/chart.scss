@@ -25,6 +25,12 @@
     }
   }
 
+  &__test {
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+
   &__bar {
     position: relative;
     width: 30%;
