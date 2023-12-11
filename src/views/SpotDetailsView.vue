@@ -77,11 +77,11 @@
           <thead>
             <tr>
               <th></th>
-              <th>06h00</th>
-              <th>09h00</th>
-              <th>12h00</th>
-              <th>15h00</th>
-              <th>18h00</th>
+              <th class="direction__head">06h00</th>
+              <th class="direction__head">09h00</th>
+              <th class="direction__head">12h00</th>
+              <th class="direction__head">15h00</th>
+              <th class="direction__head">18h00</th>
             </tr>
           </thead>
           <tbody>

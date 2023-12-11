@@ -142,11 +142,17 @@
 
   &__table {
     width: 100%;
+    border-collapse: collapse;
+  }
+
+  &__head {
+    border-bottom: 1px solid black;
   }
 
   &__title {
     text-align: left;
     width: 20%;
+    border-right: 1px solid black;
   }
 
   &__compass {
