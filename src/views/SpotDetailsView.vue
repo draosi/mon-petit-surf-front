@@ -76,7 +76,7 @@
         <table class="direction__table">
           <thead>
             <tr>
-              <th></th>
+              <th class="direction__head"></th>
               <th class="direction__head">06h00</th>
               <th class="direction__head">09h00</th>
               <th class="direction__head">12h00</th>
